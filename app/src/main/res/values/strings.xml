@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">File selector</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_file_selector">Select the files</string>
+    <string name="denied">Access denied</string>
+    <string name="empty">No files here</string>
+    <string name="sdcard_empty">Card is not inserted</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
