@@ -40,6 +40,7 @@ public class ExplorerFragment extends Fragment {
     protected View rootView;
     protected String path;
     private SuperPickerActivity pickerActivity;
+    private ArrayList<ExplorerItem> items;
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,7 +62,7 @@ public class ExplorerFragment extends Fragment {
             ListView list = (ListView) rootView.findViewById(R.id.list);
             Bundle bundle = getArguments();
 
-            ArrayList<ExplorerItem> items = new ArrayList<ExplorerItem>();
+            items = new ArrayList<ExplorerItem>();
             ExplorerAdapter adapter;
             if (bundle != null) {
                 path = bundle.getString("path");
@@ -93,15 +94,7 @@ public class ExplorerFragment extends Fragment {
                 Log.d(LOG_TAG, "Size: " + fileList.length);
                 for (File file : fileList) {
                     ExplorerItem item = null;
-
-                    if (file.isDirectory()) {
-                            item = getFolderItem(file);
-
-                    } else {
-                        item = getFileItem(file);
-                    }
-                    if(item!=null)
-                        items.add(item);
+                    putItem(file);
                 }
 
                 Collections.sort(items, new FileOrderComparator());
@@ -125,12 +118,12 @@ public class ExplorerFragment extends Fragment {
                     items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder, false));// todo R.drawable.external_storage_locked,false));
                 } else {
                     items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder));// todo R.drawable.external_storage));
-                    items.add(Converter.getFolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC)));
-                    items.add(Converter.getFolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
-                    items.add(Converter.getFolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
-                    items.add(Converter.getFolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)));
+                    putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
+                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
+                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
+                    putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
                     if(Build.VERSION.SDK_INT>=19){
-                        items.add(Converter.getFolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)));
+                        // putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
                     }
                 }
                 ArrayList<ExplorerItem> historyItems = loadHistory();
@@ -185,6 +178,18 @@ public class ExplorerFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    void putItem(File file){
+
+        ExplorerItem item;
+        if (file.isDirectory()) {
+            item = getFolderItem(file);
+
+        } else {
+            item = getFileItem(file);
+        }
+        if(item!=null)
+            items.add(item);
+    }
     private ExplorerItem getFolderItem(File file) {
         return Converter.getFolderItem(file);
     }
