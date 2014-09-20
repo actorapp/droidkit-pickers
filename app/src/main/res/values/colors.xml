@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="globalWindowBackground" >#fff</color>
+    <color name="globalWindowBackgroundTranslucent" >#d8eeeeee</color>
+
+    <color name="grey">#999</color>
+    <color name="list_divider">#d2d2d2</color>
+
+    <color name="main_color">#445871</color>
+    <color name="main_color_picturepicker">#333333</color>
+
+    <color name="controller_background_default">@color/main_color</color>
+    <color name="controller_background_pressed">#5e7188</color>
+    <color name="controller_text_color_disabled">#717171</color>
+    <color name="controller_text_color_default">#fff</color>
+
+    <color name="explorer_item_title">#000000</color>
+    <color name="explorer_item_subtitle">#999999</color>
+    <color name="explorer_item_background_pressed">#efefef</color>
+    <color name="explorer_item_stroke">#c8c8c8</color>
+    <color name="explorer_item_image_background">#ebebeb</color>
+    <color name="explorer_item_image_color">#999999</color>
+
+    <color name="picture_item_folder_title_background">#88000000</color>
+    <color name="picture_item_folder_title_color">#f8f8f8</color>
+    <color name="picture_item_folder_background">#1f1f1f</color>
+    <color name="picture_item_selection_selected">#4071cb</color>
+    <color name="picture_item_selection" >#88000000</color>
+</resources>

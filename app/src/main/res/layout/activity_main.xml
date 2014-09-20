@@ -17,8 +17,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
-        android:id="@+id/select"
-        android:text="select"
+        android:id="@+id/select_files"
+        android:text="Pick files lol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/select_images"
+        android:text="Pick images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/pick_location"
+        android:text="Pick location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>

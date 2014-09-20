@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Last selected items"
+    android:text="@string/recent_selected"
     android:paddingLeft="16dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
