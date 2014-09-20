@@ -1,7 +1,9 @@
 package com.droidkit.picker.map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.droidkit.file.R;
@@ -13,14 +15,36 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapPickerActivity extends Activity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private LatLng geoData;
 
+    View select;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_picker);
         setUpMapIfNeeded();
-        Toast.makeText(this, "Not implemented", Toast.LENGTH_SHORT).show();
 
+        select = findViewById(R.id.select);
+        select.setEnabled(false);
+        findViewById(R.id.select_text).setEnabled(false);
+        select.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("latitude", geoData.latitude);
+                returnIntent.putExtra("longitude", geoData.longitude);
+
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            }
+        });
+        View cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -49,6 +73,16 @@ public class MapPickerActivity extends Activity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Not implemented"));
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                select.setEnabled(true);
+                findViewById(R.id.select_text).setEnabled(true);
+                mMap.clear();
+                geoData = latLng;
+                mMap.addMarker(new MarkerOptions().position(latLng));
+            }
+        });
+
     }
 }

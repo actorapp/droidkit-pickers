@@ -11,6 +11,7 @@ import com.droidkit.file.R;
 import com.droidkit.picker.file.FilePickerActivity;
 import com.droidkit.picker.map.MapPickerActivity;
 import com.droidkit.picker.picture.PicturePickerActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -56,16 +57,16 @@ public class MainActivity extends Activity  {
 
 
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         TextView statusView = (TextView) findViewById(R.id.status);
 
         switch (requestCode) {
             case ACTIVITY_REQUEST_FILES:
             case ACTIVITY_REQUEST_PICTURES: {
                 if (resultCode == RESULT_OK) {
-                    statusView.setText(data.getStringExtra("result"));
+                    statusView.setText(resultData.getStringExtra("result"));
                     String fileString = "";
-                    ArrayList<String> files = data.getStringArrayListExtra("picked");
+                    ArrayList<String> files = resultData.getStringArrayListExtra("picked");
                     if (!files.isEmpty())
                         for (String file : files) {
                             fileString += file + "\n";
@@ -83,7 +84,11 @@ public class MainActivity extends Activity  {
             break;
             case ACTIVITY_REQUEST_MAP:
                 if (resultCode == RESULT_OK) {
-                    statusView.setText(data.getStringExtra("result"));
+                    LatLng geoData = new LatLng(
+                            resultData.getDoubleExtra("latitude",0),
+                            resultData.getDoubleExtra("longitude",0)
+                    );
+                    statusView.setText(geoData.toString());
                 } else {
                     statusView.setText("canceled");
                 }

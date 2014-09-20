@@ -57,9 +57,6 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(selectedItems.isEmpty()){
-                    return;
-                }
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("picked", selectedItems);
                 setResult(RESULT_OK, returnIntent);
