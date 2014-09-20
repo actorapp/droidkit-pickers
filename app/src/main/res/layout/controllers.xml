@@ -71,7 +71,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:textColor="@color/controller_text_color"
-            android:text="send"
+            android:text="@string/pick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

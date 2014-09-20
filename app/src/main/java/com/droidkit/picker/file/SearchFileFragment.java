@@ -213,8 +213,10 @@ public class SearchFileFragment extends Fragment {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
+
+                searchView.clearFocus();
                 getActivity().onBackPressed();
-                return false;
+                return true;
             }
         });
         InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -225,17 +227,9 @@ public class SearchFileFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        // InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        // View view = getActivity().getCurrentFocus();
-        // inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-
+        searchView.clearFocus();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // pickerActivity.searchEnable();
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
