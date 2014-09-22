@@ -1,15 +1,14 @@
 package com.droidkit.picker.items;
 
-/**
- * Created by kiolt_000 on 15/09/2014.
- */
+import android.app.Activity;
+
 public class StorageItem extends FolderItem {
-    public StorageItem() {
+    public StorageItem(Activity activity) {
         super("/");
     }
 
     @Override
     public String getTitle() {
-        return "/";
+        return "Phone memory";
     }
 }

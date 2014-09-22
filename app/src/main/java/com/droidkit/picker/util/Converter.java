@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.PictureItem;
@@ -60,7 +61,9 @@ public class Converter {
 
 
         String folderPath = file.getPath();
-
+        if(folderPath.equals(Environment.getExternalStorageDirectory())){
+            return new ExternalStorageItem();
+        }else
         if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath())) {
             // todo    imageId = R.drawable.folder_music;
         } else if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath())) {

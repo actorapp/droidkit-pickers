@@ -20,6 +20,7 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.adapters.ExplorerAdapter;
 import com.droidkit.picker.adapters.WelcomeExplorerAdapter;
 import com.droidkit.picker.items.ExplorerItem;
+import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.HistoryItem;
 import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.StorageItem;
@@ -41,6 +42,8 @@ public class ExplorerFragment extends Fragment {
     protected String path;
     private SuperPickerActivity pickerActivity;
     private ArrayList<ExplorerItem> items;
+    private TextView statusView;
+    private ListView list;
 
     @Override
     public void onAttach(Activity activity) {
@@ -59,8 +62,9 @@ public class ExplorerFragment extends Fragment {
         //if (savedInstanceState == null)
         {
             rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
-            ListView list = (ListView) rootView.findViewById(R.id.list);
+            list = (ListView) rootView.findViewById(R.id.list);
             Bundle bundle = getArguments();
+            statusView = (TextView) rootView.findViewById(R.id.status);
 
             items = new ArrayList<ExplorerItem>();
             ExplorerAdapter adapter;
@@ -72,7 +76,6 @@ public class ExplorerFragment extends Fragment {
                 File[] fileList = f.listFiles();
 
                 if (fileList == null) {
-                    TextView statusView = (TextView) rootView.findViewById(R.id.status);
                     statusView.setVisibility(View.VISIBLE);
                     File external = Environment.getExternalStorageDirectory();
                     if (path.equals(external.getPath()))
@@ -84,7 +87,6 @@ public class ExplorerFragment extends Fragment {
                 } else {
                     if (fileList.length == 0) {
 
-                        TextView statusView = (TextView) rootView.findViewById(R.id.status);
                         statusView.setVisibility(View.VISIBLE);
                         statusView.setText(R.string.empty);
                         return rootView;
@@ -103,7 +105,9 @@ public class ExplorerFragment extends Fragment {
             } else {
 
 
-                items.add(new StorageItem());
+//                items.add(new StorageItem(getActivity()));
+                adapter = new WelcomeExplorerAdapter(getActivity(), items);
+
                 String externalStorageState = Environment.getExternalStorageState();
                 Log.w("logtag", externalStorageState);
                 if (
@@ -115,27 +119,32 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                    items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder, false));// todo R.drawable.external_storage_locked,false));
+                    // items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder, false));// todo R.drawable.external_storage_locked,false));
                 } else {
-                    items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder));// todo R.drawable.external_storage));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
-                    if(Build.VERSION.SDK_INT>=19){
+
+                    ArrayList<ExplorerItem> historyItems = loadHistory();
+                    if (historyItems.isEmpty()) {
+                        items.add(new HistoryItem(false));
+                    } else {
+                        items.add(new HistoryItem());
+                        items.addAll(historyItems);
+                    }
+
+                    items.add(new ExternalStorageItem());// todo R.drawable.external_storage));
+
+                    if (Build.VERSION.SDK_INT >= 19) {
                         // putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
                     }
                 }
-                ArrayList<ExplorerItem> historyItems = loadHistory();
-                if(historyItems.isEmpty()){
-                    items.add(new HistoryItem(false));
-                }else {
-                    items.add(new HistoryItem());
-                    items.addAll(historyItems);
-                }
-                adapter = new WelcomeExplorerAdapter(getActivity(), items);
-
                 path = "Select files";
+
+                if(items.isEmpty()) {
+                    statusView.setText(R.string.sdcard_empty);
+                }
             }
 
             list.setAdapter(adapter);
