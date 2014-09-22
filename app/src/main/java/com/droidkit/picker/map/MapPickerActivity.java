@@ -187,6 +187,8 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
     public void onMyLocationChange(Location location) {
         if(currentLocation==null){
             // do we need to attach our location on the start?
+
+            this.currentLocation = location;
             fetchPlaces(null);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),14));
 
