@@ -6,12 +6,51 @@
     android:orientation="vertical"
     tools:context="com.droidkit.picker.map.MapPickerActivity"
     >
+
     <fragment
-        android:layout_above="@+id/controllers"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/map"
+        android:layout_above="@+id/listNearbyHolder"
         android:name="com.google.android.gms.maps.MapFragment"/>
+    <LinearLayout
+
+        android:id="@+id/listNearbyHolder"
+        android:orientation="vertical"
+        android:layout_above="@+id/controllers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Places nearby"
+                android:layout_alignParentLeft="true"
+                android:layout_above="@+id/controllers"
+                android:id="@+id/status"
+                android:padding="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <ImageButton
+                android:padding="5dp"
+                android:background="#00000000"
+                android:src="@drawable/conv_scroll_down"
+                android:id="@+id/hide"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <ListView
+            android:layout_above="@+id/controllers"
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"/>
+        </LinearLayout>
 
     <include layout="@layout/controllers" />
 </RelativeLayout>
