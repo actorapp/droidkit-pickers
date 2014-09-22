@@ -185,13 +185,13 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
 
     @Override
     public void onMyLocationChange(Location location) {
-        this.currentLocation = location;
-        if(geoData==null){
+        if(currentLocation==null){
             // do we need to attach our location on the start?
             fetchPlaces(null);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),14));
 
         }
+        this.currentLocation = location;
         Log.d("Location changed", location.toString());
     }
 
