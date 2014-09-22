@@ -122,20 +122,13 @@ public class ExplorerFragment extends Fragment {
                         ) {
                      items.add(new StorageItem());// todo R.drawable.external_storage_locked,false));
                 } else {
+                    items.add(new ExternalStorageItem());// todo R.drawable.external_storage));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
 
-                    ArrayList<ExplorerItem> historyItems = loadHistory();
-                    if (historyItems.isEmpty()) {
-                        items.add(new HistoryItem(false));
-                    } else {
-                        items.add(new HistoryItem());
-                        items.addAll(historyItems);
-                    }
 
-                    items.add(new ExternalStorageItem());// todo R.drawable.external_storage));
 
                     if (Build.VERSION.SDK_INT >= 19) {
                         // putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
@@ -143,6 +136,13 @@ public class ExplorerFragment extends Fragment {
                 }
                 path = "Select files";
 
+                ArrayList<ExplorerItem> historyItems = loadHistory();
+                if (historyItems.isEmpty()) {
+                    items.add(new HistoryItem(false));
+                } else {
+                    items.add(new HistoryItem());
+                    items.addAll(historyItems);
+                }
 
             }
 
@@ -211,7 +211,9 @@ public class ExplorerFragment extends Fragment {
 
         ArrayList<String> pathesFromDB = DatabaseConnector.getHistory(pickerActivity);
         for (String pathFromDB : pathesFromDB) {
-            history.add(getFileItem(new File(pathFromDB)));
+            File historyFile = new File(pathFromDB);
+            if(historyFile.exists())
+                history.add(getFileItem(historyFile));
         }
 
         return history;
