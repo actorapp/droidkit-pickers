@@ -60,6 +60,7 @@ public class ExplorerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //if (savedInstanceState == null)
+        //todo: animate it here
         {
             rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
             list = (ListView) rootView.findViewById(R.id.list);
@@ -119,7 +120,7 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                    // items.add(new FolderItem(Environment.getExternalStorageDirectory(), R.drawable.folder, false));// todo R.drawable.external_storage_locked,false));
+                     items.add(new StorageItem());// todo R.drawable.external_storage_locked,false));
                 } else {
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
@@ -142,9 +143,7 @@ public class ExplorerFragment extends Fragment {
                 }
                 path = "Select files";
 
-                if(items.isEmpty()) {
-                    statusView.setText(R.string.sdcard_empty);
-                }
+
             }
 
             list.setAdapter(adapter);

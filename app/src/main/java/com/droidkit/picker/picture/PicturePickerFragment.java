@@ -83,7 +83,7 @@ public class PicturePickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle bundle = getArguments();
-
+        //todo: animate it here
         items = new ArrayList<ExplorerItem>();
 
         if (bundle == null) {

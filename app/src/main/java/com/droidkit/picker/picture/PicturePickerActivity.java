@@ -43,8 +43,9 @@ public class PicturePickerActivity extends SuperPickerActivity {
             Fragment fragment = new PicturePickerFragment();
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                            R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                    // todo animate out
+                    //.setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
+                      //      R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();
@@ -57,8 +58,9 @@ public class PicturePickerActivity extends SuperPickerActivity {
             Fragment fragment = new PictureFullFragment();
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                            R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                    // todo animate out
+                   // .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
+                    //        R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();

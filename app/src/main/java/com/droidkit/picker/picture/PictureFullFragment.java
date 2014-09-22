@@ -32,7 +32,7 @@ public class PictureFullFragment extends Fragment {
         final ImageView holder = (ImageView) rootView.findViewById(R.id.image);
         final String path = getArguments().getString("path");
         file = new File(path);
-
+        //todo: animate it here
         // todo: actors
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
