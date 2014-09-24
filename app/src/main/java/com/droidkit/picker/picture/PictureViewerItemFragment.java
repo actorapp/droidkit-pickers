@@ -6,34 +6,31 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.SuperPickerActivity;
-
-import java.io.File;
 
 /**
- * Created by kiolt_000 on 15/09/2014.
+ * Created by kiolt_000 on 24/09/2014.
  */
-public class PictureFullFragment extends Fragment {
-
+public class PictureViewerItemFragment extends Fragment {
+    private PicturePickerActivity pickerActivity;
     private View rootView;
-    private File file;
-    private SuperPickerActivity pickerActivity;
+    private String path;
 
-    // todo more interactive
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_picture_full, null);
+
+        rootView = inflater.inflate(R.layout.fragment_picture_viewer_item, null);
+
+        path = getArguments().getString("path");
+
         final ImageView holder = (ImageView) rootView.findViewById(R.id.image);
-        final String path = getArguments().getString("path");
-        file = new File(path);
-        //todo: animate it here
-        // todo: actors
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... voids) {
@@ -57,7 +54,6 @@ public class PictureFullFragment extends Fragment {
                 }
             }
         }.execute();
-        getActivity().getActionBar().setTitle(file.getName());
 
         final View selectedView = rootView.findViewById(R.id.selected);
         selectedView.setSelected(pickerActivity.isSelected(path));
@@ -65,17 +61,18 @@ public class PictureFullFragment extends Fragment {
         selectedView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               boolean selected = pickerActivity.selectItem(path);
+                boolean selected = pickerActivity.selectItem(path);
                 selectedView.setSelected(selected);
             }
         });
-        return rootView;
 
+        return rootView;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.pickerActivity = (SuperPickerActivity) activity;
+        this.pickerActivity = (PicturePickerActivity) activity;
     }
 }

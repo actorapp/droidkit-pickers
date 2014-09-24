@@ -3,7 +3,8 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:actionBarStyle">@style/reactiveActionBarStyle</item>
+
+        <item name="android:actionBarStyle">@style/pickerActionBarStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/bar_back</item>
         <item name="android:windowBackground">
             @color/globalWindowBackground
@@ -19,37 +20,16 @@
     </style>
     <style name="AppTheme.PicturePicker" parent="AppTheme">
         <item name="android:logo">@null</item>
-        <item name="android:actionBarStyle">
-            @style/reactiveActionBarStylePicturePicker
-        </item>
-    </style>
-    <style name="AppTheme.ActivityAnimation"
-        parent="@style/AppTheme">
-        <!-- todo WHY THE FUCK ANIMATION DOES NOT WORK  -->
-        <item name="android:activityOpenEnterAnimation">
-            @animator/activity_explorer_enter
-        </item>
-        <item name="android:activityOpenExitAnimation">
-            @animator/activity_explorer_enter
-        </item>
-        <item name="android:activityCloseEnterAnimation">
-            @animator/activity_explorer_enter
-        </item>
-        <item name="android:activityCloseExitAnimation">
-            @animator/activity_explorer_enter
-        </item>
-        <item name="android:windowAnimationStyle">
-            @animator/activity_explorer_enter
-        </item>
-        <item name="android:windowEnterAnimation">
-            @animator/activity_explorer_enter
-        </item>
+        <item name="android:windowBackground">@color/picker_picture_content_background</item>
+        <item name="android:actionBarStyle">@style/pickerActionBarStylePicturePicker</item>
     </style>
 
-    <style name="reactiveActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="pickerActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <!-- todo repair actionbar -->
         <!--item name="android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
         <item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
         <item name="android:background">@color/main_color</item>
+        <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStyle</item>
         <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
         <item name="android:backgroundSplit">@android:drawable/ab_bottom_solid_inverse_holo</item>
         <item name="android:divider">@android:color/transparent</item>
@@ -58,10 +38,10 @@
         <item name="android:progressBarPadding">32dip</item>
         <item name="android:itemPadding">8dip</item-->
     </style>
-    <style name="reactiveActionBarStylePicturePicker" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <style name="pickerActionBarStylePicturePicker" parent="@pickerActionBarStyle">
         <!--item name="android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
         <item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
-        <item name="android:background">@color/main_color_picturepicker</item>
+        <item name="android:background">@color/picker_picture_ab_background</item>
         <item name="android:displayOptions">showHome|showTitle</item>
         <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
         <item name="android:backgroundSplit">@android:drawable/ab_bottom_solid_inverse_holo</item>
@@ -71,7 +51,7 @@
         <item name="android:progressBarPadding">32dip</item>
         <item name="android:itemPadding">8dip</item-->
     </style>
-    <style name="reactiveActionBarStyleFilePicker" parent="@style/reactiveActionBarStyle">
+    <style name="reactiveActionBarStyleFilePicker" parent="@pickerActionBarStyle">
         <item name="android:titleTextStyle">@style/reactiveActionBarTitleStyle</item>
         <!--item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
         <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
@@ -83,8 +63,12 @@
         <item name="android:itemPadding">8dip</item-->
     </style>
 
-    <style name="reactiveActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse">
+    <style name="reactiveActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:paddingLeft">13dp</item>
         <item name="android:layout_marginLeft">13dp</item>
     </style>
+    <style name="pickerActionOverflowButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/bar_more</item>
+    </style>
+
 </resources>

@@ -1,11 +1,7 @@
 package com.droidkit.picker.picture;
 
 import android.app.Fragment;
-import android.database.Cursor;
-import android.media.MediaScannerConnection;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +11,8 @@ import android.widget.Toast;
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.util.DatabaseConnector;
+
+import java.io.File;
 
 public class PicturePickerActivity extends SuperPickerActivity {
 
@@ -80,7 +77,7 @@ public class PicturePickerActivity extends SuperPickerActivity {
             Bundle bundle = new Bundle();
             bundle.putString("path", path);
 
-            Fragment fragment = new PictureFullFragment();
+            Fragment fragment = new PictureViewerFragment();
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
                     // todo animate out
@@ -91,5 +88,24 @@ public class PicturePickerActivity extends SuperPickerActivity {
                     .commit();
 
         }
+    }
+
+    public void openFull(String path, File file) {
+
+
+
+        Bundle bundle = new Bundle();
+        bundle.putString("path", path);
+        bundle.putString("selectedItem", file.getPath());
+        Fragment fragment = new PictureViewerFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction()
+                // todo animate out
+                // .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
+                //        R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                .replace(R.id.container, fragment)
+                .addToBackStack(path)
+                .commit();
+
     }
 }

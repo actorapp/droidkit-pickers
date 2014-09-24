@@ -6,7 +6,7 @@
     tools:context="com.droidkit.picker.picture.PicturePickerFragment">
 
     <GridView
-        android:paddingTop="@dimen/acionbar_height"
+        android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:id="@+id/grid"
         android:columnWidth="@dimen/picture_item_folder_size"

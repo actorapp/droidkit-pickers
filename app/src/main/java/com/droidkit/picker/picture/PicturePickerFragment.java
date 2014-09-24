@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -25,13 +26,13 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PicturePickerFragment extends Fragment {
+public class PicturePickerFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private View rootView;
-    private String path;
-    private ArrayList<ExplorerItem> items;
-    private SuperPickerActivity pickerActivity;
-    private String pathName = "Select pictures";
+    protected View rootView;
+    protected String path;
+    protected ArrayList<ExplorerItem> items;
+    protected PicturePickerActivity pickerActivity;
+    protected String pathName = "Select pictures";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,8 +93,8 @@ public class PicturePickerFragment extends Fragment {
                 int columnsNum = getResources().getInteger(R.integer.num_columns_albums);
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid);
                 gridView.setNumColumns(columnsNum);
-                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items, columnsNum));
-                gridView.setOnItemClickListener((SuperPickerActivity) getActivity());
+                gridView.setAdapter(new PictureAdapter(pickerActivity, items, columnsNum));
+                gridView.setOnItemClickListener(pickerActivity);
             }
         } else {
 
@@ -107,8 +108,8 @@ public class PicturePickerFragment extends Fragment {
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid);
                 int columnsNum = getResources().getInteger(R.integer.num_columns_pictures);
                 gridView.setNumColumns(columnsNum);
-                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items, columnsNum));
-                gridView.setOnItemClickListener((SuperPickerActivity) getActivity());
+                gridView.setAdapter(new PictureAdapter(pickerActivity, items, columnsNum));
+                gridView.setOnItemClickListener(this);
             }
         }
         pickerActivity.updateCounter();
@@ -116,7 +117,7 @@ public class PicturePickerFragment extends Fragment {
         return rootView;
     }
 
-    private void loadDirectory() {
+    protected void loadDirectory() {
         long startTime = System.currentTimeMillis();
         Log.w("Pictures loader", "Loading directory " + pathName);
         final String[] columns = {MediaStore.Images.Media.DATA};
@@ -142,6 +143,15 @@ public class PicturePickerFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.pickerActivity = (SuperPickerActivity) activity;
+        this.pickerActivity = (PicturePickerActivity) activity;
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View itemView, int position, long id) {
+        ExplorerItem item = (ExplorerItem) parent.getItemAtPosition(position);
+        if(item.isDirectory())
+            pickerActivity.onItemClick(parent, itemView, position, id);
+        else
+            pickerActivity.openFull(path, item.getFile())
+;    }
 }

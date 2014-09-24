@@ -16,11 +16,12 @@
     <string name="empty_pictures_directories">No pictures folders</string>
     <string name="nothing">Nothing here</string>
     <string name="title_activity_map_picker">Pick a place</string>
-
     <string name="google_maps_key">AIzaSyBV6Kul7Ybt_7yeEd6Im7gSjN_0fNu_Psw</string>
     <string name="pick">Pick</string>
     <string name="cancel">Cancel</string>
     <string name="phone_memory">Phone memory</string>
     <string name="external_memory">External memory</string>
     <string name="camera">Camera</string>
+    <string name="picker_map_sory_notdefined">We have to define your location, then search places nearby.</string>
+
 </resources>

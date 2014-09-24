@@ -57,7 +57,7 @@ public class Converter {
                 // imageId = R.drawable.folder_locked;
                 return null;
             } else
-                imageId = R.drawable.picker_system_folder;
+                return new FolderItem(file, R.drawable.picker_system_folder, true);
         }else
         if(file.list().length==0){
             return new FolderItem(file, R.drawable.picker_empty_folder, true);
