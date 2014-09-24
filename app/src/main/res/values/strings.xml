@@ -20,4 +20,7 @@
     <string name="google_maps_key">AIzaSyBV6Kul7Ybt_7yeEd6Im7gSjN_0fNu_Psw</string>
     <string name="pick">Pick</string>
     <string name="cancel">Cancel</string>
+    <string name="phone_memory">Phone memory</string>
+    <string name="external_memory">External memory</string>
+    <string name="camera">Camera</string>
 </resources>

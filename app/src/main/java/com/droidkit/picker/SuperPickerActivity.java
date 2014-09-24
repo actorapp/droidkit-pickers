@@ -43,7 +43,7 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
         setContentView(R.layout.activity_picker);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
+                    // .setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
                     .add(R.id.container, getWelcomeFragment())
                     .commit();
         }
@@ -51,7 +51,6 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
         getActionBar().setDisplayHomeAsUpEnabled(true);
         // getActionBar().setDisplayShowHomeEnabled(false);
         // getActionBar().setDisplayUseLogoEnabled(false);
-        getActionBar().setIcon(android.R.drawable.ic_menu_gallery);
 
         View select =  findViewById(R.id.select);
         select.setOnClickListener(new View.OnClickListener() {
@@ -143,11 +142,22 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
 
     public void updateCounter() {
         final TextView counterView = (TextView) findViewById(R.id.counter);
-        if(!selectedItems.isEmpty())
-        counterView.setText("" + selectedItems.size());
+        View selectView = findViewById(R.id.select);
+        View cancelView = findViewById(R.id.cancel);
+        View controllerHolder = findViewById(R.id.controllers);
+        if(!selectedItems.isEmpty()) {
+            counterView.setText("" + selectedItems.size());
+            controllerHolder.setBackgroundResource(R.drawable.controller_background);
+            cancelView.setBackgroundResource(R.drawable.controller_background);
+            selectView.setBackgroundResource(R.drawable.controller_background);
+        }else{
+            controllerHolder.setBackgroundResource(R.drawable.controller_background_empty);
+            cancelView.setBackgroundResource(R.drawable.controller_background_empty);
+            selectView.setBackgroundResource(R.drawable.controller_background_empty);
+        }
         final View counterHolder = findViewById(R.id.counter_holder);
         findViewById(R.id.select_text).setEnabled(!selectedItems.isEmpty());
-        findViewById(R.id.select).setEnabled(!selectedItems.isEmpty());
+        selectView.setEnabled(!selectedItems.isEmpty());
         if((selectedItems.isEmpty() && counterHolder.getVisibility() != View.GONE)
             ||(!selectedItems.isEmpty() && counterHolder.getVisibility() == View.GONE)){
 
@@ -174,7 +184,6 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
                     }
                     counterHolder.setLayoutParams(params);
                     counterHolder.invalidate();
-                    Log.i("animation", "" + width);
 
                 }
             });

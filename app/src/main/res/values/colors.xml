@@ -7,10 +7,12 @@
     <color name="list_divider">#d2d2d2</color>
 
     <color name="main_color">#445871</color>
-    <color name="main_color_picturepicker">#333333</color>
+    <color name="main_color_picturepicker">#96000000</color>
 
     <color name="controller_background_default">@color/main_color</color>
     <color name="controller_background_pressed">#5e7188</color>
+    <color name="controller_background_empty_default">#333333</color>
+    <color name="controller_background_empty_pressed">#777</color>
     <color name="controller_text_color_disabled">#717171</color>
     <color name="controller_text_color_default">#fff</color>
 
@@ -21,9 +23,11 @@
     <color name="explorer_item_image_background">#ebebeb</color>
     <color name="explorer_item_image_color">#999999</color>
 
+    <color name="picker_picture_content_background">#000</color>
+    <color name="picker_picture_ab_background">#b0444444</color>
     <color name="picture_item_folder_title_background">#88000000</color>
     <color name="picture_item_folder_title_color">#f8f8f8</color>
     <color name="picture_item_folder_background">#1f1f1f</color>
-    <color name="picture_item_selection_selected">#4071cb</color>
+    <color name="picture_item_selection_selected">#48cbed</color>
     <color name="picture_item_selection" >#88000000</color>
 </resources>

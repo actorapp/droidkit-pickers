@@ -32,6 +32,12 @@ public class PictureItem extends FileItem {
         if (stroke != null) {
             stroke.setSelected(isSelected());
         }
+        if(isVideo()){
+        View videoHolder = itemView.findViewById(R.id.video_holder);
+        if(videoHolder!=null){
+            videoHolder.setVisibility(View.VISIBLE);
+        }
+        }
     }
 
     @Override
@@ -72,5 +78,9 @@ public class PictureItem extends FileItem {
             // todo: image error
             holder.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
+    }
+
+    public boolean isVideo() {
+        return false;
     }
 }

@@ -2,23 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
+
     tools:context="com.droidkit.picker.picture.PicturePickerFragment">
 
     <GridView
-        android:paddingTop="2dp"
+        android:paddingTop="@dimen/acionbar_height"
         android:paddingBottom="2dp"
         android:id="@+id/grid"
         android:columnWidth="@dimen/picture_item_folder_size"
         android:numColumns="@integer/num_columns_albums"
         android:clipToPadding="false"
-        android:verticalSpacing="3dp"
-        android:horizontalSpacing="3dp"
+        android:verticalSpacing="@dimen/picker_picture_spacing"
+        android:horizontalSpacing="@dimen/picker_picture_spacing"
         android:stretchMode="columnWidth"
-
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <TextView
         android:textColor="#e0e0e0"
         android:layout_centerInParent="true"

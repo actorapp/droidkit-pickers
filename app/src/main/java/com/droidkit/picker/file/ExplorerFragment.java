@@ -22,7 +22,6 @@ import com.droidkit.picker.adapters.WelcomeExplorerAdapter;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.HistoryItem;
-import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.StorageItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
@@ -72,6 +71,7 @@ public class ExplorerFragment extends Fragment {
             if (bundle != null) {
                 path = bundle.getString("path");
 
+
                 Log.d(LOG_TAG, "Path: " + path);
                 File f = new File(path);
                 File[] fileList = f.listFiles();
@@ -120,9 +120,10 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                     items.add(new StorageItem());// todo R.drawable.external_storage_locked,false));
+                     items.add(new StorageItem(getString(R.string.phone_memory)));// todo R.drawable.external_storage_locked,false));
                 } else {
-                    items.add(new ExternalStorageItem());// todo R.drawable.external_storage));
+                    // todo: if scanning is running?
+                    items.add(new ExternalStorageItem(getString(R.string.external_memory)));// todo R.drawable.external_storage));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
@@ -132,6 +133,7 @@ public class ExplorerFragment extends Fragment {
 
                     if (Build.VERSION.SDK_INT >= 19) {
                         // putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
+                        // even on sdk>19 documents folder does not work.
                     }
                 }
                 path = "Select files";
@@ -228,7 +230,15 @@ public class ExplorerFragment extends Fragment {
     }
 
     private void setTitle() {
-        getActivity().getActionBar().setTitle(path);
+        if (path.contains(Environment.getExternalStorageDirectory().getPath())) {
+            if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
+                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), getString(R.string.external_memory)));
+            } else
+                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), ""));
+        } else if (path.equals("/"))
+            getActivity().getActionBar().setTitle(R.string.phone_memory);
+        else
+            getActivity().getActionBar().setTitle(path);
     }
 
 }

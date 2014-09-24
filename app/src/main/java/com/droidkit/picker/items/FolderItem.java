@@ -1,7 +1,6 @@
 package com.droidkit.picker.items;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.items.ExplorerItem;
 
 import java.io.File;
 
@@ -11,17 +10,15 @@ import java.io.File;
 public class FolderItem extends ExplorerItem {
 
     public FolderItem(File file) {
-        super(file,false, null,R.drawable.folder, true);
+        super(file,false, null,R.drawable.picker_folder, true);
 
     }
 
     public FolderItem(String path) {
-        super(new File(path),false, null,R.drawable.folder, true);
+        super(new File(path),false, null,R.drawable.picker_folder, true);
     }
 
-    public FolderItem(File file, boolean disabled) {
-        super(file, false, null, !disabled ? R.drawable.folder : R.drawable.folder, disabled);// todo R.drawable.folder_locked, disabled);
-    }
+
 
     public FolderItem(File file, int imageId) {
 
@@ -29,7 +26,7 @@ public class FolderItem extends ExplorerItem {
     }
 
     public FolderItem(File file, int imageId, boolean locked) {
-        super(file, false, null, imageId, locked);
+        super(file, false, null, imageId, !locked);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.droidkit.picker.items;
 import android.app.Activity;
 
 public class StorageItem extends FolderItem {
-    public StorageItem() {
+    public StorageItem(String name) {
         super("/");
     }
 

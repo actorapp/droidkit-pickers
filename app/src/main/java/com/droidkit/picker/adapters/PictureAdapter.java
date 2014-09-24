@@ -1,9 +1,10 @@
 package com.droidkit.picker.adapters;
 
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
@@ -20,10 +21,22 @@ public class PictureAdapter extends BaseAdapter {
 
     private final ArrayList<ExplorerItem> items;
     protected final SuperPickerActivity pickerActivity;
+    private final int itemSize;
+    private final int spacing;
+    private final int columnsNum;
+    private int itemWidth;
 
-    public PictureAdapter(SuperPickerActivity activity, ArrayList<ExplorerItem> items) {
+    public PictureAdapter(SuperPickerActivity activity, ArrayList<ExplorerItem> items, int columnsNum) {
         this.pickerActivity = activity;
         this.items = items;
+        this.columnsNum = columnsNum;
+        DisplayMetrics metrics = pickerActivity.getResources().getDisplayMetrics();
+        this.spacing = pickerActivity.getResources().getDimensionPixelSize(R.dimen.picker_picture_spacing);
+
+
+        // PWNED!
+        this.itemSize = (int) ((metrics.widthPixels  / columnsNum) ) - spacing;
+        //itemSize = itemSize - spacing;
     }
 
     @Override
@@ -92,6 +105,12 @@ public class PictureAdapter extends BaseAdapter {
                 }
             });
         }
+
+        ViewGroup.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemSize);
+        // params.width = itemWidth;
+        // params.height = itemWidth;
+        itemView.setLayoutParams(params);
+
         return itemView;
     }
 }

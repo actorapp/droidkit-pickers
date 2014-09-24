@@ -1,10 +1,8 @@
 package com.droidkit.picker.util;
 
-import android.os.Build;
 import android.os.Environment;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.PictureItem;
@@ -52,17 +50,23 @@ public class Converter {
 
     public static FolderItem getFolderItem(File file) {
 
-        int imageId = R.drawable.folder;
+        int imageId = R.drawable.picker_folder;
 
-        if (file.listFiles() == null || file.getName().toCharArray()[0]=='.'){
-            // imageId = R.drawable.folder_locked;
-            return null;
+        if (file.list() == null) {
+            if (file.getName().toCharArray()[0] == '.') {
+                // imageId = R.drawable.folder_locked;
+                return null;
+            } else
+                imageId = R.drawable.picker_system_folder;
+        }else
+        if(file.list().length==0){
+            return new FolderItem(file, R.drawable.picker_empty_folder, true);
         }
 
-
         String folderPath = file.getPath();
-        if(folderPath.equals(Environment.getExternalStorageDirectory())){
-            return new ExternalStorageItem();
+        if(folderPath.equals(Environment.getExternalStorageDirectory().getPath())){
+            // return new ExternalStorageItem("External memory");
+            // todo imageId = R.drawable.folder_external;
         }else
         if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath())) {
             // todo    imageId = R.drawable.folder_music;
@@ -70,9 +74,10 @@ public class Converter {
             // todo   imageId = R.drawable.folder_picture;
         } else if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath())) {
             // todo imageId = R.drawable.folder_downloads;
-        } else if (Build.VERSION.SDK_INT >= 19 && folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath())) {
+        } else //if (Build.VERSION.SDK_INT >= 19 && folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath())) {
             // todo imageId = R.drawable.folder_docs;
-        } else if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath())) {
+        //} else
+            if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath())) {
             // todo imageId = R.drawable.folder_movies;
         } else if (folderPath.contains(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getPath())) {
             // todo imageId = R.drawable.folder_camera;
@@ -93,6 +98,7 @@ public class Converter {
 
 
         }
+
         return new FolderItem(file, imageId);
     }
 }

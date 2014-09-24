@@ -7,5 +7,4 @@
                 android:color="@color/picture_item_selection_selected"/>
         </shape>
     </item>
-    <item android:drawable="@drawable/conv_media_cancel"/>
 </layer-list>

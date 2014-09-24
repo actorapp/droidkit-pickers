@@ -8,14 +8,16 @@ import java.io.File;
  * Created by kiolt_000 on 22/09/2014.
  */
 public class ExternalStorageItem extends FolderItem {
-    public ExternalStorageItem()
-    {
+    private final String name;
+
+    public ExternalStorageItem(String name){
         super(Environment.getExternalStorageDirectory());
+        this.name = name;
     }
 
     @Override
     public String getTitle() {
-        return "External memory";
+        return name;
     }
 
     @Override

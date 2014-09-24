@@ -7,7 +7,7 @@
         android:background="#fff"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -19,17 +19,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <ImageView
-                android:id="@+id/selected"
-                android:src="@drawable/ic_selected"
-
-                android:layout_alignParentRight="true"
-                android:layout_width="23dp"
-                android:layout_height="23dp" />
-            <View
+                android:visibility="gone"
+                android:id="@+id/video_holder"
+                android:scaleType="center"
+                android:src="@drawable/picker_play"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <ImageView
                 android:id="@+id/selected_stroke"
                 android:background="@drawable/picture_item_stroke"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/selected"
+                android:src="@drawable/picker_viewer_check"
+                android:background="@drawable/ic_selected"
+                android:layout_alignParentRight="true"
+                android:layout_width="23dp"
+                android:layout_height="23dp" />
         </RelativeLayout>
         <LinearLayout
             android:visibility="gone"

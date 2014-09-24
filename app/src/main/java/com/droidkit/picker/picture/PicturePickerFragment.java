@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,9 +18,6 @@ import com.droidkit.picker.adapters.PictureAdapter;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.PictureFolderItem;
 import com.droidkit.picker.items.PictureItem;
-import com.droidkit.picker.items.FolderItem;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -85,7 +81,6 @@ public class PicturePickerFragment extends Fragment {
         Bundle bundle = getArguments();
         //todo: animate it here
         items = new ArrayList<ExplorerItem>();
-
         if (bundle == null) {
             rootView = inflater.inflate(R.layout.fragment_picture_picker, container, false);
             loadDirectories();
@@ -94,8 +89,10 @@ public class PicturePickerFragment extends Fragment {
                 ((TextView)rootView.findViewById(R.id.status)).setText(R.string.empty_pictures_directories);
 
             }else {
+                int columnsNum = getResources().getInteger(R.integer.num_columns_albums);
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items));
+                gridView.setNumColumns(columnsNum);
+                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items, columnsNum));
                 gridView.setOnItemClickListener((SuperPickerActivity) getActivity());
             }
         } else {
@@ -108,8 +105,9 @@ public class PicturePickerFragment extends Fragment {
                 ((TextView)rootView.findViewById(R.id.status)).setText(R.string.empty_pictures);
             } else {
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid);
-                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items));
-                gridView.setNumColumns(getResources().getInteger(R.integer.num_columns_pictures));
+                int columnsNum = getResources().getInteger(R.integer.num_columns_pictures);
+                gridView.setNumColumns(columnsNum);
+                gridView.setAdapter(new PictureAdapter((SuperPickerActivity) getActivity(), items, columnsNum));
                 gridView.setOnItemClickListener((SuperPickerActivity) getActivity());
             }
         }
