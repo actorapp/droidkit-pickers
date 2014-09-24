@@ -1,8 +1,11 @@
 package com.droidkit.picker.map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -145,6 +148,16 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        for (String provider : locationManager.getAllProviders()) {
+            currentLocation = locationManager.getLastKnownLocation(provider);
+            if (currentLocation != null) {
+                break;
+            }
+        }
+
+        if(currentLocation!=null)
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),12));
         mMap.setOnMyLocationChangeListener(this);
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
@@ -155,9 +168,13 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
 
     }
 
-    private void fetchPlaces(String s) {
+    private void fetchPlaces(String query) {
         mMap.clear();
-        fetchingTask = new PlaceFetchingTask(s, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
+        if(currentLocation==null){
+            Toast.makeText(this, R.string.picker_map_sory_notdefined, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override
             protected void onPostExecute(Object o) {
                 Log.i(LOG_TAG, o.toString());
