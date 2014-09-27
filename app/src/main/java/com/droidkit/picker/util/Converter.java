@@ -13,6 +13,10 @@ public class Converter {
 
     public static FileItem getFileItem(File file, boolean selected) {
 
+        if(!file.exists()){
+            return null;
+        }
+
         String fileName = file.getName();
         String fileType = "";
         String[] fileNameSplit = fileName.split("\\.");
