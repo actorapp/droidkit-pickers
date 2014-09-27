@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/picker_map_controller_background_pressed"/>
+            <stroke android:color="#888" android:width="1px"/>
+            <corners android:radius="4dp"/>
+        </shape>
+    </item>
+</layer-list>

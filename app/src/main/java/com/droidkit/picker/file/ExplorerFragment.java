@@ -80,16 +80,16 @@ public class ExplorerFragment extends Fragment {
                     statusView.setVisibility(View.VISIBLE);
                     File external = Environment.getExternalStorageDirectory();
                     if (path.equals(external.getPath()))
-                        statusView.setText(R.string.sdcard_empty);
+                        statusView.setText(R.string.picker_files_memory_external_error);
                     else
-                        statusView.setText(R.string.denied);
+                        statusView.setText(R.string.picker_files_denied);
 
                     return rootView;
                 } else {
                     if (fileList.length == 0) {
 
                         statusView.setVisibility(View.VISIBLE);
-                        statusView.setText(R.string.empty);
+                        statusView.setText(R.string.picker_files_directory_empty);
                         return rootView;
                     }
                 }
@@ -120,10 +120,10 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                     items.add(new StorageItem(getString(R.string.phone_memory)));// todo R.drawable.external_storage_locked,false));
+                     items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));// todo R.drawable.external_storage_locked,false));
                 } else {
                     // todo: if scanning is running?
-                    items.add(new ExternalStorageItem(getString(R.string.external_memory)));// todo R.drawable.external_storage));
+                    items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));// todo R.drawable.external_storage));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
@@ -232,11 +232,11 @@ public class ExplorerFragment extends Fragment {
     private void setTitle() {
         if (path.contains(Environment.getExternalStorageDirectory().getPath())) {
             if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
-                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), getString(R.string.external_memory)));
+                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), getString(R.string.picker_files_memory_external)));
             } else
                 getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), ""));
         } else if (path.equals("/"))
-            getActivity().getActionBar().setTitle(R.string.phone_memory);
+            getActivity().getActionBar().setTitle(R.string.picker_files_memory_phone);
         else
             getActivity().getActionBar().setTitle(path);
     }

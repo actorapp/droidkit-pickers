@@ -27,17 +27,17 @@
         </activity>
         <activity
             android:name="com.droidkit.picker.file.FilePickerActivity"
-            android:label="@string/title_activity_file_selector"
+            android:label="@string/picker_files_activity_title"
             android:theme="@style/AppTheme.FilePicker" >
         </activity>
         <activity
             android:name="com.droidkit.picker.picture.PicturePickerActivity"
-            android:label="@string/title_activity_picture_picker"
+            android:label="@string/picker_pictures_activity_title"
             android:theme="@style/AppTheme.PicturePicker" >
         </activity>
         <activity
             android:name="com.droidkit.picker.map.MapPickerActivity"
-            android:label="@string/title_activity_map_picker" >
+            android:label="@string/picker_map_activity_title" >
         </activity>
 
         <meta-data

@@ -30,7 +30,7 @@ public class HistoryItem extends ExplorerItem {
     public void bindData(View itemView) {
         TextView historyView = (TextView) itemView;
         if (!hasHistory){
-            (historyView).setText(R.string.empty_history);
+            (historyView).setText(R.string.picker_files_recent_empty);
         }
     }
 

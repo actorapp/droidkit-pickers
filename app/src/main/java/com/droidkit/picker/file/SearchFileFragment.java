@@ -5,31 +5,20 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
-import android.text.method.KeyListener;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
@@ -39,7 +28,6 @@ import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.util.Converter;
 
 import java.io.File;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 
 
@@ -199,7 +187,7 @@ public class SearchFileFragment extends Fragment {
                         searchingProgressBar.setVisibility(View.GONE);
                         if (foundCount == 0) {
                             status.setVisibility(View.VISIBLE);
-                            status.setText(R.string.nothing);
+                            status.setText(R.string.picker_empty);
                         } else {
 
                         }

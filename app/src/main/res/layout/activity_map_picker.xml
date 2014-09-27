@@ -6,14 +6,61 @@
     android:orientation="vertical"
     tools:context="com.droidkit.picker.map.MapPickerActivity"
     >
-
-    <fragment
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/map"
+    <RelativeLayout
         android:layout_above="@+id/listNearbyHolder"
-        android:name="com.google.android.gms.maps.MapFragment"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.MapFragment"/>
+        <ImageButton
+            android:id="@+id/full"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/conv_attach_photo"
+            android:background="@drawable/picker_map_controllers"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <ImageButton
+            android:id="@+id/define_my_location"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/conv_attach_location"
+            android:background="@drawable/picker_map_controllers"
+            android:scaleType="centerInside"
+            android:layout_margin="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <LinearLayout
+            android:clickable="true"
+            android:id="@+id/pick_current"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/picker_map_controllers"
+            android:layout_margin="15dp"
+            android:layout_alignParentBottom="true"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:textSize="13sp"
+                android:text="@string/picker_map_pick_my"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/accurance"
+                android:padding="1dp"
+                android:textSize="10sp"
+                android:textColor="@color/picker_map_pick_my_subtite"
+                android:text="@string/picker_map_pick_my_fetching"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
     <LinearLayout
 
         android:id="@+id/listNearbyHolder"
@@ -22,6 +69,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -30,24 +80,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_above="@+id/controllers"
                 android:id="@+id/status"
-                android:padding="15dp"
-                android:layout_width="wrap_content"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textColor="@color/picker_map_nearby_header_color"
+                android:background="@drawable/picker_map_nearby"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
-            <ImageButton
-                android:padding="5dp"
-                android:background="#00000000"
-                android:src="@drawable/conv_scroll_down"
-                android:id="@+id/hide"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </RelativeLayout>
 
         <ListView
             android:layout_above="@+id/controllers"
             android:id="@+id/list"
+            android:dividerHeight="1px"
+            android:divider="@drawable/picker_map_nearby_divider"
             android:layout_width="match_parent"
             android:layout_height="250dp"/>
         </LinearLayout>

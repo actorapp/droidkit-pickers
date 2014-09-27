@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Picker</string>
+    <string name="action_settings">Settings</string>
+    <string name="picker_empty">Nothing here</string>
+    <string name="google_maps_key">AIzaSyBV6Kul7Ybt_7yeEd6Im7gSjN_0fNu_Psw</string>
+    <string name="picker_pick">Pick</string>
+    <string name="picker_cancel">Cancel</string>
+    <string name="camera">Camera</string>
+
+    <!-- Files -->
+    <string name="picker_files_activity_title">Select files</string>
+    <string name="picker_files_memory_phone">Phone memory</string>
+    <string name="picker_files_memory_external">External memory</string>
+    <string name="picker_files_memory_external_error">Card is not inserted</string>
+    <string name="picker_files_recent">Recent selected items</string>
+    <string name="picker_files_recent_empty">You have no recent files</string>
+    <string name="picker_files_denied">Access denied</string>
+    <string name="picker_files_directory_empty">No files here</string>
+
+    <!-- Images -->
+    <string name="picker_pictures_activity_title">Select pictures</string>
+    <string name="picker_pictures_empty_folder">This folder does not contains pictures.</string>
+    <string name="picker_pictures_empty">No pictures on this device</string>
+
+
+    <!-- Map -->
+    <string name="picker_map_activity_title">Pick a place</string>
+    <string name="picker_map_sory_notdefined">We have to define your location, then search places nearby.</string>
+    <string name="picker_map_pick_my">Send my current location</string>
+    <string name="picker_map_pick_my_fetching">Defining…</string>
+    <string name="picker_map_pick_my_accuracy">Accurate to %d meters</string>
+    <string name="picker_map_pick_my_wait">Wait till defining is end</string>
+
+</resources>

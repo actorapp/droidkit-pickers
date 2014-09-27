@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.adapters.PictureAdapter;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.PictureFolderItem;
@@ -87,7 +86,7 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
             loadDirectories();
             if(items.isEmpty()){
 
-                ((TextView)rootView.findViewById(R.id.status)).setText(R.string.empty_pictures_directories);
+                ((TextView)rootView.findViewById(R.id.status)).setText(R.string.picker_pictures_empty);
 
             }else {
                 int columnsNum = getResources().getInteger(R.integer.num_columns_albums);
@@ -103,7 +102,7 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
             loadDirectory();
             rootView = inflater.inflate(R.layout.fragment_picture_picker, container, false);
             if (items.isEmpty()) {
-                ((TextView)rootView.findViewById(R.id.status)).setText(R.string.empty_pictures);
+                ((TextView)rootView.findViewById(R.id.status)).setText(R.string.picker_pictures_empty_folder);
             } else {
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid);
                 int columnsNum = getResources().getInteger(R.integer.num_columns_pictures);

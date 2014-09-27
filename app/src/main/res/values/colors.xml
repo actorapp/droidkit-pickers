@@ -4,6 +4,8 @@
     <color name="globalWindowBackgroundTranslucent" >#d8eeeeee</color>
 
     <color name="grey">#999</color>
+    <color name="grey_darker">#8e8e8e</color>
+    <color name="black">#000000</color>
     <color name="list_divider">#d2d2d2</color>
 
     <color name="main_color">#445871</color>
@@ -30,4 +32,13 @@
     <color name="picture_item_folder_background">#1f1f1f</color>
     <color name="picture_item_selection_selected">#48cbed</color>
     <color name="picture_item_selection" >#88000000</color>
+
+    <!-- Map -->
+    <color name="picker_map_nearby_header_color">#4071cb</color>
+    <color name="picker_map_nearby_divider">@color/list_divider</color>
+    <color name="picker_map_nearby_place_subtitle">@color/grey</color>
+    <color name="picker_map_pick_my_subtite">@color/grey_darker</color>
+    <color name="picker_map_controller_background_normal">#b0ffffff</color>
+    <color name="picker_map_controller_background_pressed">#804071cb</color>
+
 </resources>

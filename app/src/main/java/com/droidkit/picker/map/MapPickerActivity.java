@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,29 +40,73 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
     private TextView status;
     private PlaceFetchingTask fetchingTask;
     private SearchView searchBox;
-    private View hideButton;
+    private View fullSizeButton;
     private Marker currentPick;
+    private View listHolder;
+    private View defineMyLocationButton;
+    private TextView accuranceView;
+    private View pickCurrent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_picker);
+
+        list = (ListView) findViewById(R.id.list);
+        list.setOnItemClickListener(this);
+        status = (TextView) findViewById(R.id.status);
+        listHolder = findViewById(R.id.listNearbyHolder);
+        accuranceView = (TextView) findViewById(R.id.accurance);
+
         setUpMapIfNeeded();
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        hideButton = findViewById(R.id.hide);
-        hideButton.setOnClickListener(new View.OnClickListener() {
+        fullSizeButton = findViewById(R.id.full);
+        fullSizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (list.getVisibility() == View.GONE) {
-                    list.setVisibility(View.VISIBLE);
-                }
-                else {
-                    list.setVisibility(View.GONE);
+                if (listHolder.getVisibility() == View.GONE) {
+                    listHolder.setVisibility(View.VISIBLE);
+                } else {
+                    listHolder.setVisibility(View.GONE);
                 }
             }
         });
+
+        defineMyLocationButton = findViewById(R.id.define_my_location);
+        defineMyLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location location = mMap.getMyLocation();
+
+                if (location != null) {
+
+                    LatLng target = new LatLng(location.getLatitude(), location.getLongitude());
+
+                    CameraPosition.Builder builder = new CameraPosition.Builder();
+                    builder.zoom(17);
+                    builder.target(target);
+
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(builder.build()));
+
+                }else{
+                    Toast.makeText(getBaseContext(), R.string.picker_map_pick_my_wait, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+        pickCurrent = findViewById(R.id.pick_current);
+        pickCurrent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "Hey!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        // todo do we need these buttons?
         select = findViewById(R.id.select);
         select.setEnabled(false);
         findViewById(R.id.select_text).setEnabled(false);
@@ -126,7 +170,6 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         searchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                status.setText("Loading...");
                 fetchPlaces(s);
                 searchBox.clearFocus();
                 return true;
@@ -156,24 +199,28 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
             }
         }
 
-        if(currentLocation!=null)
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),12));
+        if(currentLocation!=null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), 14));
+            fetchPlaces(null);
+        }
         mMap.setOnMyLocationChangeListener(this);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(false);
+        mMap.getUiSettings().setCompassEnabled(false);
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
 
-        list = (ListView) findViewById(R.id.list);
-        list.setOnItemClickListener(this);
-        status = (TextView) findViewById(R.id.status);
 
     }
 
     private void fetchPlaces(String query) {
+
         mMap.clear();
         if(currentLocation==null){
             Toast.makeText(this, R.string.picker_map_sory_notdefined, Toast.LENGTH_SHORT).show();
             return;
         }
+        status.setText("Loading");
         fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override
             protected void onPostExecute(Object o) {
@@ -214,15 +261,17 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
 
     @Override
     public void onMyLocationChange(Location location) {
+
         if(currentLocation==null){
             // do we need to attach our location on the start?
-
             this.currentLocation = location;
             fetchPlaces(null);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),14));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14));
+
 
         }
-        this.currentLocation = location;
+        this.currentLocation = location;;
+        accuranceView.setText(getString(R.string.picker_map_pick_my_accuracy, (int) currentLocation.getAccuracy()));
         Log.d("Location changed", location.toString());
     }
 
@@ -234,7 +283,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         select.setEnabled(true);
         findViewById(R.id.select_text).setEnabled(true);
         geoData = mapItem.getLatLng();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(geoData, 14));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(geoData, 16));
 
 
     }
