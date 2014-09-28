@@ -3,6 +3,7 @@ package com.droidkit.picker.picture;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v13.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 /**
  * Created by kiolt_000 on 24/09/2014.
  */
-public class PictureViewerAdapter extends FragmentPagerAdapter {
+public class PictureViewerAdapter extends FragmentStatePagerAdapter {
     private final ArrayList<ExplorerItem> items;
     private SuperPickerActivity pickerActivity;
 
-    public PictureViewerAdapter(SuperPickerActivity pickerActivity, ArrayList<ExplorerItem> items){
+    public PictureViewerAdapter(SuperPickerActivity pickerActivity, ArrayList<ExplorerItem> items) {
         super(pickerActivity.getFragmentManager());
         this.pickerActivity = pickerActivity;
         this.items = items;
@@ -34,18 +35,17 @@ public class PictureViewerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return position+1 + " of " + getCount();
+        return position + 1 + " of " + getCount();
     }
+
 
     @Override
     public Fragment getItem(int i) {
         Fragment fragment = new PictureViewerItemFragment();
         Bundle bundle = new Bundle();
-                bundle.putString("path", items.get(i).getPath());
+        bundle.putString("path", items.get(i).getPath());
         fragment.setArguments(bundle);
         return fragment;
     }
-
-
 
 }
