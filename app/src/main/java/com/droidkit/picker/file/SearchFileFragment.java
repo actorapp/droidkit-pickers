@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
-import com.droidkit.picker.adapters.ExplorerAdapter;
 import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.util.Converter;

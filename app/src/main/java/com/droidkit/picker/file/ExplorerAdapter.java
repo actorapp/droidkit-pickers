@@ -1,4 +1,4 @@
-package com.droidkit.picker.adapters;
+package com.droidkit.picker.file;
 
 import android.content.Context;
 import android.view.View;

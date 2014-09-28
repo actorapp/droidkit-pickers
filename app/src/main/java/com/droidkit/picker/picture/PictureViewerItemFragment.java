@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.droidkit.file.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by kiolt_000 on 24/09/2014.
@@ -31,29 +32,9 @@ public class PictureViewerItemFragment extends Fragment {
         path = getArguments().getString("path");
 
         final ImageView holder = (ImageView) rootView.findViewById(R.id.image);
-        new AsyncTask<Void, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(Void... voids) {
-                try {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inDither = true;
-                    options.outHeight = 100;
-                    options.outWidth = 100;
-                    return BitmapFactory.decodeFile(path, options);
-                }catch (Exception exp) {
 
-                }
-                return null;
-            }
+        ImageLoader.getInstance().displayImage("file://"+path, holder);
 
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null) {
-                    holder.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                    holder.setImageBitmap(bitmap);
-                }
-            }
-        }.execute();
 
         final View selectedView = rootView.findViewById(R.id.selected);
         selectedView.setSelected(pickerActivity.isSelected(path));

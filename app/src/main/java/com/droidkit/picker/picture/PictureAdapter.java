@@ -1,4 +1,4 @@
-package com.droidkit.picker.adapters;
+package com.droidkit.picker.picture;
 
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -83,6 +83,10 @@ public class PictureAdapter extends BaseAdapter {
             itemView.setTag("picture");
         }
 
+        ViewGroup.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemSize);
+        // params.width = itemWidth;
+        // params.height = itemWidth;
+        itemView.setLayoutParams(params);
 
         TextView titleView = (TextView) itemView.findViewById(R.id.title);
         TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
@@ -106,10 +110,6 @@ public class PictureAdapter extends BaseAdapter {
             });
         }
 
-        ViewGroup.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemSize);
-        // params.width = itemWidth;
-        // params.height = itemWidth;
-        itemView.setLayoutParams(params);
 
         return itemView;
     }

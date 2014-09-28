@@ -7,6 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.droidkit.file.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.utils.ImageSizeUtils;
 
 import java.io.File;
 
@@ -44,34 +50,32 @@ public class PictureItem extends FileItem {
     public void bindImage(final View itemView) {
         final ImageView holder = (ImageView) itemView.findViewById(R.id.image);
         try {
-            holder.setImageResource(R.drawable.user_placeholder);
-            new AsyncTask<Void, Void, Bitmap>() {
-                @Override
-                protected Bitmap doInBackground(Void... voids) {
-                    try {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inDither = true;
-                        options.outHeight = 1;
-                        options.outWidth = 1;
-                        options.inTargetDensity = 1;
-                        options.inSampleSize = 10;
-                        options.inScaled = true;
-                        return BitmapFactory.decodeFile(getPath(), options);
-                    }catch (Exception exp) {
+            int height = itemView.getMeasuredHeight();
+            height = itemView.getHeight();
+            height = itemView.getLayoutParams().height;
+            ImageSize size = new ImageSize(height, height);
 
-                    }
-                    return null;
+            ImageLoader.getInstance().loadImage("file://"+getPath(),size,new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String s, View view) {
+
                 }
 
                 @Override
-                protected void onPostExecute(Bitmap bitmap) {
-                    if (bitmap != null) {
-                        holder.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        holder.setImageBitmap(bitmap);
-                    }
-                }
-            }.execute();
+                public void onLoadingFailed(String s, View view, FailReason failReason) {
 
+                }
+
+                @Override
+                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                    holder.setImageBitmap(bitmap);
+                }
+
+                @Override
+                public void onLoadingCancelled(String s, View view) {
+
+                }
+            });
             // todo: actors
         } catch (Exception exp) {
             holder.setImageResource(android.R.drawable.stat_notify_error);

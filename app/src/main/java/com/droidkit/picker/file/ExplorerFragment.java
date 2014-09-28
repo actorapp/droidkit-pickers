@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
-import com.droidkit.picker.adapters.ExplorerAdapter;
-import com.droidkit.picker.adapters.WelcomeExplorerAdapter;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.HistoryItem;

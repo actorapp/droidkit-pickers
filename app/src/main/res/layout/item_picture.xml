@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:src="@drawable/user_placeholder"
+                android:background="#444"
                 android:scaleType="centerCrop"
                 android:id="@+id/image"
                 android:layout_width="match_parent"

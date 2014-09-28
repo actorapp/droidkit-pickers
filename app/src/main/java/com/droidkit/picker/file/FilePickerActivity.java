@@ -67,9 +67,9 @@ public class FilePickerActivity extends SuperPickerActivity {
             Fragment fragment = new ExplorerFragment();
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
-                    // todo  animate out
-               //     .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                 //           R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                    // todo animate out
+                    //     .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
+                    //           R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();

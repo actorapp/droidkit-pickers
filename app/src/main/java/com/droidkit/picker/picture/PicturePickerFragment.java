@@ -14,7 +14,6 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.adapters.PictureAdapter;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.PictureFolderItem;
 import com.droidkit.picker.items.PictureItem;

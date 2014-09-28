@@ -12,8 +12,20 @@ import com.droidkit.picker.file.FilePickerActivity;
 import com.droidkit.picker.map.MapPickerActivity;
 import com.droidkit.picker.picture.PicturePickerActivity;
 import com.google.android.gms.maps.model.LatLng;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
 
 
 public class MainActivity extends Activity  {
@@ -51,6 +63,11 @@ public class MainActivity extends Activity  {
                 startActivityForResult(new Intent(MainActivity.this, MapPickerActivity.class), ACTIVITY_REQUEST_MAP);
             }
         });
+        File cacheDir = StorageUtils.getCacheDirectory(getBaseContext());
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getBaseContext())
+                .threadPriority(Thread.MAX_PRIORITY)
+                .build();
+        ImageLoader.getInstance().init(config);
 
     }
 

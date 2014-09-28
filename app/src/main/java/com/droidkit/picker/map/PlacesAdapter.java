@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,29 +76,8 @@ public class PlacesAdapter extends BaseAdapter {
         subtitleView.setText(item.vicinity);
         iconView.setImageResource(R.drawable.user_placeholder);
         // todo: actors
-        new AsyncTask<Void, Void, Bitmap>() {
-            @Override
-            protected Bitmap doInBackground(Void... voids) {
-                String urldisplay = item.icon;
-                Bitmap mIcon11 = null;
-                try {
-                    InputStream in = new java.net.URL(urldisplay).openStream();
-                    mIcon11 = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
-                    e.printStackTrace();
-                }
-                return mIcon11;
-            }
 
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-
-                if(bitmap!=null)
-                    iconView.setImageBitmap(bitmap);
-
-            }
-        }.execute();
+        ImageLoader.getInstance().displayImage(item.icon, iconView);
 
 
         return itemView;
