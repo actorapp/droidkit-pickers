@@ -96,7 +96,6 @@ public class ExplorerFragment extends Fragment {
 
                 Log.d(LOG_TAG, "Size: " + fileList.length);
                 for (File file : fileList) {
-                    ExplorerItem item = null;
                     putItem(file);
                 }
 
@@ -110,7 +109,7 @@ public class ExplorerFragment extends Fragment {
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
 
                 String externalStorageState = Environment.getExternalStorageState();
-                Log.w("logtag", externalStorageState);
+                Log.w(LOG_TAG, externalStorageState);
                 if (
                         externalStorageState.equals(Environment.MEDIA_REMOVED)
                                 || externalStorageState.equals(Environment.MEDIA_BAD_REMOVAL)
@@ -120,10 +119,10 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                     items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));// todo R.drawable.external_storage_locked,false));
+                     items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));
                 } else {
                     // todo: if scanning is running?
-                    items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));// todo R.drawable.external_storage));
+                    items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
@@ -136,7 +135,7 @@ public class ExplorerFragment extends Fragment {
                         // even on sdk>19 documents folder does not work.
                     }
                 }
-                path = "Select files";
+                path = getString(R.string.picker_files_activity_title);
 
                 ArrayList<ExplorerItem> historyItems = loadHistory();
                 if (historyItems.isEmpty()) {

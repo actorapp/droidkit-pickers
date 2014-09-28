@@ -11,6 +11,7 @@
     <ImageView
         android:src="@drawable/ic_launcher"
         android:id="@+id/icon"
+        android:scaleType="center"
         android:layout_margin="5dp"
         android:layout_width="45dp"
         android:layout_height="45dp" />

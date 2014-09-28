@@ -77,7 +77,7 @@ public class SearchFileFragment extends Fragment {
 //            searchItemView.startAnimation(alphaAnimation);
 //        }
 
-        getActivity().getActionBar().setTitle("Search");
+        getActivity().getActionBar().setTitle(R.string.picker_files_search_activity_title);
 
         return rootView;
     }
@@ -132,7 +132,7 @@ public class SearchFileFragment extends Fragment {
 
         // searchView.setIconifiedByDefault(false);
 
-        searchView.setIconified(false);
+        // searchView.setIconified(false);
         searchView.requestFocusFromTouch();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

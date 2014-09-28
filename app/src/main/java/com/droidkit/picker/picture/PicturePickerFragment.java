@@ -37,12 +37,11 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     public void loadDirectories() {
 
         long startTime = System.currentTimeMillis();
         final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media.BUCKET_ID, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
-        final String orderBy = MediaStore.Images.Media.BUCKET_ID;
+        final String orderBy = MediaStore.Images.Media.DEFAULT_SORT_ORDER;
 
         Cursor imagecursor = getActivity().getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
@@ -60,9 +59,9 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
 
                     String bucketName = imagecursor.getString(bucketNameColumnIndex);
                     if (bucketId != lastBucketId) {
-                        if (folder != null)
-                            items.add(folder);
+
                         folder = new PictureFolderItem(bucketId, bucketName);
+                        items.add(folder);
                     }
                     String imgUri = imagecursor.getString(imgUriColumnIndex);
                     folder.putImage(imgUri);
@@ -72,7 +71,7 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
                 } while (imagecursor.moveToNext());
             imagecursor.close();
         }
-        Log.w("Pictures loader", "Loaded "+ items.size()+" directories in " + (System.currentTimeMillis() - startTime));
+        Log.w("Pictures loader", "Loaded " + items.size() + " directories in " + (System.currentTimeMillis() - startTime));
     }
 
     @Override

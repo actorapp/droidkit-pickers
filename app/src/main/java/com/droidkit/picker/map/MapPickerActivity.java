@@ -61,6 +61,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         setUpMapIfNeeded();
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
         fullSizeButton = findViewById(R.id.full);
         fullSizeButton.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +221,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
             Toast.makeText(this, R.string.picker_map_sory_notdefined, Toast.LENGTH_SHORT).show();
             return;
         }
+        list.setAdapter(null);
         status.setText("Loading");
         fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override

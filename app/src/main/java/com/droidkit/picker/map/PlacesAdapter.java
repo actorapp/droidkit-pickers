@@ -1,6 +1,9 @@
 package com.droidkit.picker.map;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -62,15 +66,38 @@ public class PlacesAdapter extends BaseAdapter {
 
         TextView titleView = (TextView) itemView.findViewById(R.id.title);
         TextView subtitleView = (TextView) itemView.findViewById(R.id.subtitle);
-        ImageView iconView = (ImageView) itemView.findViewById(R.id.icon);
+        final ImageView iconView = (ImageView) itemView.findViewById(R.id.icon);
 
-        MapItem item = getItem(position);
+        final MapItem item = getItem(position);
         // iconView.setImageResource();
-        // todo: bind image
 
         titleView.setText(item.name);
         subtitleView.setText(item.vicinity);
+        iconView.setImageResource(R.drawable.user_placeholder);
+        // todo: actors
+        new AsyncTask<Void, Void, Bitmap>() {
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                String urldisplay = item.icon;
+                Bitmap mIcon11 = null;
+                try {
+                    InputStream in = new java.net.URL(urldisplay).openStream();
+                    mIcon11 = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+                return mIcon11;
+            }
 
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+
+                if(bitmap!=null)
+                    iconView.setImageBitmap(bitmap);
+
+            }
+        }.execute();
 
 
         return itemView;

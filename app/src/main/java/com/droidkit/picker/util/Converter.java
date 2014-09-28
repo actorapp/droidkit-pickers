@@ -56,12 +56,13 @@ public class Converter {
 
         int imageId = R.drawable.picker_folder;
 
-        if (file.list() == null) {
-            if (file.getName().toCharArray()[0] == '.') {
+        if (file.list() == null || file.getName().toCharArray()[0] == '.') {
+            return null;
+            /*if (file.getName().toCharArray()[0] == '.') {
                 // imageId = R.drawable.folder_locked;
                 return null;
             } else
-                return new FolderItem(file, R.drawable.picker_system_folder, true);
+                return new FolderItem(file, R.drawable.picker_system_folder, true);*/
         }else
         if(file.list().length==0){
             return new FolderItem(file, R.drawable.picker_empty_folder, true);
@@ -73,9 +74,9 @@ public class Converter {
             // todo imageId = R.drawable.folder_external;
         }else
         if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath())) {
-            // todo    imageId = R.drawable.folder_music;
+            // todo imageId = R.drawable.folder_music;
         } else if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath())) {
-            // todo   imageId = R.drawable.folder_picture;
+            // todo imageId = R.drawable.folder_picture;
         } else if (folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath())) {
             // todo imageId = R.drawable.folder_downloads;
         } else //if (Build.VERSION.SDK_INT >= 19 && folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath())) {

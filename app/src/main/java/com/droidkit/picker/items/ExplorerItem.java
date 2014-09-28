@@ -85,7 +85,6 @@ public abstract class ExplorerItem {
     }
 
     public void bindImage(View itemView) {
-        //todo: actors
         if(imageId!=0) {
             itemView.findViewById(R.id.image_fake).setVisibility(View.INVISIBLE);
             ImageView holder = (ImageView) itemView.findViewById(R.id.image);

@@ -104,7 +104,7 @@ public class PicturePickerActivity extends SuperPickerActivity {
                 // .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
                 //        R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
                 .replace(R.id.container, fragment)
-                .addToBackStack(path)
+                .addToBackStack(path+"_full")
                 .commit();
 
     }

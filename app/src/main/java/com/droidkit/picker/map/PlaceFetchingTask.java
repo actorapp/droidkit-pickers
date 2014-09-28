@@ -95,7 +95,7 @@ public class PlaceFetchingTask extends AsyncTask<Void, Void, Object> {
             resultList = new ArrayList<MapItem>(jsonResultItems.length());
 
             for (int i = 0; i < jsonResultItems.length(); i++) {
-                // todo converter
+                // todo json parser
 
                 final JSONObject jsonResultItem = jsonResultItems.getJSONObject(i);
                 MapItem item = new MapItem() {
