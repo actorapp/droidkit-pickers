@@ -27,8 +27,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocationChangeListener, AdapterView.OnItemClickListener, GoogleMap.OnMapLongClickListener {
+public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocationChangeListener, AdapterView.OnItemClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
 
     private static final String LOG_TAG = "MapPickerActivity";
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -46,6 +47,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
     private View defineMyLocationButton;
     private TextView accuranceView;
     private View pickCurrent;
+    private HashMap<String, Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,14 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         pickCurrent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "Hey!", Toast.LENGTH_SHORT).show();
+                if(currentLocation!=null){
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("latitude", currentLocation.getLatitude());
+                    returnIntent.putExtra("longitude", currentLocation.getLongitude());
+
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
             }
         });
 
@@ -210,7 +219,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         mMap.getUiSettings().setCompassEnabled(false);
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
-
+        mMap.setOnMarkerClickListener(this);
 
     }
 
@@ -249,15 +258,16 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
     }
 
     private void showItemsOnTheMap(ArrayList<MapItem> array) {
-
+        markers = new HashMap<String, Marker>();
         for (MapItem mapItem : array) {
 
-            mMap.addMarker(new MarkerOptions()
-                    .position(mapItem.getLatLng())
-                           .title(mapItem.name)
-                    .draggable(false)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.conv_attach_location))
-            );
+          markers.put(mapItem.id,
+                  mMap.addMarker(new MarkerOptions()
+                                  .position(mapItem.getLatLng())
+                                 // .title(mapItem.name)
+                                  .draggable(false)
+                          //.icon(BitmapDescriptorFactory.fromResource(R.drawable.conv_attach_location))
+                  ));
         }
     }
 
@@ -269,8 +279,6 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
             this.currentLocation = location;
             fetchPlaces(null);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 14));
-
-
         }
         this.currentLocation = location;;
         accuranceView.setText(getString(R.string.picker_map_pick_my_accuracy, (int) currentLocation.getAccuracy()));
@@ -309,5 +317,13 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         }
 
 
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(currentPick!=null)
+            currentPick.remove();
+        currentPick = marker;
+        return true;
     }
 }
