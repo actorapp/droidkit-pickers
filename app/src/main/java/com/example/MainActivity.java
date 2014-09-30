@@ -3,6 +3,7 @@ package com.example;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -76,7 +77,7 @@ public class MainActivity extends Activity  {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         TextView statusView = (TextView) findViewById(R.id.status);
-
+        Log.d("Picker result", String.valueOf(resultData));
         switch (requestCode) {
             case ACTIVITY_REQUEST_FILES:
             case ACTIVITY_REQUEST_PICTURES: {
@@ -105,7 +106,10 @@ public class MainActivity extends Activity  {
                             resultData.getDoubleExtra("latitude",0),
                             resultData.getDoubleExtra("longitude",0)
                     );
-                    statusView.setText(geoData.toString());
+                    String statusText = geoData.toString();
+                    statusText += " " + resultData.getStringExtra("street");
+                    statusText += " " + resultData.getStringExtra("place");
+                    statusView.setText(statusText);
                 } else {
                     statusView.setText("canceled");
                 }

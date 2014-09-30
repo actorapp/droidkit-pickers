@@ -70,15 +70,10 @@ public class PlacesAdapter extends BaseAdapter {
         final ImageView iconView = (ImageView) itemView.findViewById(R.id.icon);
 
         final MapItem item = getItem(position);
-        // iconView.setImageResource();
 
         titleView.setText(item.name);
         subtitleView.setText(item.vicinity);
         iconView.setImageResource(R.drawable.user_placeholder);
-        // todo: actors
-
-        ImageLoader.getInstance().displayImage(item.icon, iconView);
-
 
         return itemView;
     }

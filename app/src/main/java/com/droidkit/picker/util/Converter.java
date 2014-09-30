@@ -33,7 +33,7 @@ public class Converter {
                 // todo imageId = R.drawable.file_music;
                 break;
             case FormatChecker.FORMAT_PICTURE:
-                return new PictureItem(file, selected);
+                return new PictureItem(file, selected, fileType);
             // todo imageId = R.drawable.file_picture;
             // break;
             case FormatChecker.FORMAT_DOC:

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -20,7 +21,6 @@ import com.droidkit.file.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -28,26 +28,35 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocationChangeListener, AdapterView.OnItemClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerClickListener {
+public class MapPickerActivity extends Activity
+        implements
+        GoogleMap.OnMyLocationChangeListener,
+        AdapterView.OnItemClickListener,
+        GoogleMap.OnMapLongClickListener,
+        GoogleMap.OnMarkerClickListener {
 
     private static final String LOG_TAG = "MapPickerActivity";
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Location currentLocation;
     private LatLng geoData;
 
+    private PlaceFetchingTask fetchingTask;
+    private Marker currentPick;
+
     View select;
-    private Location currentLocation;
     private ListView list;
     private TextView status;
-    private PlaceFetchingTask fetchingTask;
     private SearchView searchBox;
     private View fullSizeButton;
-    private Marker currentPick;
     private View listHolder;
     private View defineMyLocationButton;
     private TextView accuranceView;
     private View pickCurrent;
+
     private HashMap<String, Marker> markers;
+    private ArrayList<MapItem> places;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
 
         list = (ListView) findViewById(R.id.list);
         list.setOnItemClickListener(this);
+        list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         status = (TextView) findViewById(R.id.status);
         listHolder = findViewById(R.id.listNearbyHolder);
         accuranceView = (TextView) findViewById(R.id.accurance);
@@ -239,15 +249,15 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
                 if(o instanceof ArrayList){
                     list.setVisibility(View.VISIBLE);
                     status.setText("Places nearby");
-                    ArrayList<MapItem> array = (ArrayList<MapItem>) o;
-                    if(array.isEmpty()){
+                    places = (ArrayList<MapItem>) o;
+                    if(places.isEmpty()){
                         status.setText("No places");
                     }else {
-                        list.setAdapter(new PlacesAdapter(MapPickerActivity.this, array));
-                        showItemsOnTheMap(array);
+                        list.setAdapter(new PlacesAdapter(MapPickerActivity.this, places));
+                        showItemsOnTheMap(places);
                     }
                 }else {
-
+                    places = new ArrayList<MapItem>();
                     list.setAdapter(null);
                     status.setText(o.toString());
                     Toast.makeText(MapPickerActivity.this, o.toString(), Toast.LENGTH_SHORT).show();
@@ -264,7 +274,7 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
           markers.put(mapItem.id,
                   mMap.addMarker(new MarkerOptions()
                                   .position(mapItem.getLatLng())
-                                 // .title(mapItem.name)
+                                          // .title(mapItem.name)
                                   .draggable(false)
                           //.icon(BitmapDescriptorFactory.fromResource(R.drawable.conv_attach_location))
                   ));
@@ -290,11 +300,21 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         MapItem mapItem = (MapItem) adapterView.getItemAtPosition(position);
 
 
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("latitude", mapItem.getLatLng().latitude);
+        returnIntent.putExtra("longitude", mapItem.getLatLng().longitude);
+        returnIntent.putExtra("street", mapItem.vicinity);
+        returnIntent.putExtra("place", mapItem.name);
+
+        setResult(RESULT_OK, returnIntent);
+        finish();
+
+        /*
         select.setEnabled(true);
         findViewById(R.id.select_text).setEnabled(true);
         geoData = mapItem.getLatLng();
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(geoData, 16));
-
+        */
 
     }
 
@@ -304,16 +324,16 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
         findViewById(R.id.select_text).setEnabled(true);
         //mMap.clear();
 
-        geoData = latLng;
+        // geoData = latLng;
         if(currentPick==null) {
             MarkerOptions currentPickOptions = new MarkerOptions()
                     .draggable(true)
                     .position(geoData);
 
-            currentPick = mMap.addMarker(currentPickOptions);
+            //currentPick = mMap.addMarker(currentPickOptions);
         }else{
 
-            currentPick.setPosition(geoData);
+            //currentPick.setPosition(geoData);
         }
 
 
@@ -323,7 +343,32 @@ public class MapPickerActivity extends Activity implements GoogleMap.OnMyLocatio
     public boolean onMarkerClick(Marker marker) {
         if(currentPick!=null)
             currentPick.remove();
-        currentPick = marker;
+        String placeId = null;
+        for (Map.Entry<String, Marker> markerIterator : markers.entrySet()) {
+            if(markerIterator.getValue().equals(marker)){
+                placeId = markerIterator.getKey();
+                break;
+            }
+        }
+        int position = -1;
+        for (int i = 0; i < places.size(); i++) {
+            MapItem place = places.get(i);
+            if(place.id.equals(placeId)){
+                position = i;
+                break;
+            }
+        }
+        if(position!=-1) {
+            list.setItemChecked(position, true);
+            list.smoothScrollToPosition(position);
+        }
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(marker.getPosition().latitude, marker.getPosition().longitude),
+                16));
+
+        //currentPick = marker;
         return true;
     }
+
 }

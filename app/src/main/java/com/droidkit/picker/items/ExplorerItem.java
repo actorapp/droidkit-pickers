@@ -94,8 +94,10 @@ public abstract class ExplorerItem {
         }else{
             itemView.findViewById(R.id.image).setVisibility(View.INVISIBLE);
             TextView holder = (TextView) itemView.findViewById(R.id.image_fake);
-            holder.setVisibility(View.VISIBLE);
-            holder.setText(fileType);
+            if(holder!=null) {
+                holder.setVisibility(View.VISIBLE);
+                holder.setText(fileType);
+            }
         }
     }
 
