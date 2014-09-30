@@ -41,6 +41,7 @@ public class ExplorerFragment extends Fragment {
     private ArrayList<ExplorerItem> items;
     private TextView statusView;
     private ListView list;
+    private String title;
 
     @Override
     public void onAttach(Activity activity) {
@@ -69,6 +70,7 @@ public class ExplorerFragment extends Fragment {
             if (bundle != null) {
                 path = bundle.getString("path");
 
+                title = path;
 
                 Log.d(LOG_TAG, "Path: " + path);
                 File f = new File(path);
@@ -133,7 +135,8 @@ public class ExplorerFragment extends Fragment {
                         // even on sdk>19 documents folder does not work.
                     }
                 }
-                path = getString(R.string.picker_files_activity_title);
+                path = "";
+                title = getString(R.string.picker_files_activity_title);
 
                 ArrayList<ExplorerItem> historyItems = loadHistory();
                 if (historyItems.isEmpty()) {
@@ -235,7 +238,7 @@ public class ExplorerFragment extends Fragment {
         } else if (path.equals("/"))
             getActivity().getActionBar().setTitle(R.string.picker_files_memory_phone);
         else
-            getActivity().getActionBar().setTitle(path);
+            getActivity().getActionBar().setTitle(title);
     }
 
 }

@@ -51,7 +51,7 @@ public abstract class SearchTask extends AsyncTask<Void,File,Integer> {
             }
         });
         Log.i("Searching", "Scanning started. Root path: " + root);
-        if (!root.getPath().equals("/")) {
+        if (!root.getPath().equals("")) {
             scanFolder(root);
         } else {
             scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));

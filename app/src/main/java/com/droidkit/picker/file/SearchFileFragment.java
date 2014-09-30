@@ -131,7 +131,7 @@ public class SearchFileFragment extends Fragment {
 
         // searchView.setIconifiedByDefault(false);
 
-        // searchView.setIconified(false);
+        searchView.setIconified(false);
         searchView.requestFocusFromTouch();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -147,6 +147,10 @@ public class SearchFileFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String query) {
+
+                if(query.equals("")){
+                    return true;
+                }
 
                 if (task != null) {
                     task.cancel(true);
