@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
+import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.util.DatabaseConnector;
 
@@ -27,7 +28,7 @@ public class FilePickerActivity extends SuperPickerActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //searchEnable();
-
+        findViewById(R.id.controllers).setVisibility(View.GONE);
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayUseLogoEnabled(false);
         getActionBar().setIcon(null);
@@ -45,7 +46,7 @@ public class FilePickerActivity extends SuperPickerActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+            int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
@@ -58,6 +59,11 @@ public class FilePickerActivity extends SuperPickerActivity {
     public void onItemClick(AdapterView<?> parent, View itemView, int position, long id) {
 
         ExplorerItem item = (ExplorerItem) parent.getItemAtPosition(position);
+
+        if(item instanceof BackItem){
+            onBackPressed();
+            return;
+        }
 
         if (item.isDirectory()) {
             String path = item.getPath();
@@ -76,7 +82,7 @@ public class FilePickerActivity extends SuperPickerActivity {
         } else {
 
             selectItem(item,itemView);
-            //item.bindData(itemView);
+            returnResult();
         }
     }
 

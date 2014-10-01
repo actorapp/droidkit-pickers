@@ -1,5 +1,6 @@
 package com.droidkit.picker.items;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -104,6 +105,9 @@ public abstract class ExplorerItem {
     public void bindData(View itemView){
         TextView titleView  = (TextView) itemView.findViewById(R.id.title);
         TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
+
+        subTitleView.setVisibility(View.VISIBLE);
+
         titleView.setText(getTitle());
         subTitleView.setText(getSubtitle());
         View selectedView = itemView.findViewById(R.id.selected);

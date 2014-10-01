@@ -17,9 +17,10 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
+import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
-import com.droidkit.picker.items.HistoryItem;
+import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.items.StorageItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
@@ -70,11 +71,21 @@ public class ExplorerFragment extends Fragment {
             if (bundle != null) {
                 path = bundle.getString("path");
 
-                title = path;
+
 
                 Log.d(LOG_TAG, "Path: " + path);
-                File f = new File(path);
-                File[] fileList = f.listFiles();
+                File currentPathFile = new File(path);
+                File[] fileList = currentPathFile.listFiles();
+                title = currentPathFile.getName();
+
+
+                if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
+                    if(Environment.isExternalStorageEmulated()){
+                        title = getString(R.string.picker_files_memory_phone);
+                    }else
+                        title = getString((R.string.picker_files_memory_external));// todo if its emulated?
+                } else if (path.equals("/"))
+                    title = getString(R.string.picker_files_memory_phone);
 
                 if (fileList == null) {
                     statusView.setVisibility(View.VISIBLE);
@@ -95,11 +106,13 @@ public class ExplorerFragment extends Fragment {
                 }
 
                 Log.d(LOG_TAG, "Size: " + fileList.length);
+
                 for (File file : fileList) {
                     putItem(file);
                 }
-
                 Collections.sort(items, new FileOrderComparator());
+
+                insertBack();
                 adapter = new ExplorerAdapter(getActivity(), items);
 
             } else {
@@ -121,13 +134,15 @@ public class ExplorerFragment extends Fragment {
                         ) {
                      items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));
                 } else {
-                    // todo: if scanning is running?
-                    items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                    if (Environment.isExternalStorageEmulated()) {
 
+                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_phone)));
+                    }else
+                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));
 
 
                     if (Build.VERSION.SDK_INT >= 19) {
@@ -139,10 +154,7 @@ public class ExplorerFragment extends Fragment {
                 title = getString(R.string.picker_files_activity_title);
 
                 ArrayList<ExplorerItem> historyItems = loadHistory();
-                if (historyItems.isEmpty()) {
-                    items.add(new HistoryItem(false));
-                } else {
-                    items.add(new HistoryItem());
+                if (!historyItems.isEmpty()) {
                     items.addAll(historyItems);
                 }
 
@@ -156,12 +168,14 @@ public class ExplorerFragment extends Fragment {
         return rootView;
     }
 
-
+    private void insertBack() {
+        items.add(0, new BackItem());
+    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.file_selector, menu);
+        inflater.inflate(R.menu.picker_file, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
@@ -230,15 +244,7 @@ public class ExplorerFragment extends Fragment {
     }
 
     private void setTitle() {
-        if (path.contains(Environment.getExternalStorageDirectory().getPath())) {
-            if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
-                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), getString(R.string.picker_files_memory_external)));
-            } else
-                getActivity().getActionBar().setTitle(path.replace(Environment.getExternalStorageDirectory().getPath(), ""));
-        } else if (path.equals("/"))
-            getActivity().getActionBar().setTitle(R.string.picker_files_memory_phone);
-        else
-            getActivity().getActionBar().setTitle(title);
+        getActivity().getActionBar().setTitle(title);
     }
 
 }

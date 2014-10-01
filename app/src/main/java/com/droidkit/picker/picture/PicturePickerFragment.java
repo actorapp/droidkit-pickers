@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -135,6 +137,13 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
             imageCursor.close();
         }
         Log.w("Pictures loader", "Loaded " + items.size()+ " items in directory in " + (System.currentTimeMillis() - startTime));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.picker_picture, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override

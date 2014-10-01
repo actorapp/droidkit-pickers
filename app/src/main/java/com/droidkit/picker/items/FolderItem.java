@@ -1,5 +1,8 @@
 package com.droidkit.picker.items;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.droidkit.file.R;
 
 import java.io.File;
@@ -39,5 +42,14 @@ public class FolderItem extends ExplorerItem {
     @Override
     public boolean isDirectory() {
         return true;
+    }
+
+    @Override
+    public void bindData(View itemView) {
+        super.bindData(itemView);
+
+        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
+
+        subTitleView.setVisibility(View.GONE);
     }
 }

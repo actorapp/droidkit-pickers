@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public abstract class SuperPickerActivity extends Activity implements AdapterView.OnItemClickListener {
     protected ArrayList<String> selectedItems = new ArrayList<String>();
     private boolean searchEnabled;
-    private Fragment currentFragment;
+    protected Fragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,7 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("picked", selectedItems);
-                setResult(RESULT_OK, returnIntent);
-                save();
-                finish();
+                returnResult();
             }
         });
         View cancel = findViewById(R.id.cancel);
@@ -71,6 +67,14 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
             }
         });
 
+    }
+
+    protected void returnResult() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("picked", selectedItems);
+        setResult(RESULT_OK, returnIntent);
+        save();
+        finish();
     }
 
     protected abstract Fragment getWelcomeFragment();
@@ -147,13 +151,6 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
         View controllerHolder = findViewById(R.id.controllers);
         if(!selectedItems.isEmpty()) {
             counterView.setText("" + selectedItems.size());
-            controllerHolder.setBackgroundResource(R.drawable.controller_background);
-            cancelView.setBackgroundResource(R.drawable.controller_background);
-            selectView.setBackgroundResource(R.drawable.controller_background);
-        }else{
-            controllerHolder.setBackgroundResource(R.drawable.controller_background_empty);
-            cancelView.setBackgroundResource(R.drawable.controller_background_empty);
-            selectView.setBackgroundResource(R.drawable.controller_background_empty);
         }
         final View counterHolder = findViewById(R.id.counter_holder);
         findViewById(R.id.select_text).setEnabled(!selectedItems.isEmpty());

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
+    <!--item
         android:title="@string/camera"
         android:icon="@drawable/bar_photo_grey"
         android:id="@+id/camera"
-        android:showAsAction="always"/>
+        android:showAsAction="always"/-->
     <item
-        android:title="hello"
+        android:title="Vanya burns"
         android:showAsAction="never"
         />
 

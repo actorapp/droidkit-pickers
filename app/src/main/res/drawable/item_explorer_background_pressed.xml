@@ -10,7 +10,7 @@
             <solid android:color="@color/explorer_item_background_pressed"/>
             <stroke
                 android:width="1px"
-                android:color="@color/explorer_item_stroke"/>
+                android:color="@color/picker_file_listitem_divider"/>
         </shape>
     </item>
 </layer-list>

@@ -32,7 +32,7 @@ public class ExplorerAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return getItem(position).isEnabled();
+        return true;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ExplorerAdapter extends BaseAdapter {
 
         View itemView;
         if (convertView == null)
-            itemView = View.inflate(context, R.layout.item_explorer, null);
+            itemView = View.inflate(context, R.layout.picker_item_file, null);
         else
             itemView = convertView;
 
@@ -64,6 +64,7 @@ public class ExplorerAdapter extends BaseAdapter {
 
 
         titleView.setText(item.getTitle());
+        /*
         if (item.isDirectory()) {
             selectedView.setVisibility(View.INVISIBLE);
             subTitleView.setVisibility(View.GONE);
@@ -72,6 +73,7 @@ public class ExplorerAdapter extends BaseAdapter {
             subTitleView.setVisibility(View.VISIBLE);
             selectedView.setVisibility(View.VISIBLE);
         }
+        */
         item.bindImage(itemView);
         item.bindData(itemView);
         itemView.setTag("item");

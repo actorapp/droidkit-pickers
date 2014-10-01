@@ -2,73 +2,44 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-
         <item name="android:actionBarStyle">@style/pickerActionBarStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/bar_back</item>
-        <item name="android:windowBackground">
-            @color/globalWindowBackground
-        </item>
+        <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStyle</item>
         <item name="android:windowContentOverlay">@null</item>
-
-
+        <item name="android:windowBackground">@color/globalWindowBackground</item>
     </style>
     <style name="AppTheme.FilePicker" parent="AppTheme">
-        <item name="android:actionBarStyle">
-            @style/reactiveActionBarStyleFilePicker
-        </item>
+        <item name="android:actionBarStyle">@style/pickerActionBarStyleFilePicker</item>
     </style>
     <style name="AppTheme.PicturePicker" parent="AppTheme">
         <item name="android:logo">@null</item>
+        <item name="android:actionOverflowButtonStyle">@style/pickerPictureActionOverflowButtonStyle</item>
         <item name="android:windowBackground">@color/picker_picture_content_background</item>
         <item name="android:actionBarStyle">@style/pickerActionBarStylePicturePicker</item>
     </style>
 
     <style name="pickerActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <!-- todo repair actionbar -->
-        <!--item name="android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
-        <item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
+        <item name="android:titleTextStyle">@style/pickerActionBarTitleStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/bar_back</item>
         <item name="android:background">@color/main_color</item>
-        <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStyle</item>
-        <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
-        <item name="android:backgroundSplit">@android:drawable/ab_bottom_solid_inverse_holo</item>
-        <item name="android:divider">@android:color/transparent</item>
-        <item name="android:progressBarStyle">@android:style/Widget.Holo.ProgressBar.Horizontal</item>
-        <item name="android:indeterminateProgressStyle">@android:style/Widget.Holo.ProgressBar</item>
-        <item name="android:progressBarPadding">32dip</item>
-        <item name="android:itemPadding">8dip</item-->
     </style>
-    <style name="pickerActionBarStylePicturePicker" parent="@pickerActionBarStyle">
-        <!--item name="android:titleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Title.Inverse</item>
-        <item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
-        <item name="android:background">@color/picker_picture_ab_background</item>
-        <item name="android:displayOptions">showHome|showTitle</item>
-        <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
-        <item name="android:backgroundSplit">@android:drawable/ab_bottom_solid_inverse_holo</item>
-        <item name="android:divider">@android:color/transparent</item>
-        <item name="android:progressBarStyle">@android:style/Widget.Holo.ProgressBar.Horizontal</item>
-        <item name="android:indeterminateProgressStyle">@android:style/Widget.Holo.ProgressBar</item>
-        <item name="android:progressBarPadding">32dip</item>
-        <item name="android:itemPadding">8dip</item-->
+    <style name="pickerActionBarStyleFilePicker" parent="@style/pickerActionBarStyle">
     </style>
-    <style name="reactiveActionBarStyleFilePicker" parent="@pickerActionBarStyle">
-        <item name="android:titleTextStyle">@style/reactiveActionBarTitleStyle</item>
-        <!--item name="android:subtitleTextStyle">@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle.Inverse</item-->
-        <!--item name="android:backgroundStacked">@android:drawable/ab_stacked_solid_dark_holo</item>
-        <item name="android:backgroundSplit">@android:drawable/ab_bottom_solid_inverse_holo</item>
-        <item name="android:divider">@android:color/transparent</item>
-        <item name="android:progressBarStyle">@android:style/Widget.Holo.ProgressBar.Horizontal</item>
-        <item name="android:indeterminateProgressStyle">@android:style/Widget.Holo.ProgressBar</item>
-        <item name="android:progressBarPadding">32dip</item>
-        <item name="android:itemPadding">8dip</item-->
+    <style name="pickerActionBarStylePicturePicker" parent="@style/pickerActionBarStyle">
+        <item name="android:background">@color/main_color_picturepicker</item>
     </style>
 
-    <style name="reactiveActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+    <style name="pickerActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:paddingLeft">13dp</item>
         <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:textColor">#fff</item>
     </style>
     <style name="pickerActionOverflowButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/bar_more</item>
+    </style>
+    <style name="pickerPictureActionOverflowButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/bar_more_grey</item>
     </style>
 
 </resources>

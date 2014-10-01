@@ -6,14 +6,15 @@
 
     <ListView
         android:id="@+id/list"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:divider="@drawable/picker_file_listview_divider"
+        android:dividerHeight="1px"
         android:longClickable="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/status"
-        android:textColor="@color/grey"
+        android:textColor="@color/picker_status_color"
+        android:textSize="@dimen/picker_status_size"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

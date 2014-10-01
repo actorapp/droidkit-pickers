@@ -2,6 +2,7 @@ package com.droidkit.picker.items;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -36,6 +37,16 @@ public class PictureFolderItem extends FolderItem {
     @Override
     public String getPath() {
         return ""+ bucketId;
+    }
+
+    @Override
+    public void bindData(View itemView) {
+        super.bindData(itemView);
+
+        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
+
+        subTitleView.setVisibility(View.VISIBLE);
+
     }
 
     @Override

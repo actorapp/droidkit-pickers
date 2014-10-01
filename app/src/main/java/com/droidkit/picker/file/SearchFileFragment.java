@@ -11,11 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -25,12 +26,13 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.util.Converter;
+import com.droidkit.picker.util.SearchViewHacker;
 
 import java.io.File;
 import java.util.ArrayList;
 
 
-public class SearchFileFragment extends Fragment {
+public class SearchFileFragment extends Fragment implements AbsListView.OnScrollListener {
     private View rootView;
     private String lastTitle;
     private ArrayList<FileItem> items = new ArrayList<FileItem>();
@@ -56,6 +58,7 @@ public class SearchFileFragment extends Fragment {
         status = (TextView) rootView.findViewById(R.id.status);
         searchingProgressBar = rootView.findViewById(R.id.progressBar);
         listView = (ListView) contentContainer.findViewById(R.id.list);
+        listView.setOnScrollListener(this);
 
         adapter = new ExplorerAdapter(pickerActivity, items);
         listView.setAdapter(adapter);
@@ -98,12 +101,12 @@ public class SearchFileFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        inflater.inflate(R.menu.file_search, menu);
+        inflater.inflate(R.menu.picker_search, menu);
         MenuItem searchMenuItem = menu.getItem(0);
 
         searchView = (SearchView) searchMenuItem.getActionView();
 
-        searchView.setQueryHint("Type something...");
+        searchView.setIconified(false);
         int searchPlateId = searchView.getContext().getResources().getIdentifier("android:id/search_plate", null, null);
         View searchPlate = searchView.findViewById(searchPlateId);
         if (searchPlate != null) {
@@ -114,41 +117,28 @@ public class SearchFileFragment extends Fragment {
                 searchText.setTextColor(Color.WHITE);
                 searchText.setHintTextColor(Color.WHITE);
             }
-
-            int searchButtonId = searchView.getContext().getResources().getIdentifier("android:id/search_button", null, null);
-            ImageView searchButton = (ImageView) searchView.findViewById(searchButtonId);
-            if (searchButton != null) {
-                searchButton.setImageResource(R.drawable.bar_search);
-                searchButton.setPadding(0, 0, 0, 0);
-            }
-            int searchButtonMagId = searchView.getContext().getResources().getIdentifier("android:id/search_mag_icon", null, null);
-            ImageView searchButtonMag = (ImageView) searchView.findViewById(searchButtonMagId);
-            if (searchButtonMag != null) {
-                searchButtonMag.setImageResource(R.drawable.bar_search);
-                //searchButtonMag.setPadding(0,0,0,0);
-            }
         }
 
-        // searchView.setIconifiedByDefault(false);
+        SearchViewHacker.disableCloseButton(searchView);
+        SearchViewHacker.disableMagIcon(searchView);
+        SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
+        SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
+        SearchViewHacker.setEditText(searchView, R.drawable.search_text_box);
+        SearchViewHacker.setHint(searchView, getString(R.string.picker_files_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_hint_color), null);
 
-        searchView.setIconified(false);
-        searchView.requestFocusFromTouch();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
 
-                InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (inputMethodManager.isActive()) {
-                    inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-                }
+                hideKeyBoard();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
 
-                if(query.equals("")){
+                if (query.equals("")) {
                     return true;
                 }
 
@@ -205,11 +195,12 @@ public class SearchFileFragment extends Fragment {
             @Override
             public boolean onClose() {
 
-                searchView.clearFocus();
-                getActivity().onBackPressed();
-                return true;
+                    hideKeyBoard();
+                    getActivity().onBackPressed();
+                return false;
             }
         });
+        searchView.requestFocusFromTouch();
         InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -218,7 +209,10 @@ public class SearchFileFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        searchView.clearFocus();
+        hideKeyBoard();
+        pickerActivity.getActionBar().setDisplayShowHomeEnabled(false);
+        pickerActivity.getActionBar().setDisplayUseLogoEnabled(false);
+        pickerActivity.getActionBar().setIcon(null);
     }
 
 
@@ -233,6 +227,9 @@ public class SearchFileFragment extends Fragment {
         // pickerActivity.searchDisable();
         pickerActivity.setFragment(this);
         pickerActivity.invalidateOptionsMenu();
+        pickerActivity.getActionBar().setDisplayShowHomeEnabled(true);
+        pickerActivity.getActionBar().setDisplayUseLogoEnabled(true);
+        pickerActivity.getActionBar().setIcon(R.drawable.bar_search);
     }
 
     @Override
@@ -241,4 +238,33 @@ public class SearchFileFragment extends Fragment {
         this.pickerActivity = (SuperPickerActivity) activity;
     }
 
+    void hideKeyBoard(){
+        searchView.clearFocus();
+        pickerActivity.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        View focusedView = pickerActivity.getCurrentFocus();
+        if(focusedView!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+        switch (i){
+            case SCROLL_STATE_FLING:
+                break;
+            case SCROLL_STATE_IDLE:
+                break;
+            case SCROLL_STATE_TOUCH_SCROLL:
+                hideKeyBoard();
+                break;
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int i, int i2, int i3) {
+
+    }
 }

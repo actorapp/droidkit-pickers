@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.util.SearchViewHacker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -35,7 +38,7 @@ public class MapPickerActivity extends Activity
         GoogleMap.OnMyLocationChangeListener,
         AdapterView.OnItemClickListener,
         GoogleMap.OnMapLongClickListener,
-        GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener, AbsListView.OnScrollListener {
 
     private static final String LOG_TAG = "MapPickerActivity";
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -48,7 +51,7 @@ public class MapPickerActivity extends Activity
     View select;
     private ListView list;
     private TextView status;
-    private SearchView searchBox;
+    private SearchView searchView;
     private View fullSizeButton;
     private View listHolder;
     private View defineMyLocationButton;
@@ -64,6 +67,7 @@ public class MapPickerActivity extends Activity
         setContentView(R.layout.activity_map_picker);
 
         list = (ListView) findViewById(R.id.list);
+        list.setOnScrollListener(this);
         list.setOnItemClickListener(this);
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         status = (TextView) findViewById(R.id.status);
@@ -79,6 +83,7 @@ public class MapPickerActivity extends Activity
         fullSizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // todo animate it
                 if (listHolder.getVisibility() == View.GONE) {
                     listHolder.setVisibility(View.VISIBLE);
                 } else {
@@ -185,19 +190,35 @@ public class MapPickerActivity extends Activity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.map, menu);
-        searchBox = (SearchView) menu.getItem(0).getActionView();
-        searchBox.setIconified(true);
-        searchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView = (SearchView) menu.getItem(0).getActionView();
+
+        SearchViewHacker.disableCloseButton(searchView);
+        SearchViewHacker.disableMagIcon(searchView);
+        SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
+        SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
+        SearchViewHacker.setEditText(searchView, R.drawable.search_text_box);
+        SearchViewHacker.setHint(searchView, getString(R.string.picker_files_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_focused_color), null);
+        SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
+        searchView.setIconified(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 fetchPlaces(s);
-                searchBox.clearFocus();
+                hideKeyBoard();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
 
+                return false;
+            }
+        });
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+
+                hideKeyBoard();
                 return false;
             }
         });
@@ -265,6 +286,18 @@ public class MapPickerActivity extends Activity
             }
         };
         fetchingTask.execute();
+    }
+
+    void hideKeyBoard(){
+        searchView.clearFocus();
+        this.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        View focusedView = this.getCurrentFocus();
+        if(focusedView!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(focusedView.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
     }
 
     private void showItemsOnTheMap(ArrayList<MapItem> array) {
@@ -361,6 +394,7 @@ public class MapPickerActivity extends Activity
         if(position!=-1) {
             list.setItemChecked(position, true);
             list.smoothScrollToPosition(position);
+            list.setVisibility(View.VISIBLE);
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
@@ -371,4 +405,17 @@ public class MapPickerActivity extends Activity
         return true;
     }
 
+    @Override
+    public void onScrollStateChanged(AbsListView absListView, int i) {
+        switch (i){
+            case SCROLL_STATE_TOUCH_SCROLL:
+                hideKeyBoard();
+                break;
+        }
+    }
+
+    @Override
+    public void onScroll(AbsListView absListView, int i, int i2, int i3) {
+
+    }
 }

@@ -28,21 +28,21 @@ public abstract class SearchTask extends AsyncTask<Void,File,Integer> {
 
     @Override
     protected final Integer doInBackground(Void... voids) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onPreStart();
+            }
+        });
 
-        try {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    onPreStart();
-                }
-            });
+        /*try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
             if (isCancelled()) {
                 return null;
             }
-        }
+        }*/
 
         handler.post(new Runnable() {
             @Override

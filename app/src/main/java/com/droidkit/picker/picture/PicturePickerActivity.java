@@ -26,18 +26,22 @@ public class PicturePickerActivity extends SuperPickerActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            case R.id.camera:
+            /*case R.id.camera:
                 Toast.makeText(this, "Do we need it here?", Toast.LENGTH_SHORT).show();
                 break;
-
+            */
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.picker_picture, menu);
-        return true;
+
+        if(currentFragment!=null){
+            currentFragment.onCreateOptionsMenu(menu,getMenuInflater());
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -71,6 +75,7 @@ public class PicturePickerActivity extends SuperPickerActivity {
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();
+            currentFragment = fragment;
         } else {
 
             String path = item.getPath();
@@ -86,8 +91,9 @@ public class PicturePickerActivity extends SuperPickerActivity {
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();
-
+            currentFragment = fragment;
         }
+        invalidateOptionsMenu();
     }
 
     public void openFull(String path, File file) {
@@ -106,6 +112,7 @@ public class PicturePickerActivity extends SuperPickerActivity {
                 .replace(R.id.container, fragment)
                 .addToBackStack(path+"_full")
                 .commit();
-
+        currentFragment = fragment;
+        invalidateOptionsMenu();
     }
 }

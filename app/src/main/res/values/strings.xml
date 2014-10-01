@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="picker_files_search_query_text">Search</string>
+    <string name="picker_file_sort_name">Sort by date</string>
+    <string name="picker_file_sort_date">Sort by date</string>
+</resources>
