@@ -35,14 +35,14 @@ public abstract class SearchTask extends AsyncTask<Void,File,Integer> {
             }
         });
 
-        /*try {
-            Thread.sleep(1000);
+        try {
+            Thread.sleep(350);
         } catch (InterruptedException e) {
             e.printStackTrace();
             if (isCancelled()) {
                 return null;
             }
-        }*/
+        }
 
         handler.post(new Runnable() {
             @Override
@@ -71,24 +71,31 @@ public abstract class SearchTask extends AsyncTask<Void,File,Integer> {
         if (folder.getPath().contains("/sys")) {
             return;
         }
-        if (folder.listFiles() != null) {
-            for (final File file : folder.listFiles()) {
-                if (isCancelled()) {
-                    return;
-                }
-                if (file.isDirectory()) {
-                    scanFolder(file);
-                } else {
-                    if (file.getName().toLowerCase().contains(query)) {
-                        onProgressUpdate(file);
-                        foundCount++;
-                        Log.i("Searching", "Found: " + file.getPath());
-                    }
+
+        if (folder.listFiles() == null || folder.getName().toCharArray()[0] == '.') {
+            return;
+        }
+        if (folder.getName().toLowerCase().contains(query)) {
+            onProgressUpdate(folder);
+            foundCount++;
+        }
+
+        for (final File file : folder.listFiles()) {
+            if (isCancelled()) {
+                return;
+            }
+            if (file.isDirectory()) {
+                scanFolder(file);
+            } else {
+                if (file.getName().toLowerCase().contains(query)) {
+                    onProgressUpdate(file);
+                    foundCount++;
                 }
             }
-            Log.i("Searching", "Scanned: " + folder.getPath());
         }
+        Log.i("Searching", "Scanned: " + folder.getPath());
     }
+
 
     @Override
     protected void onProgressUpdate(final File... values) {

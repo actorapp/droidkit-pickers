@@ -21,6 +21,7 @@ import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.FileItem;
+import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.StorageItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
@@ -76,8 +77,13 @@ public class ExplorerFragment extends Fragment {
                 Log.d(LOG_TAG, "Path: " + path);
                 File currentPathFile = new File(path);
                 File[] fileList = currentPathFile.listFiles();
-                title = currentPathFile.getName();
-
+                title = currentPathFile.getPath();
+                if(title.contains(Environment.getExternalStorageDirectory().getPath())){
+                    title = title.replace(Environment.getExternalStorageDirectory().getPath(),"");
+                }
+                if(title.length()>0 && title.toCharArray()[0] == '/'){
+                    title = title.substring(1);
+                }
 
                 if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
                     if(Environment.isExternalStorageEmulated()){
@@ -134,15 +140,19 @@ public class ExplorerFragment extends Fragment {
                         ) {
                      items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));
                 } else {
-                    putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
-                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
-                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
+                    File cameraFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                    if(cameraFile.exists()) {
+                       items.add(new FolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),R.drawable.picker_folder_camera,getString(R.string.picker_files_camera)));
+                    }
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
+                    putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
+                    putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
                     if (Environment.isExternalStorageEmulated()) {
 
-                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_phone)));
+                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_phone),R.drawable.picker_memory));
                     }else
-                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external)));
+                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external),R.drawable.picker_sdcard));
 
 
                     if (Build.VERSION.SDK_INT >= 19) {

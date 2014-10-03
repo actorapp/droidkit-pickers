@@ -217,7 +217,6 @@ public class MapPickerActivity extends Activity
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-
                 hideKeyBoard();
                 return false;
             }

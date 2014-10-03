@@ -9,6 +9,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
+import com.droidkit.file.R;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -61,15 +63,16 @@ public class SearchViewHacker {
 
     public static void setCloseIcon(SearchView searchView, int res) {
         ImageView searchImageView = (ImageView) findView(searchView, "mCloseButton");
+        searchImageView.setVisibility(View.VISIBLE);
+        searchImageView.setAdjustViewBounds(false);
         searchImageView.setImageResource(res);
     }
-    @Deprecated
     public static void disableCloseButton(SearchView searchView){
-        /*ImageView searchImageView = (ImageView) findView(searchView, "mCloseButton");
-        searchImageView.setMaxWidth(0);
-        searchImageView.setImageBitmap(null);
+        ImageView searchImageView = (ImageView) findView(searchView, "mCloseButton");
+        // searchImageView.setMaxWidth(0);
         searchImageView.setVisibility(View.GONE);
-        searchImageView.setAdjustViewBounds(true);*/
+        searchImageView.setImageBitmap(null);
+        searchImageView.setAdjustViewBounds(true);
     }
     public static void disableMagIcon(SearchView searchView){
         ImageView searchImageView = (ImageView) findView(searchView, "mSearchHintIcon");

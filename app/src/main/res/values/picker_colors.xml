@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="globalWindowBackground" >#fff</color>
+    <color name="globalWindowBackground" >#fffffc</color>
     <color name="globalWindowBackgroundTranslucent" >#d8eeeeee</color>
 
     <color name="grey">#999</color>
     <color name="grey_darker">#8e8e8e</color>
     <color name="black">#000000</color>
-    <color name="list_divider">#d2d2d2</color>
+    <color name="list_divider">#dadada</color>
 
     <color name="main_color">#0277bd</color>
     <color name="main_color_picturepicker">#333</color>
@@ -19,11 +19,11 @@
     <color name="controller_text_color_default">#fff</color>
 
     <color name="explorer_item_title">#000000</color>
-    <color name="explorer_item_subtitle">#999999</color>
+    <color name="explorer_item_subtitle">#a6a6a6</color>
     <color name="explorer_item_background_pressed">#efefef</color>
     <color name="picker_file_listitem_divider">#c8c8c8</color>
     <color name="explorer_item_image_background">#ebebeb</color>
-    <color name="explorer_item_image_color">#999999</color>
+    <color name="explorer_item_image_color">#555555</color>
     <color name="picker_file_searchbox_hint_color">#9ac9e5</color>
     <color name="picker_file_searchbox_focused_color">#fff</color>
 

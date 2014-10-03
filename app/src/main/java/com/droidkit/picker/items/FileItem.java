@@ -1,9 +1,12 @@
 package com.droidkit.picker.items;
 
 import com.droidkit.picker.items.ExplorerItem;
+import com.droidkit.picker.util.TimeHelper;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by kiolt_000 on 15/09/2014.
@@ -34,15 +37,23 @@ public class FileItem extends ExplorerItem {
 
     @Override
     public String getSubtitle() {
+        String convertedSize = null;
         long size = (int) file.length();
-        if(size>1000000000){
-            return (size / (1000000000))+"."+((size%1000000000)/100000000) + " MB ";
+        if (size > 1024*1024*1024) {
+            convertedSize = (size / (1024*1024*1024)) + "." + ((size % (1024*1024*1024)) / (100*1024*1024)) + " MB";
         }
-        if(size>1000000){
-            return (size / (1000000))+"."+((size%1000000)/100000) + " MB ";
+        if (size > 1024*1024) {
+            convertedSize = (size / (1024*1024)) + "." + ((size % (1024*1024)) / (100*1024)) + " MB";
+        }
+        if (convertedSize == null) {
+
+            convertedSize = (size / (1024)) + " KB";
         }
 
-        return (size / (1000)) + " KB " ;
+        long date = file.lastModified();
+
+        String convertedDate = TimeHelper.getConvertedTime(date);
+        return convertedSize + ", " + convertedDate;
     }
 
 

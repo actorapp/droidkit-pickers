@@ -8,29 +8,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="62dp">
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="13dp"
+            android:id="@+id/image"
+            android:scaleType="center"
+            android:src="@drawable/picker_file"
+            android:layout_centerVertical="true"
+            android:layout_width="55dp"
+            android:layout_height="42dp" />
         <TextView
+            android:id="@+id/image_fake"
             android:ellipsize="end"
             android:singleLine="true"
             android:textStyle="bold"
             android:textSize="@dimen/picker_file_filetype_size"
             android:gravity="center"
             android:textAllCaps="true"
-            android:background="@color/explorer_item_image_background"
+            android:text="xalssss"
             android:textColor="@color/explorer_item_image_color"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="13dp"
-            android:id="@+id/image_fake"
-            android:padding="3dp"
-            android:layout_centerVertical="true"
-            android:layout_width="55dp"
-            android:layout_height="42dp" />
-        <ImageView
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="13dp"
-            android:id="@+id/image"
-            android:layout_centerVertical="true"
-            android:layout_width="55dp"
-            android:layout_height="42dp" />
+            android:layout_alignRight="@+id/image"
+            android:layout_alignLeft="@+id/image"
+            android:paddingLeft="13dp"
+            android:paddingRight="13dp"
+            android:paddingBottom="3dp"
+            android:layout_alignBottom="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <RelativeLayout
             android:paddingRight="13dp"
             android:layout_toRightOf="@+id/image"
@@ -44,13 +48,12 @@
                 android:layout_toLeftOf="@+id/selected"
                 >
 
-                <TextView
+                <com.droidkit.picker.util.TrimmedTextView
                     android:text="Title"
                     android:textSize="@dimen/picker_file_title_size"
                     android:textColor="@color/explorer_item_title"
                     android:id="@+id/title"
                     android:singleLine="true"
-                    android:ellipsize="end"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <TextView

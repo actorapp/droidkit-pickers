@@ -13,7 +13,7 @@
     </style>
     <style name="AppTheme.PicturePicker" parent="AppTheme">
         <item name="android:logo">@null</item>
-        <item name="android:actionOverflowButtonStyle">@style/pickerPictureActionOverflowButtonStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStylePicturePicker</item>
         <item name="android:windowBackground">@color/picker_picture_content_background</item>
         <item name="android:actionBarStyle">@style/pickerActionBarStylePicturePicker</item>
     </style>
@@ -31,14 +31,13 @@
     </style>
 
     <style name="pickerActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:paddingLeft">13dp</item>
-        <item name="android:layout_marginLeft">13dp</item>
+        <item name="android:paddingLeft">10dp</item>
         <item name="android:textColor">#fff</item>
     </style>
     <style name="pickerActionOverflowButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/bar_more</item>
     </style>
-    <style name="pickerPictureActionOverflowButtonStyle" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
+    <style name="pickerActionOverflowButtonStylePicturePicker" parent="@android:style/Widget.Holo.Light.ActionButton.Overflow">
         <item name="android:src">@drawable/bar_more_grey</item>
     </style>
 

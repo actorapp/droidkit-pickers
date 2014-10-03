@@ -8,9 +8,18 @@ public class FormatChecker {
     public static final int FORMAT_MUSIC = -1;
     public static final int FORMAT_PICTURE = -2;
     public static final int FORMAT_DOC = -3;
-    public static final int FORMAT_ARCHIVE = -4;
+    public static final int FORMAT_RAR = -4;
     public static final int FORMAT_VIDEO = -5;
-    public static final int FORMAT_EXECUTABLE = -6;
+    public static final int FORMAT_APK = -6;
+    public static final int FORMAT_ZIP = -7;
+    public static final int FORMAT_XLS = -8;
+    public static final int FORMAT_PPT = -9;
+    public static final int FORMAT_CSV = -10;
+    public static final int FORMAT_HTM = -11;
+    public static final int FORMAT_HTML = -12;
+    public static final int FORMAT_PDF = -13;
+
+
 
     //todo implement regex
     public static boolean checkMusic(String fileType) {
@@ -25,10 +34,13 @@ public class FormatChecker {
     public static boolean checkDoc(String fileType) {
         return
                 fileType.equals("doc") ||
-                        fileType.equals("pdf") ||
                         fileType.equals("txt") ||
                         fileType.equals("xlc") ||
                         fileType.equals("docx");
+    }
+    public static boolean checkPdf(String fileType) {
+        return
+                fileType.equals("pdf");
     }
 
     public static boolean checkPicture(String fileType) {
@@ -38,19 +50,40 @@ public class FormatChecker {
                         fileType.equals("psd");
     }
 
-    public static boolean checkExecutable(String fileType) {
+    public static boolean checkApk(String fileType) {
         return
                 fileType.equals("exe") ||
                         fileType.equals("apk");
     }
 
-    public static boolean checkArchive(String fileType) {
+    public static boolean checkRar(String fileType) {
         return
-                fileType.equals("rar") ||
-                        fileType.equals("zip") ||
-                        fileType.equals("7z");
+                fileType.equals("rar");
     }
-
+    public static boolean checkZip(String fileType) {
+        return
+                        fileType.equals("zip");
+    }
+    public static boolean checkXls(String fileType) {
+        return
+                fileType.contains("xls");
+    }
+    public static boolean checkPpt(String fileType) {
+        return
+                fileType.equals("ppt");
+    }
+    public static boolean checkCsv(String fileType) {
+        return
+                fileType.equals("ppt");
+    }
+    public static boolean checkHtm(String fileType) {
+        return
+                fileType.equals("htm");
+    }
+    public static boolean checkHtml(String fileType) {
+        return
+                fileType.equals("ppt");
+    }
 
     public static int getType(String fileType) {
         if (checkMusic(fileType)) {
@@ -59,14 +92,36 @@ public class FormatChecker {
         if (checkDoc(fileType)) {
             return FORMAT_DOC;
         }
+
+        if (checkPdf(fileType)) {
+            return FORMAT_PDF;
+        }
         if (checkPicture(fileType)) {
             return FORMAT_PICTURE;
         }
-        if (checkExecutable(fileType)) {
-            return FORMAT_EXECUTABLE;
+        if (checkApk(fileType)) {
+            return FORMAT_APK;
         }
-        if (checkArchive(fileType)) {
-            return FORMAT_ARCHIVE;
+        if (checkRar(fileType)) {
+            return FORMAT_RAR;
+        }
+        if (checkZip(fileType)) {
+            return FORMAT_ZIP;
+        }
+        if (checkXls(fileType)) {
+            return FORMAT_XLS;
+        }
+        if(checkPpt(fileType)){
+            return FORMAT_PPT;
+        }
+        if(checkCsv(fileType)){
+            return FORMAT_CSV;
+        }
+        if(checkHtm(fileType)){
+            return FORMAT_HTM;
+        }
+        if(checkHtml(fileType)){
+            return FORMAT_HTML;
         }
         return FORMAT_UNKNOWN;
     }

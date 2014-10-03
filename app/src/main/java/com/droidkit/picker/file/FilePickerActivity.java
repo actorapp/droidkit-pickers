@@ -29,9 +29,9 @@ public class FilePickerActivity extends SuperPickerActivity {
         super.onCreate(savedInstanceState);
         //searchEnable();
         findViewById(R.id.controllers).setVisibility(View.GONE);
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayUseLogoEnabled(false);
-        getActionBar().setIcon(null);
+        getActionBar().setDisplayShowHomeEnabled(true);
+        getActionBar().setDisplayUseLogoEnabled(true);
+        // getActionBar().setIcon(null);
     }
 
     @Override

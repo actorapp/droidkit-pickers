@@ -13,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -24,6 +28,7 @@ import android.widget.TextView;
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.file.search.SearchTask;
+import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.SearchViewHacker;
@@ -35,7 +40,7 @@ import java.util.ArrayList;
 public class SearchFileFragment extends Fragment implements AbsListView.OnScrollListener {
     private View rootView;
     private String lastTitle;
-    private ArrayList<FileItem> items = new ArrayList<FileItem>();
+    private ArrayList<ExplorerItem> items = new ArrayList<ExplorerItem>();
     SearchTask task;
     private ListView listView;
     private ExplorerAdapter adapter;
@@ -44,6 +49,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     private View searchingProgressBar;
     private SuperPickerActivity pickerActivity;
     private SearchView searchView;
+    private boolean animating = false;
 
 
     @Override
@@ -71,13 +77,13 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         translateAnimation.setDuration(450);
         translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 
-//        searchContainer.startAnimation(translateAnimation);
+        //  searchContainer.startAnimation(translateAnimation);
         contentContainer.startAnimation(alphaAnimation);
 
-//        for (int i = 0; i < searchContainer.getChildCount(); i++) {
-//            View searchItemView = searchContainer.getChildAt(i);
-//            searchItemView.startAnimation(alphaAnimation);
-//        }
+        /*for (int i = 0; i < searchContainer.getChildCount(); i++) {
+            View searchItemView = searchContainer.getChildAt(i);
+            searchItemView.startAnimation(alphaAnimation);
+        }*/
 
         getActivity().getActionBar().setTitle(R.string.picker_files_search_activity_title);
 
@@ -119,13 +125,12 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
             }
         }
 
-        SearchViewHacker.disableCloseButton(searchView);
-        SearchViewHacker.disableMagIcon(searchView);
+        SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
         SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
         SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
         SearchViewHacker.setEditText(searchView, R.drawable.search_text_box);
         SearchViewHacker.setHint(searchView, getString(R.string.picker_files_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_hint_color), null);
-
+        SearchViewHacker.disableMagIcon(searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -139,7 +144,11 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
             public boolean onQueryTextChange(String query) {
 
                 if (query.equals("")) {
+                    SearchViewHacker.disableCloseButton(searchView);
                     return true;
+                }else{
+                    SearchViewHacker.setCloseIcon(searchView,R.drawable.bar_clear_search);
+
                 }
 
                 if (task != null) {
@@ -148,19 +157,43 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                 }
                 task = new SearchTask(new File(root), query) {
 
+                    ArrayList<ExplorerItem> foundItems = new ArrayList<ExplorerItem>();
                     @Override
                     public void onPreStart() {
 
                         status.setVisibility(View.GONE);
-                        searchingProgressBar.setVisibility(View.VISIBLE);
-                        listView.setAlpha(0.5f);
+                        //searchingProgressBar.setVisibility(View.VISIBLE);
                         listView.setOnItemClickListener(null);
+                        AnimationSet outAnimation = new AnimationSet(true);
+                        outAnimation.addAnimation(new TranslateAnimation(0, 0, 0, 100));
+                        outAnimation.addAnimation(new AlphaAnimation(1,0));
+                        outAnimation.setDuration(350);
+                        outAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                        outAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                listView.setVisibility(View.VISIBLE);
+                                animating = true;
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                items.clear();
+                                adapter.notifyDataSetChanged();
+                                animating = false;
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        if(!animating)
+                            listView.startAnimation(outAnimation);
                     }
 
                     @Override
                     public void onSearchStarted() {
-                        items.clear();
-                        listView.setAlpha(1);
                         listView.setOnItemClickListener(pickerActivity);
                         adapter.notifyDataSetChanged();
                     }
@@ -169,10 +202,10 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                     @Override
                     public void onItemFound(File file) {
 
-                        status.setVisibility(View.GONE);
-                        searchingProgressBar.setVisibility(View.GONE);
-                        items.add(Converter.getFileItem(file, pickerActivity.isSelected(file)));
-                        adapter.notifyDataSetChanged();
+                        //status.setVisibility(View.GONE);
+                        //searchingProgressBar.setVisibility(View.GONE);
+                        foundItems.add(Converter.getItem(file, pickerActivity.isSelected(file)));
+                        //adapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -181,8 +214,36 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                         if (foundCount == 0) {
                             status.setVisibility(View.VISIBLE);
                             status.setText(R.string.picker_empty);
+                            items.clear();
+                            adapter.notifyDataSetChanged();
+                            listView.setVisibility(View.GONE);
                         } else {
+                            AnimationSet outAnimation = new AnimationSet(true);
+                            outAnimation.addAnimation(new TranslateAnimation(0, 0, 100, 0));
+                            outAnimation.addAnimation(new AlphaAnimation(0,1));
+                            outAnimation.setDuration(350);
+                            outAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                            outAnimation.setAnimationListener(new Animation.AnimationListener() {
+                                @Override
+                                public void onAnimationStart(Animation animation) {
+                                    listView.setVisibility(View.VISIBLE);
+                                    items.clear();
+                                    items.addAll(foundItems);
+                                    adapter.notifyDataSetChanged();
+                                    animating = true;
+                                }
 
+                                @Override
+                                public void onAnimationEnd(Animation animation) {
+                                    animating = false;
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animation animation) {
+
+                                }
+                            });
+                            listView.startAnimation(outAnimation);
                         }
 
                     }
@@ -195,12 +256,29 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
             @Override
             public boolean onClose() {
 
-                    hideKeyBoard();
-                    getActivity().onBackPressed();
+                hideKeyBoard();
+                getActivity().onBackPressed();
                 return false;
             }
         });
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(searchView.getQuery().length()==0) {
+                    searchView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            SearchViewHacker.disableCloseButton(searchView);
+                        }
+                    },0);
+                    SearchViewHacker.disableCloseButton(searchView);
+                }else
+                    SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
+            }
+        });
         searchView.requestFocusFromTouch();
+        SearchViewHacker.disableCloseButton(searchView);
         InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
@@ -210,9 +288,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         super.onPause();
 
         hideKeyBoard();
-        pickerActivity.getActionBar().setDisplayShowHomeEnabled(false);
-        pickerActivity.getActionBar().setDisplayUseLogoEnabled(false);
-        pickerActivity.getActionBar().setIcon(null);
+        pickerActivity.getActionBar().setIcon(R.drawable.bar_filepicker_icon);
     }
 
 
@@ -227,8 +303,6 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         // pickerActivity.searchDisable();
         pickerActivity.setFragment(this);
         pickerActivity.invalidateOptionsMenu();
-        pickerActivity.getActionBar().setDisplayShowHomeEnabled(true);
-        pickerActivity.getActionBar().setDisplayUseLogoEnabled(true);
         pickerActivity.getActionBar().setIcon(R.drawable.bar_search);
     }
 

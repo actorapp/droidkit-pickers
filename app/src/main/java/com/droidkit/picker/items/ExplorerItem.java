@@ -86,18 +86,18 @@ public abstract class ExplorerItem {
     }
 
     public void bindImage(View itemView) {
+        ImageView holder = (ImageView) itemView.findViewById(R.id.image);
+        holder.setScaleType(ImageView.ScaleType.CENTER);
         if(imageId!=0) {
             itemView.findViewById(R.id.image_fake).setVisibility(View.INVISIBLE);
-            ImageView holder = (ImageView) itemView.findViewById(R.id.image);
             holder.setVisibility(View.VISIBLE);
-            holder.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
             holder.setImageResource(imageId);
         }else{
-            itemView.findViewById(R.id.image).setVisibility(View.INVISIBLE);
-            TextView holder = (TextView) itemView.findViewById(R.id.image_fake);
-            if(holder!=null) {
-                holder.setVisibility(View.VISIBLE);
-                holder.setText(fileType);
+            holder.setImageResource(R.drawable.picker_file);
+            TextView formatHolder = (TextView) itemView.findViewById(R.id.image_fake);
+            if(formatHolder!=null) {
+                formatHolder.setVisibility(View.VISIBLE);
+                formatHolder.setText(fileType);
             }
         }
     }
@@ -106,6 +106,7 @@ public abstract class ExplorerItem {
         TextView titleView  = (TextView) itemView.findViewById(R.id.title);
         TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
 
+        titleView.setEllipsize(TextUtils.TruncateAt.END);
         subTitleView.setVisibility(View.VISIBLE);
 
         titleView.setText(getTitle());

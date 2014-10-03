@@ -47,6 +47,7 @@ public class PictureFolderItem extends FolderItem {
 
         subTitleView.setVisibility(View.VISIBLE);
 
+
     }
 
     @Override
