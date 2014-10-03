@@ -139,11 +139,12 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
                      items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));
-                } else {
+                } else {/*
                     File cameraFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
                     if(cameraFile.exists()) {
                        items.add(new FolderItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),R.drawable.picker_folder_camera,getString(R.string.picker_files_camera)));
-                    }
+                    }*/
+                    putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)));
                     putItem(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));

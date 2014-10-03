@@ -76,8 +76,8 @@ public class FolderItem extends ExplorerItem {
         titleView.setEllipsize(null);
         long startTime = System.currentTimeMillis();
         SpannableStringBuilder text = new SpannableStringBuilder();
-        text.append(ellipsizeTitle(getTitle()));
-        text.append(countFiles());
+        text.append((getTitle()));
+        //text.append(countFiles());
         titleView.setText(text);
         Log.d("Picker", "Time to create item: "+ (System.currentTimeMillis() - startTime));
     }
@@ -99,10 +99,10 @@ public class FolderItem extends ExplorerItem {
         if(list!=null) {
             int count = list.length;
             String notSpanned = " (" + count + ")";
-            SpannableString spannableString = new SpannableString(notSpanned);
+            /*SpannableString spannableString = new SpannableString(notSpanned);
             spannableString.setSpan( new ForegroundColorSpan(0xff888888), 0, spannableString.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            return spannableString;
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
+            return notSpanned;
         }
         return "";
     }

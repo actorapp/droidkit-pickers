@@ -10,9 +10,9 @@
     <string name="camera">Camera</string>
 
     <!-- Files -->
-    <string name="picker_files_activity_title">Select files</string>
-    <string name="picker_files_memory_phone">Phone memory…</string>
-    <string name="picker_files_memory_external">External memory…</string>
+    <string name="picker_files_activity_title">Select file</string>
+    <string name="picker_files_memory_phone">Phone Memory…</string>
+    <string name="picker_files_memory_external">External Memory…</string>
     <string name="picker_files_memory_external_error">Card is not inserted</string>
     <string name="picker_files_recent">Recent selected items</string>
     <string name="picker_files_recent_empty">You have no recent files</string>

@@ -85,7 +85,7 @@ public class Converter {
                 return new FolderItem(file, R.drawable.picker_system_folder, true);*/
         }else
         if(file.list().length==0){
-            return new FolderItem(file, R.drawable.picker_folder, true);// todo: picker_folder_empty
+            // return new FolderItem(file, R.drawable.picker_folder, true);// todo: picker_folder_empty
         }
 
         String folderPath = file.getPath();

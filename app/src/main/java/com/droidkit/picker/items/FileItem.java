@@ -46,8 +46,10 @@ public class FileItem extends ExplorerItem {
             convertedSize = (size / (1024*1024)) + "." + ((size % (1024*1024)) / (100*1024)) + " MB";
         }
         if (convertedSize == null) {
-
-            convertedSize = (size / (1024)) + " KB";
+            if(size/1024==0){
+                convertedSize = "N Bytes";
+            }else
+                convertedSize = (size / (1024)) + " KB";
         }
 
         long date = file.lastModified();
