@@ -19,9 +19,9 @@
             android:id="@+id/full"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/conv_attach_photo"
+            android:src="@drawable/conv_location_fullscreen_icon"
             android:background="@drawable/picker_map_controllers"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             android:layout_margin="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp" />
@@ -29,9 +29,9 @@
             android:id="@+id/define_my_location"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/conv_attach_location"
+            android:src="@drawable/conv_location_icon"
             android:background="@drawable/picker_map_controllers"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             android:layout_margin="10dp"
             android:layout_width="50dp"
             android:layout_height="50dp" />
@@ -46,16 +46,16 @@
             android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-            <TextView
-                android:textSize="13sp"
+            <com.droidkit.picker.util.MediumTextView
+                android:textSize="@dimen/picker_map_controllers_title"
                 android:text="@string/picker_map_pick_my"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
                 android:id="@+id/accurance"
                 android:padding="1dp"
-                android:textSize="10sp"
-                android:textColor="@color/picker_map_pick_my_subtite"
+                android:textSize="@dimen/picker_map_controllers_subtitle"
+                android:textColor="@color/picker_map_controller_subtitle"
                 android:text="@string/picker_map_pick_my_fetching"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -76,27 +76,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:text="Places nearby"
+                android:text="@string/picker_map_nearby_header"
+                android:textColor="@color/picker_map_nearby_header_color"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/picker_map_header"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/status"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:textColor="@color/picker_map_nearby_header_color"
                 android:background="@drawable/picker_map_nearby"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
         </RelativeLayout>
-
-        <ListView
-            android:layout_above="@+id/controllers"
-            android:id="@+id/list"
-            android:dividerHeight="1px"
-            android:divider="@drawable/picker_map_nearby_divider"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_height="250dp">
+            <ProgressBar
+                android:id="@+id/loading"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ListView
+                android:layout_above="@+id/controllers"
+                android:id="@+id/list"
+                android:dividerHeight="1px"
+                android:divider="@drawable/picker_map_nearby_divider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            </RelativeLayout>
         </LinearLayout>
     <RelativeLayout
         android:background="#fff"

@@ -4,4 +4,6 @@
     <string name="picker_file_sort_name">Sort by date</string>
     <string name="picker_file_sort_date">Sort by date</string>
     <string name="picker_files_camera">Camera</string>
+    <string name="picker_loading">Loading</string>
+    <string name="picker_map_nearby_header">or select from nearby</string>
 </resources>

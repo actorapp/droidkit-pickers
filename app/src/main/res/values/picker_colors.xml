@@ -38,8 +38,8 @@
     <!-- Map -->
     <color name="picker_map_nearby_header_color">@color/main_color</color>
     <color name="picker_map_nearby_divider">@color/list_divider</color>
-    <color name="picker_map_nearby_place_subtitle">@color/grey</color>
-    <color name="picker_map_pick_my_subtite">@color/grey_darker</color>
+    <color name="picker_map_place_subtitle">@color/grey</color>
+    <color name="picker_map_controller_subtitle">@color/grey_darker</color>
     <color name="picker_map_controller_background_normal">#ffffffff</color>
     <color name="picker_map_controller_background_pressed">#fff</color>
 

@@ -6,8 +6,8 @@
 
     <ListView
         android:id="@+id/list"
-        android:divider="@drawable/picker_file_listview_divider"
-        android:dividerHeight="1px"
+        android:divider="@null"
+        android:dividerHeight="-1dp"
         android:longClickable="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

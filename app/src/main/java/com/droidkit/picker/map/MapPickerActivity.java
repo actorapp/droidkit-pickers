@@ -14,7 +14,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.droidkit.picker.util.SearchViewHacker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -51,8 +54,9 @@ public class MapPickerActivity extends Activity
     View select;
     private ListView list;
     private TextView status;
+    private ProgressBar loading;
     private SearchView searchView;
-    private View fullSizeButton;
+    private ImageView fullSizeButton;
     private View listHolder;
     private View defineMyLocationButton;
     private TextView accuranceView;
@@ -70,6 +74,7 @@ public class MapPickerActivity extends Activity
         list.setOnScrollListener(this);
         list.setOnItemClickListener(this);
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        loading = (ProgressBar) findViewById(R.id.loading);
         status = (TextView) findViewById(R.id.status);
         listHolder = findViewById(R.id.listNearbyHolder);
         accuranceView = (TextView) findViewById(R.id.accurance);
@@ -79,16 +84,11 @@ public class MapPickerActivity extends Activity
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
 
-        fullSizeButton = findViewById(R.id.full);
+        fullSizeButton = (ImageView) findViewById(R.id.full);
         fullSizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // todo animate it
-                if (listHolder.getVisibility() == View.GONE) {
-                    listHolder.setVisibility(View.VISIBLE);
-                } else {
-                    listHolder.setVisibility(View.GONE);
-                }
+                togglePlacesList();
             }
         });
 
@@ -131,7 +131,7 @@ public class MapPickerActivity extends Activity
         });
 
 
-        // todo do we need these buttons?
+        // we dont need these buttons
         select = findViewById(R.id.select);
         select.setEnabled(false);
         findViewById(R.id.select_text).setEnabled(false);
@@ -153,6 +153,17 @@ public class MapPickerActivity extends Activity
                 finish();
             }
         });
+    }
+
+    protected void togglePlacesList() {
+        // todo animate it
+        if (listHolder.getVisibility() == View.GONE) {
+            listHolder.setVisibility(View.VISIBLE);
+            fullSizeButton.setImageResource(R.drawable.conv_location_fullscreen_icon);
+        } else {
+            listHolder.setVisibility(View.GONE);
+            fullSizeButton.setImageResource(R.drawable.conv_location_halfscreen_icon);
+        }
     }
 
     @Override
@@ -233,7 +244,7 @@ public class MapPickerActivity extends Activity
     private void setUpMap() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         for (String provider : locationManager.getAllProviders()) {
-            currentLocation = locationManager.getLastKnownLocation(provider);
+            // currentLocation = locationManager.getLastKnownLocation(provider);
             if (currentLocation != null) {
                 break;
             }
@@ -261,17 +272,19 @@ public class MapPickerActivity extends Activity
             return;
         }
         list.setAdapter(null);
-        status.setText("Loading");
+        // status.setText(R.string.picker_loading);
+        loading.setVisibility(View.VISIBLE);
         fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override
             protected void onPostExecute(Object o) {
                 Log.i(LOG_TAG, o.toString());
                 if(o instanceof ArrayList){
+                    loading.setVisibility(View.GONE);
                     list.setVisibility(View.VISIBLE);
-                    status.setText("Places nearby");
+                    // status.setText(R.string.picker_map_nearby_header);
                     places = (ArrayList<MapItem>) o;
                     if(places.isEmpty()){
-                        status.setText("No places");
+                        //status.setText("No places");
                     }else {
                         list.setAdapter(new PlacesAdapter(MapPickerActivity.this, places));
                         showItemsOnTheMap(places);
@@ -279,7 +292,7 @@ public class MapPickerActivity extends Activity
                 }else {
                     places = new ArrayList<MapItem>();
                     list.setAdapter(null);
-                    status.setText(o.toString());
+                    // status.setText(o.toString());
                     Toast.makeText(MapPickerActivity.this, o.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -308,7 +321,7 @@ public class MapPickerActivity extends Activity
                                   .position(mapItem.getLatLng())
                                           // .title(mapItem.name)
                                   .draggable(false)
-                          //.icon(BitmapDescriptorFactory.fromResource(R.drawable.conv_attach_location))
+                                  .icon(BitmapDescriptorFactory.fromResource(R.drawable.picker_map_marker))
                   ));
         }
     }
@@ -391,9 +404,11 @@ public class MapPickerActivity extends Activity
             }
         }
         if(position!=-1) {
-            list.setItemChecked(position, true);
-            list.smoothScrollToPosition(position);
-            list.setVisibility(View.VISIBLE);
+                list.setItemChecked(position, true);
+                list.smoothScrollToPosition(position);
+            if(listHolder.getVisibility()==View.GONE) {
+                togglePlacesList();
+            }
         }
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
