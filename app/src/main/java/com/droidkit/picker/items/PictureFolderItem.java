@@ -1,13 +1,12 @@
 package com.droidkit.picker.items;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.ArrayList;
 
 /**
  * Created by kiolt_000 on 16/09/2014.
@@ -30,8 +29,8 @@ public class PictureFolderItem extends FolderItem {
     }
 
     @Override
-    public String getSubtitle() {
-        return imgCounter + " pictures";
+    public String getSubtitle(Context context) {
+        return ""+ imgCounter ;
     }
 
     @Override

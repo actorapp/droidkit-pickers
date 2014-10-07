@@ -59,8 +59,9 @@ public class ExplorerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //if (savedInstanceState == null)
-        //todo: animate it here
+        if(savedInstanceState==null && rootView==null) {
+            //todo: animate it here
+        }
         {
             rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
             list = (ListView) rootView.findViewById(R.id.list);
@@ -89,7 +90,7 @@ public class ExplorerFragment extends Fragment {
                     if(Environment.isExternalStorageEmulated()){
                         title = getString(R.string.picker_files_memory_phone);
                     }else
-                        title = getString((R.string.picker_files_memory_external));// todo if its emulated?
+                        title = getString((R.string.picker_files_memory_external));
                 } else if (path.equals("/"))
                     title = getString(R.string.picker_files_memory_phone);
 

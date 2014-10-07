@@ -3,7 +3,6 @@ package com.droidkit.picker.items;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -46,10 +45,7 @@ public class FolderItem extends ExplorerItem {
         this.name = name;
     }
 
-    @Override
-    public String getSubtitle() {
-        return null;
-    }
+
 
     @Override
     public String getTitle() {

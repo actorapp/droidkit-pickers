@@ -96,7 +96,7 @@ public class PictureAdapter extends BaseAdapter {
 
 
         titleView.setText(item.getTitle());
-        subTitleView.setText(item.getSubtitle());
+        subTitleView.setText(item.getSubtitle(null));
 
         item.bindImage(itemView);
         item.bindData(itemView);

@@ -1,5 +1,6 @@
 package com.droidkit.picker.items;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,12 +13,12 @@ import java.io.File;
 /**
 * Created by kiolt_000 on 14/09/2014.
 */
-public abstract class ExplorerItem {
+public class ExplorerItem {
     private String fileType = null;
     protected final File file;
     private boolean selected = false;
     private boolean enabled = true;
-    private int imageId = 0;// todo  R.drawable.file_unknown;
+    private int imageId = 0;
 
     public ExplorerItem(File file) {
         this.file = file;
@@ -50,7 +51,9 @@ public abstract class ExplorerItem {
         return file.getName();
     }
 
-    public abstract String getSubtitle();
+    public String getSubtitle(Context context){
+        return null;
+    }
 
     public int getImage() {
         return imageId;
@@ -110,7 +113,7 @@ public abstract class ExplorerItem {
         subTitleView.setVisibility(View.VISIBLE);
 
         titleView.setText(getTitle());
-        subTitleView.setText(getSubtitle());
+        subTitleView.setText(getSubtitle(itemView.getContext()));
         View selectedView = itemView.findViewById(R.id.selected);
         if(selectedView!=null)
             selectedView.setSelected(selected);

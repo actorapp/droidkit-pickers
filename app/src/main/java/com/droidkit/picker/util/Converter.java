@@ -85,13 +85,13 @@ public class Converter {
                 return new FolderItem(file, R.drawable.picker_system_folder, true);*/
         }else
         if(file.list().length==0){
-            // return new FolderItem(file, R.drawable.picker_folder, true);// todo: picker_folder_empty
+            // return new FolderItem(file, R.drawable.picker_folder, true);//  picker_folder_empty
         }
 
         String folderPath = file.getPath();
         if(folderPath.equals(Environment.getExternalStorageDirectory().getPath())){
             // return new ExternalStorageItem("External memory");
-            // todo imageId = R.drawable.folder_external;
+            // imageId = R.drawable.folder_external;
         }else
         if (folderPath.contains(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath())) {
             imageId = R.drawable.picker_folder_music;
@@ -100,7 +100,7 @@ public class Converter {
         } else if (folderPath.contains(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath())) {
             imageId = R.drawable.picker_folder_download;
         } else //if (Build.VERSION.SDK_INT >= 19 && folderPath.equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getPath())) {
-            // todo imageId = R.drawable.folder_docs;
+            //  imageId = R.drawable.folder_docs;
         //} else
             if (folderPath.contains(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath())) {
             imageId = R.drawable.picker_folder_video;

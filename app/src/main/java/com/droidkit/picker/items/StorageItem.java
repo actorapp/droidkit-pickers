@@ -1,6 +1,5 @@
 package com.droidkit.picker.items;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,10 +20,7 @@ public class StorageItem extends ExplorerItem {
         return name;
     }
 
-    @Override
-    public String getSubtitle() {
-        return null;
-    }
+
 
     @Override
     public void bindData(View itemView) {

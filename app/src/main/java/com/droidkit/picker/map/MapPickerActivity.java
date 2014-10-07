@@ -175,7 +175,7 @@ public class MapPickerActivity extends Activity
 
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(startSize, defaultHeight);
             valueAnimator.setDuration(300);
-            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -216,7 +216,7 @@ public class MapPickerActivity extends Activity
 
             final ValueAnimator valueAnimator = ValueAnimator.ofFloat(defaultHeight, endSize);
             valueAnimator.setDuration(300);
-            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -248,7 +248,7 @@ public class MapPickerActivity extends Activity
 
 
             AlphaAnimation hideAnimation = new AlphaAnimation(1,0);
-            hideAnimation.setDuration(200);
+            hideAnimation.setDuration(300);
             hideAnimation.setInterpolator(new AccelerateInterpolator());
             hideAnimation.setAnimationListener(new Animation.AnimationListener() {
                 @Override

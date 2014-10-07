@@ -1,12 +1,11 @@
 package com.droidkit.picker.items;
 
-import com.droidkit.picker.items.ExplorerItem;
+import android.content.Context;
+
+import com.droidkit.file.R;
 import com.droidkit.picker.util.TimeHelper;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by kiolt_000 on 15/09/2014.
@@ -36,25 +35,25 @@ public class FileItem extends ExplorerItem {
     }
 
     @Override
-    public String getSubtitle() {
+    public String getSubtitle(Context context) {
         String convertedSize = null;
         long size = (int) file.length();
         if (size > 1024*1024*1024) {
-            convertedSize = (size / (1024*1024*1024)) + "." + ((size % (1024*1024*1024)) / (100*1024*1024)) + " MB";
+            convertedSize = (size / (1024*1024*1024)) + "." + ((size % (1024*1024*1024)) / (100*1024*1024)) +" "+context.getString(R.string.picker_gbytes);
         }
         if (size > 1024*1024) {
-            convertedSize = (size / (1024*1024)) + "." + ((size % (1024*1024)) / (100*1024)) + " MB";
+            convertedSize = (size / (1024*1024)) + "." + ((size % (1024*1024)) / (100*1024)) +" "+context.getString(R.string.picker_mbytes);
         }
         if (convertedSize == null) {
             if(size/1024==0){
-                convertedSize = "N Bytes";
+                convertedSize = context.getString(R.string.picker_nbytes);
             }else
-                convertedSize = (size / (1024)) + " KB";
+                convertedSize = (size / (1024))  +" "+context.getString(R.string.picker_kbytes);
         }
 
         long date = file.lastModified();
 
-        String convertedDate = TimeHelper.getConvertedTime(date);
+        String convertedDate = TimeHelper.getConvertedTime(date,context);
         return convertedSize + ", " + convertedDate;
     }
 

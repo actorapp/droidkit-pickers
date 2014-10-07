@@ -21,10 +21,7 @@ public class HistoryItem extends ExplorerItem {
         this.hasHistory = hasHistory;
     }
 
-    @Override
-    public String getSubtitle() {
-        return null;
-    }
+
 
     @Override
     public void bindData(View itemView) {

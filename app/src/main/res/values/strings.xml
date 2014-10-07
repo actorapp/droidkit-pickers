@@ -8,4 +8,19 @@
     <string name="picker_map_nearby_header">or select from nearby</string>
     <string name="picker_map_nearby_empty">No places nearby</string>
     <string name="picker_internalerror">Error has occurred</string>
+    <string name="picker_time_yesterday_at">yesterday at %s</string>
+    <string name="picker_time_today_at">today at %s</string>
+    <string name="picker_nbytes">N bytes</string>
+    <string name="picker_kbytes">KB</string>
+    <string name="picker_mbytes">MB</string>
+    <string name="picker_gbytes">GB</string>
+    <string name="picker_time_hour_ago">1 hour ago</string>
+    <string name="picker_time_minute_ago">1 minute ago</string>
+    <plurals name="picker_time_minutes_ago">
+        <item quantity="one">%d minute ago</item>
+        <item quantity="two">%d minutes ago</item>
+        <item quantity="few">%d minutes ago</item>
+        <item quantity="many">%d minutes ago</item>
+        <item quantity="other">%d songs found.</item>
+    </plurals>
 </resources>

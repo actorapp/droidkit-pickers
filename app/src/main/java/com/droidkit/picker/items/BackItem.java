@@ -21,10 +21,6 @@ public class BackItem extends ExplorerItem {
         return "..";
     }
 
-    @Override
-    public String getSubtitle() {
-        return null;
-    }
 
     @Override
     public boolean isDirectory() {
