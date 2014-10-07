@@ -350,7 +350,7 @@ public class MapPickerActivity extends Activity
     private void setUpMap() {
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         for (String provider : locationManager.getAllProviders()) {
-            // currentLocation = locationManager.getLastKnownLocation(provider);
+            currentLocation = locationManager.getLastKnownLocation(provider);
             if (currentLocation != null) {
                 break;
             }
