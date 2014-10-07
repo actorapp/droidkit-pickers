@@ -119,4 +119,8 @@ public class ExplorerItem {
             selectedView.setSelected(selected);
 
     }
+
+    public Long getLastModified() {
+        return file.lastModified();
+    }
 }

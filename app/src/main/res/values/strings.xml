@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="picker_files_search_query_text">Search</string>
-    <string name="picker_file_sort_name">Sort by date</string>
+    <string name="picker_file_sort_name">Sort by name</string>
     <string name="picker_file_sort_date">Sort by date</string>
     <string name="picker_files_camera">Camera</string>
     <string name="picker_loading">Loading</string>
@@ -16,6 +16,8 @@
     <string name="picker_gbytes">GB</string>
     <string name="picker_time_hour_ago">1 hour ago</string>
     <string name="picker_time_minute_ago">1 minute ago</string>
+    <string name="picker_time_at">%1$s at %2$s</string>
+    <string name="picker_search">Search</string>
     <plurals name="picker_time_minutes_ago">
         <item quantity="one">%d minute ago</item>
         <item quantity="two">%d minutes ago</item>

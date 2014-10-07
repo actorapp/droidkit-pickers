@@ -5,12 +5,13 @@
     <item
         android:icon="@drawable/bar_search"
         android:id="@+id/search"
-        android:title="select"
+        android:title="@string/picker_search"
         android:enabled="true"
         android:showAsAction="always"
 
         />
     <item
+        android:visible="false"
         android:title="@string/picker_file_sort_name"
         android:enabled="true"
         android:showAsAction="never"

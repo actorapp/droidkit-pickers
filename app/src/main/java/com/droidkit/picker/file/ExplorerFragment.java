@@ -25,6 +25,8 @@ import com.droidkit.picker.items.FolderItem;
 import com.droidkit.picker.items.StorageItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
+import com.droidkit.picker.util.FileDateOrderComparator;
+import com.droidkit.picker.util.FileNameOrderComparator;
 import com.droidkit.picker.util.FileOrderComparator;
 
 import java.io.File;
@@ -44,6 +46,11 @@ public class ExplorerFragment extends Fragment {
     private TextView statusView;
     private ListView list;
     private String title;
+    private boolean welcome = false;
+    private ExplorerAdapter adapter;
+    private Menu menu;
+    private MenuItem sortnameMenuItem;
+    private MenuItem sortdateMenuItem;
 
     @Override
     public void onAttach(Activity activity) {
@@ -69,7 +76,6 @@ public class ExplorerFragment extends Fragment {
             statusView = (TextView) rootView.findViewById(R.id.status);
 
             items = new ArrayList<ExplorerItem>();
-            ExplorerAdapter adapter;
             if (bundle != null) {
                 path = bundle.getString("path");
 
@@ -117,14 +123,14 @@ public class ExplorerFragment extends Fragment {
                 for (File file : fileList) {
                     putItem(file);
                 }
-                Collections.sort(items, new FileOrderComparator());
+                Collections.sort(items, new FileNameOrderComparator());
 
                 insertBack();
                 adapter = new ExplorerAdapter(getActivity(), items);
 
             } else {
 
-
+                welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
 
@@ -187,7 +193,14 @@ public class ExplorerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.picker_file, menu);
+        this.menu = menu;
+        if(!welcome) {
+            inflater.inflate(R.menu.picker_file, menu);
+            sortnameMenuItem = menu.findItem(R.id.sortname);
+            sortdateMenuItem = menu.findItem(R.id.sortdate);
+        }
+        else
+            inflater.inflate(R.menu.picker_file_welcome, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
     @Override
@@ -196,18 +209,40 @@ public class ExplorerFragment extends Fragment {
         if (id == R.id.action_settings) {
             return true;
         }
-        switch (id){
+        switch (id) {
+            case R.id.sortname:
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        sortdateMenuItem.setVisible(true);
+                        sortnameMenuItem.setVisible(false);
+                    }
+                });
+                Collections.sort(items, new FileNameOrderComparator());
+                adapter.notifyDataSetChanged();
+                return true;
+            case R.id.sortdate:
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        sortdateMenuItem.setVisible(false);
+                        sortnameMenuItem.setVisible(true);
+                    }
+                });
+                Collections.sort(items, new FileDateOrderComparator());
+                adapter.notifyDataSetChanged();
+                return true;
             case R.id.search:
-                    Bundle bundle = new Bundle();
-                    bundle.putString("root", path );
-                    SearchFileFragment searchFragment = new SearchFileFragment();
-                    searchFragment.setArguments(bundle);
-                    pickerActivity.getFragmentManager().beginTransaction()
-                            //.setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
-                            .replace(R.id.container, searchFragment)
-                            .addToBackStack("search")
-                            .commit();
-                    //pickerActivity.searchDisable();
+                Bundle bundle = new Bundle();
+                bundle.putString("root", path);
+                SearchFileFragment searchFragment = new SearchFileFragment();
+                searchFragment.setArguments(bundle);
+                pickerActivity.getFragmentManager().beginTransaction()
+                        //.setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
+                        .replace(R.id.container, searchFragment)
+                        .addToBackStack("search")
+                        .commit();
+                //pickerActivity.searchDisable();
 
                 return true;
         }
