@@ -1,5 +1,7 @@
 package com.droidkit.picker.map;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -59,6 +65,7 @@ public class MapPickerActivity extends Activity
     private SearchView searchView;
     private ImageView fullSizeButton;
     private View listHolder;
+    private View mapHolder;
     private View defineMyLocationButton;
     private TextView accuranceView;
     private View pickCurrent;
@@ -79,6 +86,7 @@ public class MapPickerActivity extends Activity
         status = (TextView) findViewById(R.id.status);
         header = findViewById(R.id.header);
         listHolder = findViewById(R.id.listNearbyHolder);
+        mapHolder = findViewById(R.id.mapholder);
         accuranceView = (TextView) findViewById(R.id.accurance);
 
         setUpMapIfNeeded();
@@ -157,14 +165,110 @@ public class MapPickerActivity extends Activity
         });
     }
 
+    private int defaultHeight = 0;
     protected void togglePlacesList() {
         // todo animate it
         if (listHolder.getVisibility() == View.GONE) {
+
+            fullSizeButton.setEnabled(false);
+            float startSize = findViewById(R.id.container).getHeight();
+
+            final ValueAnimator valueAnimator = ValueAnimator.ofFloat(startSize, defaultHeight);
+            valueAnimator.setDuration(300);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    mapHolder.getLayoutParams().height = ((Float) valueAnimator.getAnimatedValue()).intValue();
+                    mapHolder.requestLayout();
+                }
+            });
+            valueAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    fullSizeButton.setEnabled(true);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+            valueAnimator.start();
+
             listHolder.setVisibility(View.VISIBLE);
             fullSizeButton.setImageResource(R.drawable.conv_location_fullscreen_icon);
         } else {
-            listHolder.setVisibility(View.GONE);
-            fullSizeButton.setImageResource(R.drawable.conv_location_halfscreen_icon);
+
+            fullSizeButton.setEnabled(false);
+            float endSize = findViewById(R.id.container).getHeight();
+            defaultHeight = mapHolder.getHeight();
+
+            final ValueAnimator valueAnimator = ValueAnimator.ofFloat(defaultHeight, endSize);
+            valueAnimator.setDuration(300);
+            valueAnimator.setInterpolator(new DecelerateInterpolator());
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    mapHolder.getLayoutParams().height = ((Float) valueAnimator.getAnimatedValue()).intValue();
+                    mapHolder.requestLayout();
+                }
+            });
+            valueAnimator.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animator) {
+                    fullSizeButton.setEnabled(true);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animator) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animator) {
+
+                }
+            });
+
+
+            AlphaAnimation hideAnimation = new AlphaAnimation(1,0);
+            hideAnimation.setDuration(200);
+            hideAnimation.setInterpolator(new AccelerateInterpolator());
+            hideAnimation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    fullSizeButton.setImageResource(R.drawable.conv_location_halfscreen_icon);
+                    listHolder.setVisibility(View.GONE);
+                    valueAnimator.start();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            listHolder.startAnimation(hideAnimation);
         }
     }
 
@@ -274,7 +378,7 @@ public class MapPickerActivity extends Activity
             return;
         }
         list.setAdapter(null);
-        status.setText(R.string.picker_loading);
+        status.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
         fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override
