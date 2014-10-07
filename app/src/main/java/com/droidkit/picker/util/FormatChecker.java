@@ -25,6 +25,7 @@ public class FormatChecker {
     public static boolean checkMusic(String fileType) {
         return
                 fileType.equals("mp3") ||
+                        fileType.equals("m4a") ||
                         fileType.equals("ogg") ||
                         fileType.equals("flac") ||
                         fileType.equals("alac") ||

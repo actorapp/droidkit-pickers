@@ -185,7 +185,18 @@ public class ExplorerFragment extends Fragment {
 
         return rootView;
     }
-
+    private void reinsertBack(){
+        removeBack();
+        insertBack();
+    }
+    private void removeBack(){
+        for (ExplorerItem item : items) {
+            if(item instanceof BackItem){
+                items.remove(item);
+                break;
+            }
+        }
+    }
     private void insertBack() {
         items.add(0, new BackItem());
     }
@@ -218,7 +229,9 @@ public class ExplorerFragment extends Fragment {
                         sortnameMenuItem.setVisible(false);
                     }
                 });
+                removeBack();
                 Collections.sort(items, new FileNameOrderComparator());
+                insertBack();
                 adapter.notifyDataSetChanged();
                 return true;
             case R.id.sortdate:
@@ -229,7 +242,9 @@ public class ExplorerFragment extends Fragment {
                         sortnameMenuItem.setVisible(true);
                     }
                 });
+                removeBack();
                 Collections.sort(items, new FileDateOrderComparator());
+                insertBack();
                 adapter.notifyDataSetChanged();
                 return true;
             case R.id.search:
