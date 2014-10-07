@@ -6,4 +6,6 @@
     <string name="picker_files_camera">Camera</string>
     <string name="picker_loading">Loading</string>
     <string name="picker_map_nearby_header">or select from nearby</string>
+    <string name="picker_map_nearby_empty">No places nearby</string>
+    <string name="picker_internalerror">Error has occurred</string>
 </resources>

@@ -54,6 +54,7 @@ public class MapPickerActivity extends Activity
     View select;
     private ListView list;
     private TextView status;
+    private View header;
     private ProgressBar loading;
     private SearchView searchView;
     private ImageView fullSizeButton;
@@ -76,6 +77,7 @@ public class MapPickerActivity extends Activity
         list.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
         loading = (ProgressBar) findViewById(R.id.loading);
         status = (TextView) findViewById(R.id.status);
+        header = findViewById(R.id.header);
         listHolder = findViewById(R.id.listNearbyHolder);
         accuranceView = (TextView) findViewById(R.id.accurance);
 
@@ -272,7 +274,7 @@ public class MapPickerActivity extends Activity
             return;
         }
         list.setAdapter(null);
-        // status.setText(R.string.picker_loading);
+        status.setText(R.string.picker_loading);
         loading.setVisibility(View.VISIBLE);
         fetchingTask = new PlaceFetchingTask(query, 50, currentLocation.getLatitude(), currentLocation.getLongitude()) {
             @Override
@@ -280,11 +282,12 @@ public class MapPickerActivity extends Activity
                 Log.i(LOG_TAG, o.toString());
                 if(o instanceof ArrayList){
                     loading.setVisibility(View.GONE);
+                    status.setVisibility(View.GONE);
+                    header.setVisibility(View.VISIBLE);
                     list.setVisibility(View.VISIBLE);
-                    // status.setText(R.string.picker_map_nearby_header);
                     places = (ArrayList<MapItem>) o;
                     if(places.isEmpty()){
-                        //status.setText("No places");
+                        status.setText(R.string.picker_map_nearby_empty);
                     }else {
                         list.setAdapter(new PlacesAdapter(MapPickerActivity.this, places));
                         showItemsOnTheMap(places);
@@ -292,7 +295,8 @@ public class MapPickerActivity extends Activity
                 }else {
                     places = new ArrayList<MapItem>();
                     list.setAdapter(null);
-                    // status.setText(o.toString());
+                    header.setVisibility(View.GONE);
+                    status.setText(R.string.picker_internalerror);
                     Toast.makeText(MapPickerActivity.this, o.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
