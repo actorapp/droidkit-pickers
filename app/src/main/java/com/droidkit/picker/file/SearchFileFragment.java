@@ -12,12 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -27,21 +24,24 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
+import com.droidkit.picker.file.search.IndexTask;
 import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.items.FileItem;
 import com.droidkit.picker.util.Converter;
+import com.droidkit.picker.util.FileNameOrderComparator;
+import com.droidkit.picker.util.MaterialInterpolator;
 import com.droidkit.picker.util.SearchViewHacker;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class SearchFileFragment extends Fragment implements AbsListView.OnScrollListener {
     private View rootView;
     private String lastTitle;
     private ArrayList<ExplorerItem> items = new ArrayList<ExplorerItem>();
-    SearchTask task;
+    SearchTask searchingTask;
     private ListView listView;
     private ExplorerAdapter adapter;
     private String root;
@@ -49,7 +49,9 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     private View searchingProgressBar;
     private SuperPickerActivity pickerActivity;
     private SearchView searchView;
-    private boolean animating = false;
+    private boolean animated = false;
+    private IndexTask indexingTask;
+    private ArrayList<File> index = new ArrayList<File>();
 
 
     @Override
@@ -71,22 +73,33 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         listView.setOnItemClickListener(pickerActivity);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(300);
-        alphaAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        alphaAnimation.setInterpolator(new MaterialInterpolator());
 
         TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, -150, 0);
         translateAnimation.setDuration(450);
-        translateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        translateAnimation.setInterpolator(new MaterialInterpolator());
 
         //  searchContainer.startAnimation(translateAnimation);
         contentContainer.startAnimation(alphaAnimation);
 
-        /*for (int i = 0; i < searchContainer.getChildCount(); i++) {
-            View searchItemView = searchContainer.getChildAt(i);
-            searchItemView.startAnimation(alphaAnimation);
-        }*/
+        /**/
 
         getActivity().getActionBar().setTitle(R.string.picker_files_search_activity_title);
-
+        if(index.isEmpty()) {
+            indexingTask = new IndexTask(new File(root)) {
+                @Override
+                public void onIndexingEnded(ArrayList<File> indexedItems) {
+                    index.clear();
+                    index.addAll(indexedItems);
+                    indexingTask = null;
+                    if (searchingTask != null) {
+                        searchingTask.execute();
+                    }
+                }
+            };
+            indexingTask.execute();
+        }else{
+        }
         return rootView;
     }
 
@@ -151,91 +164,38 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
 
                 }
 
-                if (task != null) {
-                    task.cancel(true);
-                    task = null;
+                if (searchingTask != null) {
+                    searchingTask.cancel(true);
+                    searchingTask = null;
                 }
-                task = new SearchTask(new File(root), query) {
-
-                    ArrayList<ExplorerItem> foundItems = new ArrayList<ExplorerItem>();
+                searchingTask = new SearchTask(new File(root), query, index) {
                     @Override
-                    public void onPreStart() {
-
-                        status.setVisibility(View.GONE);
-                        //searchingProgressBar.setVisibility(View.VISIBLE);
-                        listView.setOnItemClickListener(null);
-                        AnimationSet outAnimation = new AnimationSet(true);
-                        outAnimation.addAnimation(new TranslateAnimation(0, 0, 0, 100));
-                        outAnimation.addAnimation(new AlphaAnimation(1,0));
-                        outAnimation.setDuration(350);
-                        outAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-                        outAnimation.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                                listView.setVisibility(View.VISIBLE);
-                                animating = true;
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                items.clear();
-                                adapter.notifyDataSetChanged();
-                                animating = false;
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        if(!animating)
-                            listView.startAnimation(outAnimation);
-                    }
-
-                    @Override
-                    public void onSearchStarted() {
-                        listView.setOnItemClickListener(pickerActivity);
-                        adapter.notifyDataSetChanged();
-                    }
-
-
-                    @Override
-                    public void onItemFound(File file) {
-
-                        //status.setVisibility(View.GONE);
-                        //searchingProgressBar.setVisibility(View.GONE);
-                        foundItems.add(Converter.getItem(file, pickerActivity.isSelected(file)));
-                        //adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onSearchEnded(int foundCount) {
+                    public void onSearchEnded(final ArrayList<File> files) {
+                        searchingTask = null;
                         searchingProgressBar.setVisibility(View.GONE);
-                        if (foundCount == 0) {
+                        if (files.isEmpty()) {
                             status.setVisibility(View.VISIBLE);
                             status.setText(R.string.picker_empty);
                             items.clear();
                             adapter.notifyDataSetChanged();
                             listView.setVisibility(View.GONE);
                         } else {
+                            showItems(files);
+                            /*
                             AnimationSet outAnimation = new AnimationSet(true);
                             outAnimation.addAnimation(new TranslateAnimation(0, 0, 100, 0));
                             outAnimation.addAnimation(new AlphaAnimation(0,1));
                             outAnimation.setDuration(350);
-                            outAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                            outAnimation.setInterpolator(new MaterialInterpolator());
                             outAnimation.setAnimationListener(new Animation.AnimationListener() {
                                 @Override
                                 public void onAnimationStart(Animation animation) {
-                                    listView.setVisibility(View.VISIBLE);
-                                    items.clear();
-                                    items.addAll(foundItems);
-                                    adapter.notifyDataSetChanged();
-                                    animating = true;
+                                    animated = true;
                                 }
 
                                 @Override
                                 public void onAnimationEnd(Animation animation) {
-                                    animating = false;
+                                    animated = false;
                                 }
 
                                 @Override
@@ -243,12 +203,14 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
 
                                 }
                             });
-                            listView.startAnimation(outAnimation);
+                            listView.startAnimation(outAnimation);*/
                         }
 
                     }
                 };
-                task.execute();
+                if(indexingTask==null || !index.isEmpty()) {
+                    searchingTask.execute();
+                }
                 return false;
             }
         });
@@ -281,6 +243,48 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         SearchViewHacker.disableCloseButton(searchView);
         InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    private void showItems(ArrayList<File> files) {
+        items.clear();
+        ArrayList<ExplorerItem> foundItems = new ArrayList<ExplorerItem>();
+        for (File file : files) {
+                ExplorerItem item;
+                if (file.isDirectory()) {
+                    item = Converter.getFolderItem(file);
+
+                } else {
+                    item = Converter.getFileItem(file, false);
+                }
+                if(item!=null)
+                    items.add(item);
+        }
+        Collections.sort(items, new FileNameOrderComparator());
+        status.setVisibility(View.GONE);
+        adapter.notifyDataSetChanged();
+        if(!animated){
+            listView.post(new Runnable() {
+                @Override
+                public void run() {
+                    listView.setVisibility(View.VISIBLE);
+                    for (int i = 0; i < listView.getChildCount(); i++) {
+                        View searchItemView = listView.getChildAt(i);
+                        AnimationSet slideInAnimation = new AnimationSet(true);
+                        slideInAnimation.setInterpolator(new MaterialInterpolator());
+                        slideInAnimation.setDuration(150);
+                        slideInAnimation.setStartOffset(i * 50);
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(0,1);
+                        slideInAnimation.addAnimation(alphaAnimation);
+                        TranslateAnimation translateAnimation = new TranslateAnimation(0,0,150,0);
+                        slideInAnimation.addAnimation(translateAnimation);
+                        searchItemView.startAnimation(slideInAnimation);
+                    }
+                }
+            });
+
+            animated = true;
+        }else
+            listView.setVisibility(View.VISIBLE);
     }
 
     @Override
