@@ -38,23 +38,25 @@ public class FileItem extends ExplorerItem {
     public String getSubtitle(Context context) {
         String convertedSize = null;
         long size = (int) file.length();
-        if (size > 1024*1024*1024) {
-            convertedSize = (size / (1024*1024*1024)) + "." + ((size % (1024*1024*1024)) / (100*1024*1024)) +" "+context.getString(R.string.picker_gbytes);
+        if (size > 1024 * 1024 * 1024) {
+            convertedSize = (size / (1024 * 1024 * 1024)) + "." + ((size % (1024 * 1024 * 1024)) / (100 * 1024 * 1024)) + " " + context.getString(R.string.picker_gbytes);
         }
-        if (size > 1024*1024) {
-            convertedSize = (size / (1024*1024)) + "." + ((size % (1024*1024)) / (100*1024)) +" "+context.getString(R.string.picker_mbytes);
+        if (size > 1024 * 1024) {
+            convertedSize = (size / (1024 * 1024)) + "." + ((size % (1024 * 1024)) / (100 * 1024)) + " " + context.getString(R.string.picker_mbytes);
         }
         if (convertedSize == null) {
-            if(size/1024==0){
+            if (size / 1024 == 0) {
                 convertedSize = context.getString(R.string.picker_nbytes);
-            }else
-                convertedSize = (size / (1024))  +" "+context.getString(R.string.picker_kbytes);
+            } else
+                convertedSize = (size / (1024)) + " " + context.getString(R.string.picker_kbytes);
         }
 
         long date = file.lastModified();
-
-        String convertedDate = TimeHelper.getConvertedTime(date,context);
-        return convertedSize + ", " + convertedDate;
+        String subtitle = convertedSize;
+        if (date != 0) {
+            subtitle += ", " + TimeHelper.getConvertedTime(date, context);
+        }
+        return subtitle;
     }
 
 
