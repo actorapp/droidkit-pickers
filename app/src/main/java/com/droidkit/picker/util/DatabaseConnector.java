@@ -50,12 +50,21 @@ public class DatabaseConnector extends SQLiteOpenHelper {
 
         Cursor cursor = database.query(SELECTED_HISTORY_TABLE, SELECTED_HISTORY_COLUMNS, null, null, null, null, "last_selected DESC");
         int pathColumnIndex = cursor.getColumnIndex("path");
+        ArrayList<String> removeIndexes = new ArrayList<String>();
         if (cursor.moveToFirst()) {
+            int count = 0;
             do {
-                history.add(cursor.getString(pathColumnIndex));
+                if (count < 20) {
+                    count++;
+                    history.add(cursor.getString(pathColumnIndex));
+                } else {
+                    removeIndexes.add(cursor.getString(pathColumnIndex));
+                }
             } while (cursor.moveToNext());
         }
         cursor.close();
+        String[] removeIndexesArray = new String[removeIndexes.size()];
+        database.delete(SELECTED_HISTORY_TABLE, "path = ?", removeIndexes.toArray(removeIndexesArray));
         database.close();
         return history;
     }
