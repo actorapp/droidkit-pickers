@@ -46,7 +46,7 @@ public class FileItem extends ExplorerItem {
         }
         if (convertedSize == null) {
             if (size / 1024 == 0) {
-                convertedSize = context.getString(R.string.picker_nbytes);
+                convertedSize = context.getString(R.string.picker_bytes, size);
             } else
                 convertedSize = (size / (1024)) + " " + context.getString(R.string.picker_kbytes);
         }

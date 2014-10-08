@@ -1,6 +1,7 @@
 package com.droidkit.picker.util;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 
 import com.droidkit.file.R;
 
@@ -22,6 +23,8 @@ public class TimeHelper {
         Date currentDate = new Date(System.currentTimeMillis());
         Date convertableDate = new Date(time);
 
+        String convertedDate = SimpleDateFormat.getDateInstance().format(convertableDate);
+        String convertedTime = DateUtils.formatDateTime(context, time, DateUtils.FORMAT_SHOW_TIME);
         if (currentDate.getYear() == convertableDate.getYear()) {
             if (currentDate.getMonth() == convertableDate.getMonth()) {
                 if (currentDate.getDay() == convertableDate.getDay()) {
@@ -39,15 +42,16 @@ public class TimeHelper {
                             return context.getString(R.string.picker_time_hour_ago);
                         }
                     }
-                    return context.getString(R.string.picker_time_today_at, SimpleDateFormat.getTimeInstance().format(convertableDate));
+                    return context.getString(R.string.picker_time_today_at, convertedTime);
                 } else {
                     if (currentDate.getDay() - 1 == convertableDate.getDay()) {
-                        return context.getString(R.string.picker_time_yesterday_at, SimpleDateFormat.getTimeInstance().format(convertableDate));
+                        return context.getString(R.string.picker_time_yesterday_at, convertedTime);
                     }
                 }
             }
+            int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
+            convertedDate = DateUtils.formatDateTime(context, time, flags);
         }
-        String convertedDate = SimpleDateFormat.getDateInstance().format(convertableDate);
-        return context.getString(R.string.picker_time_at, convertedDate, SimpleDateFormat.getTimeInstance(DateFormat.SHORT).format(convertableDate));
+        return context.getString(R.string.picker_time_at, convertedDate, convertedTime);
     }
 }
