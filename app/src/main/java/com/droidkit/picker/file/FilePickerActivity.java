@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +33,12 @@ public class FilePickerActivity extends SuperPickerActivity {
         findViewById(R.id.controllers).setVisibility(View.GONE);
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setDisplayUseLogoEnabled(true);
+        /*
+        final int actionBarTitle = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        final TextView title = (TextView)getWindow().findViewById(actionBarTitle);
+        if ( title != null ) {
+            title.setEllipsize(TextUtils.TruncateAt.START);
+        }*/
         // getActionBar().setIcon(null);
     }
 

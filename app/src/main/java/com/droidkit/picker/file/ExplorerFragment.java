@@ -49,6 +49,7 @@ public class ExplorerFragment extends Fragment {
     private Menu menu;
     private MenuItem sortnameMenuItem;
     private MenuItem sortdateMenuItem;
+    private View emptyView;
 
     @Override
     public void onAttach(Activity activity) {
@@ -72,6 +73,7 @@ public class ExplorerFragment extends Fragment {
             list = (ListView) rootView.findViewById(R.id.list);
             Bundle bundle = getArguments();
             statusView = (TextView) rootView.findViewById(R.id.status);
+            emptyView = rootView.findViewById(R.id.empty);
 
             items = new ArrayList<ExplorerItem>();
             if (bundle != null) {
@@ -110,9 +112,10 @@ public class ExplorerFragment extends Fragment {
                 } else {
                     if (fileList.length == 0) {
 
+                        emptyView.setVisibility(View.VISIBLE);
                         statusView.setVisibility(View.VISIBLE);
                         statusView.setText(R.string.picker_files_directory_empty);
-                        return rootView;
+                        //return rootView;
                     }
                 }
 
@@ -131,7 +134,7 @@ public class ExplorerFragment extends Fragment {
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
-                items.add(new HeaderItem(getString(R.string.picker_header_recent)));
+                items.add(new HeaderItem(getString(R.string.picker_header_main)));
                 String externalStorageState = Environment.getExternalStorageState();
                 Log.w(LOG_TAG, externalStorageState);
                 if (
@@ -287,7 +290,7 @@ public class ExplorerFragment extends Fragment {
 
         ArrayList<String> pathesFromDB = DatabaseConnector.getHistory(pickerActivity);
         if(!pathesFromDB.isEmpty()) {
-            history.add(new HeaderItem(getString(R.string.picker_header_main)));
+            history.add(new HeaderItem(getString(R.string.picker_header_recent)));
             for (String pathFromDB : pathesFromDB) {
                 File historyFile = new File(pathFromDB);
                 if (historyFile.exists())
