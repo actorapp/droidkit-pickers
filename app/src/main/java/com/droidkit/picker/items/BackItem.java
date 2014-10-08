@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.file.ExploreItemViewHolder;
 
 import java.io.File;
 
@@ -32,14 +33,12 @@ public class BackItem extends ExplorerItem {
         return true;
     }
 
+
+
     @Override
-    public void bindData(View itemView) {
-
-        TextView titleView  = (TextView) itemView.findViewById(R.id.title);
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
-
-        subTitleView.setVisibility(View.GONE);
-
-        titleView.setText(getTitle());
+    public void bindData(ExploreItemViewHolder holder) {
+        holder.setTitle(getTitle());
+        holder.disableSubtitle();
+        holder.enableDivider();
     }
 }

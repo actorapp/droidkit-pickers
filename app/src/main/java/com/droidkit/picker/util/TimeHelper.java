@@ -8,6 +8,7 @@ import com.droidkit.file.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by kiolt_000 on 15/09/2014.
@@ -17,15 +18,27 @@ public class TimeHelper {
         return (int) (System.currentTimeMillis() / 1000);
     }
 
+    static ThreadLocal<DateFormat> dateInstanceGetter = new ThreadLocal<DateFormat>(){
+        @Override
+        protected DateFormat initialValue() {
+            return SimpleDateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+        }
+    };
+    static ThreadLocal<DateFormat> timeInstanceGetter = new ThreadLocal<DateFormat>(){
+        @Override
+        protected DateFormat initialValue() {
+            return SimpleDateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+        }
+    };
     public static String getConvertedTime(long time, Context context) {
 
 
         Date currentDate = new Date(System.currentTimeMillis());
         Date convertableDate = new Date(time);
 
-        String convertedDate = SimpleDateFormat.getDateInstance().format(convertableDate);
-        String convertedTime = DateUtils.formatDateTime(context, time, DateUtils.FORMAT_SHOW_TIME);
-        if (currentDate.getYear() == convertableDate.getYear()) {
+        String convertedDate = dateInstanceGetter.get().format(convertableDate);
+        String convertedTime = timeInstanceGetter.get().format(convertableDate);
+        /*if (currentDate.getYear() == convertableDate.getYear()) {
             if (currentDate.getMonth() == convertableDate.getMonth()) {
                 if (currentDate.getDay() == convertableDate.getDay()) {
                     if (currentDate.getHours() == convertableDate.getHours()) {
@@ -50,7 +63,7 @@ public class TimeHelper {
             }
             int flags = DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NO_YEAR;
             convertedDate = DateUtils.formatDateTime(context, time, flags);
-        }
+        }*/
         return context.getString(R.string.picker_time_at, convertedDate, convertedTime);
     }
 }

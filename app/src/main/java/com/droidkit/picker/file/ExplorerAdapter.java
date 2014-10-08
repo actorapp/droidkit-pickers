@@ -1,6 +1,7 @@
 package com.droidkit.picker.file;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -50,41 +51,30 @@ public class ExplorerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        long startTime = System.currentTimeMillis();
         View itemView;
-        if (convertView == null)
-            itemView = View.inflate(context, R.layout.picker_item_file, null);
-        else
-            itemView = convertView;
+        ExploreItemViewHolder holder;
+        if (convertView == null) {
+            convertView = View.inflate(context, R.layout.picker_item_file, null);
+            holder = new ExploreItemViewHolder(convertView);
+            convertView.setTag(holder);
+        }else{
+            holder = (ExploreItemViewHolder) convertView.getTag();
+        }
+        itemView = convertView;
 
         ExplorerItem item = getItem(position);
 
 
-        TextView titleView = (TextView) itemView.findViewById(R.id.title);
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
-        ImageView imageView = (ImageView) itemView.findViewById(R.id.image);
-        View selectedView = itemView.findViewById(R.id.selected);
 
 
-        titleView.setText(item.getTitle());
-        /*
-        if (item.isDirectory()) {
-            selectedView.setVisibility(View.INVISIBLE);
-            subTitleView.setVisibility(View.GONE);
-        } else {
-            subTitleView.setText(item.getSubtitle());
-            subTitleView.setVisibility(View.VISIBLE);
-            selectedView.setVisibility(View.VISIBLE);
+
+        item.bindImage(holder);
+        item.bindData(holder);
+        if(getCount()==1){
+            holder.disableDivider();
         }
-        */
-        View divider = itemView.findViewById(R.id.divider);
-        if(item instanceof StorageItem || item instanceof ExternalStorageItem){
-            divider.setVisibility(View.GONE);
-        }else{
-            divider.setVisibility(View.VISIBLE);
-        }
-        item.bindImage(itemView);
-        item.bindData(itemView);
-        itemView.setTag("item");
+        Log.d("Picker", "Time to create item: " + (System.currentTimeMillis() - startTime));
         return itemView;
     }
 }

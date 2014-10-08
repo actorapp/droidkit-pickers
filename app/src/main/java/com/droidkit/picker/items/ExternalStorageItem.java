@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.file.ExploreItemViewHolder;
 
 /**
  * Created by kiolt_000 on 22/09/2014.
@@ -25,12 +26,12 @@ public class ExternalStorageItem extends ExplorerItem {
 
 
 
+
+
     @Override
-    public void bindData(View itemView) {
-        super.bindData(itemView);
-
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
-
-        subTitleView.setVisibility(View.GONE);
+    public void bindData(ExploreItemViewHolder holder) {
+        holder.setTitle(getTitle());
+        holder.disableSubtitle();
+        holder.disableDivider();
     }
 }

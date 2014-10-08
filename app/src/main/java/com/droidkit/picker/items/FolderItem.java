@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.file.ExploreItemViewHolder;
 import com.droidkit.picker.util.TrimmedTextView;
 
 import java.io.File;
@@ -60,54 +61,10 @@ public class FolderItem extends ExplorerItem {
         return true;
     }
 
+
     @Override
-    public void bindData(View itemView) {
-        super.bindData(itemView);
-
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
-
-        subTitleView.setVisibility(View.GONE);
-
-        TextView titleView = (TextView) itemView.findViewById(R.id.title);
-        titleView.setEllipsize(null);
-        long startTime = System.currentTimeMillis();
-        SpannableStringBuilder text = new SpannableStringBuilder();
-        text.append((getTitle()));
-        //text.append(countFiles());
-        titleView.setText(text);
-        Log.d("Picker", "Time to create item: "+ (System.currentTimeMillis() - startTime));
+    public void bindData(ExploreItemViewHolder holder) {
+        holder.setTitle(getTitle());
+        holder.disableSubtitle();
     }
-
-    CharSequence countFiles() {
-
-        String[] list = getFile().list(new FilenameFilter() {
-            @Override
-            public boolean accept(File file, String s) {
-
-                if(!file.exists() || file.list()==null)
-                    return false;
-                if(file.isDirectory() && (file.getName().charAt(0)=='.')){
-                    return false;
-                }
-                return true;
-            }
-        });
-        if(list!=null) {
-            int count = list.length;
-            String notSpanned = " (" + count + ")";
-            /*SpannableString spannableString = new SpannableString(notSpanned);
-            spannableString.setSpan( new ForegroundColorSpan(0xff888888), 0, spannableString.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);*/
-            return notSpanned;
-        }
-        return "";
-    }
-
-    CharSequence ellipsizeTitle(String text) {
-        SpannableString s = new SpannableString(text);
-        s.setSpan(TrimmedTextView.EllipsizeRange.ELLIPSIS_AT_END, 0, s.length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        return s;
-    }
-
 }

@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.file.ExploreItemViewHolder;
 
 import java.io.File;
 
@@ -24,10 +25,12 @@ public class StorageItem extends ExplorerItem {
 
     @Override
     public void bindData(View itemView) {
-        super.bindData(itemView);
+    }
 
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
-
-        subTitleView.setVisibility(View.GONE);
+    @Override
+    public void bindData(ExploreItemViewHolder holder) {
+        holder.setTitle(getTitle());
+        holder.disableSubtitle();
+        holder.disableDivider();
     }
 }

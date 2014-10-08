@@ -18,7 +18,7 @@
             android:layout_width="55dp"
             android:layout_height="42dp" />
         <TextView
-            android:id="@+id/image_fake"
+            android:id="@+id/type"
             android:ellipsize="end"
             android:singleLine="true"
             android:textStyle="bold"
@@ -53,6 +53,7 @@
                     android:paddingTop="2dp"
                     android:paddingBottom="1dp"
                     android:textSize="@dimen/picker_file_title_size"
+                    android:ellipsize="end"
                     android:textColor="@color/explorer_item_title"
                     android:id="@+id/title"
                     android:singleLine="true"

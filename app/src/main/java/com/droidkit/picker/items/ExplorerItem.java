@@ -1,12 +1,12 @@
 package com.droidkit.picker.items;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
+import com.droidkit.picker.file.ExploreItemViewHolder;
 
 import java.io.File;
 
@@ -88,39 +88,46 @@ public class ExplorerItem {
         this.selected = selected;
     }
 
+    @Deprecated
     public void bindImage(View itemView) {
         ImageView holder = (ImageView) itemView.findViewById(R.id.image);
         holder.setScaleType(ImageView.ScaleType.CENTER);
         if(imageId!=0) {
-            itemView.findViewById(R.id.image_fake).setVisibility(View.INVISIBLE);
+            itemView.findViewById(R.id.type).setVisibility(View.INVISIBLE);
             holder.setVisibility(View.VISIBLE);
             holder.setImageResource(imageId);
         }else{
             holder.setImageResource(R.drawable.picker_file);
-            TextView formatHolder = (TextView) itemView.findViewById(R.id.image_fake);
+            TextView formatHolder = (TextView) itemView.findViewById(R.id.type);
             if(formatHolder!=null) {
                 formatHolder.setVisibility(View.VISIBLE);
                 formatHolder.setText(fileType);
             }
         }
     }
-
+    @Deprecated
     public void bindData(View itemView){
-        TextView titleView  = (TextView) itemView.findViewById(R.id.title);
-        TextView subTitleView = (TextView) itemView.findViewById(R.id.subtitle);
 
-        titleView.setEllipsize(TextUtils.TruncateAt.END);
-        subTitleView.setVisibility(View.VISIBLE);
+    }
+    public void bindImage(ExploreItemViewHolder holder){
 
-        titleView.setText(getTitle());
-        subTitleView.setText(getSubtitle(itemView.getContext()));
-        View selectedView = itemView.findViewById(R.id.selected);
-        if(selectedView!=null)
-            selectedView.setSelected(selected);
-
+        if(imageId!=0) {
+            holder.setIcon(imageId);
+            holder.setType("");
+        }else{
+            holder.setIcon(R.drawable.picker_file);
+            holder.setType(fileType);
+        }
     }
 
     public Long getLastModified() {
         return file.lastModified();
+    }
+
+    public void bindData(ExploreItemViewHolder holder) {
+        holder.setTitle(getTitle());
+        holder.setSubtitle(getSubtitle(holder.getContext()));
+        holder.setSelected(selected);
+        holder.enableDivider();
     }
 }
