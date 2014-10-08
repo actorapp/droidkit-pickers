@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.items.ExplorerItem;
+import com.droidkit.picker.items.ExternalStorageItem;
+import com.droidkit.picker.items.StorageItem;
 
 import java.util.ArrayList;
 
@@ -74,6 +76,12 @@ public class ExplorerAdapter extends BaseAdapter {
             selectedView.setVisibility(View.VISIBLE);
         }
         */
+        View divider = itemView.findViewById(R.id.divider);
+        if(item instanceof StorageItem || item instanceof ExternalStorageItem){
+            divider.setVisibility(View.GONE);
+        }else{
+            divider.setVisibility(View.VISIBLE);
+        }
         item.bindImage(itemView);
         item.bindData(itemView);
         itemView.setTag("item");

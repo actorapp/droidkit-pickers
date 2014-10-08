@@ -1,8 +1,6 @@
 package com.droidkit.picker.file.search;
 
 import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
@@ -15,14 +13,29 @@ import java.util.ArrayList;
 public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<File>> {
 
     private final File root;
-    private final String query;
+    private final String strongRegex;
     private final ArrayList<File> foundItems;
     private final ArrayList<File> index;
+    private final String weakRegex;
     private Handler handler;
 
     public SearchTask(File searchRoot, String searchQuery, ArrayList<File> index) {
         this.root = searchRoot;
-        this.query = searchQuery.toLowerCase();
+        String tempRegex = searchQuery.toLowerCase();
+        String[] splitedTempRegex = tempRegex.split("\\s+");
+        ArrayList<String> filtered = new ArrayList<String>();
+        for (String s : splitedTempRegex) {
+            if (s != null && !s.equals("")) {
+                filtered.add(s);
+            }
+        }
+        tempRegex = filtered.toString()
+                .replaceAll("\\[", "(").replaceAll("]", ")")
+                .replaceAll(",", "|")
+                .replaceAll("\\s+", "")
+                .replaceAll("\\.","\\\\.");
+        this.strongRegex = "(((.*)(\\s+))|(^))"+tempRegex + ".*";
+        this.weakRegex = ".*"+tempRegex+".*";
         this.index = index;
         handler = new Handler();
         foundItems = new ArrayList<File>();
@@ -47,9 +60,7 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<File>> {
         });
         Log.i("Searching", "Scanning started. Root path: " + root);
         for (File file : index) {
-            if(file.getName().toLowerCase().contains(query)){
-                foundItems.add(file);
-            }
+            compare(file);
         }
         if (isCancelled()) {
             return null;
@@ -58,6 +69,16 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<File>> {
         return foundItems;
     }
 
+    private void compare(File file) {
+        if (root == null || file.getPath().contains(root.getPath())) {
+
+            String name = file.getName().toLowerCase();
+            if (//name.matches(strongRegex) ||
+                    name.matches(weakRegex)) {
+                foundItems.add(file);
+            }
+        }
+    }
 
     @Override
     protected final void onPostExecute(ArrayList<File> files) {

@@ -76,10 +76,10 @@ public class MainActivity extends Activity  {
             @Override
             public void onClick(View view) {
                 TextView box = (TextView) findViewById(R.id.testBox);
-                String folderPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath();
-                String testString = " Does \n" + folderPath +
-                        "\n contains \n" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath()+" ?";
-                testString += "\n " + folderPath.contains(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getPath());
+                String testString = "";
+                String tempString = "s spictures";
+                // strongRegex testString+= "" + tempString.matches("(((.*)(\\s+))|(^))(pic)(.*)");
+                // weakRegex testString+= "" + tempString.matches(".*(pic).*");
                 box.setText(testString);
             }
         });

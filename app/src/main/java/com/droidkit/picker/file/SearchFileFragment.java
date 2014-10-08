@@ -29,6 +29,7 @@ import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.FileNameOrderComparator;
+import com.droidkit.picker.util.FileSearchOrderComparator;
 import com.droidkit.picker.util.MaterialInterpolator;
 import com.droidkit.picker.util.SearchViewHacker;
 
@@ -52,6 +53,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     private boolean animated = false;
     private IndexTask indexingTask;
     private ArrayList<File> index = new ArrayList<File>();
+    private String query;
 
 
     @Override
@@ -163,12 +165,17 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                     SearchViewHacker.setCloseIcon(searchView,R.drawable.bar_clear_search);
 
                 }
+                SearchFileFragment.this.query = query;
 
                 if (searchingTask != null) {
                     searchingTask.cancel(true);
                     searchingTask = null;
                 }
-                searchingTask = new SearchTask(new File(root), query, index) {
+                File rootFile = new File(root);
+                if(root == null || root.equals("")){
+                    rootFile = null;
+                }
+                searchingTask = new SearchTask(rootFile, query, index) {
                     @Override
                     public void onSearchEnded(final ArrayList<File> files) {
                         searchingTask = null;
@@ -178,7 +185,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                             status.setText(R.string.picker_empty);
                             items.clear();
                             adapter.notifyDataSetChanged();
-                            listView.setVisibility(View.GONE);
+                            // listView.setVisibility(View.GONE);
                         } else {
                             showItems(files);
                             /*
@@ -243,6 +250,9 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         SearchViewHacker.disableCloseButton(searchView);
         InputMethodManager inputMethodManager = (InputMethodManager) pickerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        if(query!=null){
+            searchView.setQuery(query,false);
+        }
     }
 
     private void showItems(ArrayList<File> files) {
@@ -259,7 +269,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                 if(item!=null)
                     items.add(item);
         }
-        Collections.sort(items, new FileNameOrderComparator());
+        Collections.sort(items, new FileSearchOrderComparator(query));
         status.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         if(!animated){
