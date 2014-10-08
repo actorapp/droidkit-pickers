@@ -14,7 +14,7 @@ public class HeaderItem extends ExplorerItem {
     private final String name;
 
     public HeaderItem(String name) {
-        super(null,false);
+        super(null, false);
         this.name = name;
     }
 

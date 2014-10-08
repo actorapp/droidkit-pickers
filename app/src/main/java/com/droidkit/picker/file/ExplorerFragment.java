@@ -131,7 +131,7 @@ public class ExplorerFragment extends Fragment {
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
-                items.add(new HeaderItem(getString(R.string.picker_header_main)));
+                items.add(new HeaderItem(getString(R.string.picker_header_recent)));
                 String externalStorageState = Environment.getExternalStorageState();
                 Log.w(LOG_TAG, externalStorageState);
                 if (

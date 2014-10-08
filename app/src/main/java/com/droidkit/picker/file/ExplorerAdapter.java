@@ -34,7 +34,7 @@ public class ExplorerAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        return true;
+        return getItem(position).isEnabled();
     }
 
     @Override
