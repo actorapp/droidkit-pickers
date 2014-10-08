@@ -10,15 +10,19 @@
     <string name="camera">Camera</string>
 
     <!-- Files -->
-    <string name="picker_files_activity_title">Select file</string>
-    <string name="picker_files_memory_phone">Phone Memory…</string>
-    <string name="picker_files_memory_external">External Memory…</string>
+    <string name="picker_files_activity_title">Select File</string>
+    <string name="picker_files_memory_phone">Phone Memory</string>
+    <string name="picker_files_memory_external">External Memory</string>
     <string name="picker_files_memory_external_error">Card is not inserted</string>
     <string name="picker_files_recent">Recent selected items</string>
     <string name="picker_files_recent_empty">You have no recent files</string>
     <string name="picker_files_denied">Access denied</string>
     <string name="picker_files_directory_empty">No files here</string>
     <string name="picker_files_search_activity_title">Search</string>
+    <string name="picker_files_search_query_text">Search</string>
+    <string name="picker_file_sort_name">Sort by name</string>
+    <string name="picker_file_sort_date">Sort by date</string>
+    <string name="picker_files_camera">Camera</string>
 
     <!-- Images -->
     <string name="picker_pictures_activity_title">Select pictures</string>

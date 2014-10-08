@@ -20,14 +20,12 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
-import com.droidkit.picker.items.FileItem;
-import com.droidkit.picker.items.FolderItem;
+import com.droidkit.picker.items.HeaderItem;
 import com.droidkit.picker.items.StorageItem;
 import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
 import com.droidkit.picker.util.FileDateOrderComparator;
 import com.droidkit.picker.util.FileNameOrderComparator;
-import com.droidkit.picker.util.FileOrderComparator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -133,7 +131,7 @@ public class ExplorerFragment extends Fragment {
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
-
+                items.add(new HeaderItem(getString(R.string.picker_header_main)));
                 String externalStorageState = Environment.getExternalStorageState();
                 Log.w(LOG_TAG, externalStorageState);
                 if (
@@ -288,10 +286,13 @@ public class ExplorerFragment extends Fragment {
         ArrayList<ExplorerItem> history = new ArrayList<ExplorerItem>();
 
         ArrayList<String> pathesFromDB = DatabaseConnector.getHistory(pickerActivity);
-        for (String pathFromDB : pathesFromDB) {
-            File historyFile = new File(pathFromDB);
-            if(historyFile.exists())
-                history.add(getFileItem(historyFile));
+        if(!pathesFromDB.isEmpty()) {
+            history.add(new HeaderItem(getString(R.string.picker_header_main)));
+            for (String pathFromDB : pathesFromDB) {
+                File historyFile = new File(pathFromDB);
+                if (historyFile.exists())
+                    history.add(getFileItem(historyFile));
+            }
         }
 
         return history;

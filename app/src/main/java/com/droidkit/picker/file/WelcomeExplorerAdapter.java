@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.items.HistoryItem;
+import com.droidkit.picker.items.HeaderItem;
 
 import java.util.ArrayList;
 
@@ -22,14 +22,14 @@ public class WelcomeExplorerAdapter extends ExplorerAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View itemView;
         ExplorerItem item = getItem(position);
-        if (item instanceof HistoryItem) {
+        if (item instanceof HeaderItem) {
 
-            itemView = View.inflate(context, R.layout.item_history, null);
-            itemView.setTag("history");
+            itemView = View.inflate(context, R.layout.picker_item_header, null);
+            itemView.setTag("header");
             item.bindData(itemView);
             return itemView;
         } else {
-            if (convertView != null && !convertView.getTag().equals("history"))
+            if (convertView != null && !convertView.getTag().equals("header"))
                 return super.getView(position, convertView, parent);
             else
                 return super.getView(position, null, parent);
