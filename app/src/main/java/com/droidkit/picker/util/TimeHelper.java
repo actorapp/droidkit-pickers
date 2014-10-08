@@ -32,12 +32,10 @@ public class TimeHelper {
                         if (currentDate.getMinutes() == convertableDate.getMinutes()) {
                             return context.getString(R.string.picker_time_minute_ago);
                         }
-                        if (currentDate.getHours() - 1 == convertableDate.getHours()) {
+                        int minutesAgo = currentDate.getMinutes() - convertableDate.getMinutes();
+                        return context.getResources().getQuantityString(R.plurals.picker_time_minutes_ago, minutesAgo, minutesAgo);
+                        // todo android-i18n-plurals implementation
 
-                            int minutesAgo = currentDate.getMinutes() - convertableDate.getMinutes();
-                            return context.getResources().getQuantityString(R.plurals.picker_time_minutes_ago, minutesAgo, minutesAgo);
-                            // todo android-i18n-plurals implementation
-                        }
                     } else {
                         if (currentDate.getHours() - 1 == convertableDate.getHours()) {
                             return context.getString(R.string.picker_time_hour_ago);
