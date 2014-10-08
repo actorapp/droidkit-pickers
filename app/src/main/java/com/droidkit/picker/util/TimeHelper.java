@@ -29,10 +29,11 @@ public class TimeHelper {
             if (currentDate.getMonth() == convertableDate.getMonth()) {
                 if (currentDate.getDay() == convertableDate.getDay()) {
                     if (currentDate.getHours() == convertableDate.getHours()) {
+                        if (currentDate.getMinutes() == convertableDate.getMinutes()) {
+                            return context.getString(R.string.picker_time_minute_ago);
+                        }
                         if (currentDate.getHours() - 1 == convertableDate.getHours()) {
-                            if (currentDate.getMinutes() == convertableDate.getMinutes()) {
-                                return context.getString(R.string.picker_time_minute_ago);
-                            }
+
                             int minutesAgo = currentDate.getMinutes() - convertableDate.getMinutes();
                             return context.getResources().getQuantityString(R.plurals.picker_time_minutes_ago, minutesAgo, minutesAgo);
                             // todo android-i18n-plurals implementation
