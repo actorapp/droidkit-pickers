@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
@@ -27,15 +26,12 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.file.search.IndexTask;
 import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.util.Converter;
-import com.droidkit.picker.util.FileNameOrderComparator;
-import com.droidkit.picker.util.FileSearchOrderComparator;
+import com.droidkit.picker.util.IndeterminateWrapper;
 import com.droidkit.picker.util.MaterialInterpolator;
 import com.droidkit.picker.util.SearchViewHacker;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class SearchFileFragment extends Fragment implements AbsListView.OnScrollListener {
@@ -47,13 +43,13 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     private ExplorerAdapter adapter;
     private String root;
     private TextView status;
-    private View searchingProgressBar;
     private SuperPickerActivity pickerActivity;
     private SearchView searchView;
     private boolean animated = false;
     private IndexTask indexingTask;
     private ArrayList<File> index = new ArrayList<File>();
     private String query;
+    private IndeterminateWrapper progress;
 
 
     @Override
@@ -66,7 +62,8 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         View contentContainer = rootView.findViewById(R.id.content_container);
 
         status = (TextView) rootView.findViewById(R.id.status);
-        searchingProgressBar = rootView.findViewById(R.id.progressBar);
+        progress = new IndeterminateWrapper(pickerActivity);
+        progress.show();
         listView = (ListView) contentContainer.findViewById(R.id.list);
         listView.setOnScrollListener(this);
 
@@ -96,9 +93,11 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                     indexingTask = null;
                     if (searchingTask != null) {
                         searchingTask.execute();
-                    }
+                    }else
+                        progress.hide();
                 }
             };
+                //searchingProgressBar.progressiveStart();
             indexingTask.execute();
         }else{
         }
@@ -175,11 +174,12 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                 if(root == null || root.equals("")){
                     rootFile = null;
                 }
+                progress.show();
                 searchingTask = new SearchTask(rootFile, query, index) {
                     @Override
-                    public void onSearchEnded(final ArrayList<File> files) {
+                    public void onSearchEnded(final ArrayList<ExplorerItem> files) {
                         searchingTask = null;
-                        searchingProgressBar.setVisibility(View.GONE);
+                        progress.hide();
                         if (files.isEmpty()) {
                             status.setVisibility(View.VISIBLE);
                             status.setText(R.string.picker_empty);
@@ -255,21 +255,9 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         }
     }
 
-    private void showItems(ArrayList<File> files) {
+    private void showItems(ArrayList<ExplorerItem> found) {
         items.clear();
-        ArrayList<ExplorerItem> foundItems = new ArrayList<ExplorerItem>();
-        for (File file : files) {
-                ExplorerItem item;
-                if (file.isDirectory()) {
-                    item = Converter.getFolderItem(file);
-
-                } else {
-                    item = Converter.getFileItem(file, false);
-                }
-                if(item!=null)
-                    items.add(item);
-        }
-        Collections.sort(items, new FileSearchOrderComparator(query));
+        items.addAll(found);
         status.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         if(!animated){
@@ -281,8 +269,12 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                         View searchItemView = listView.getChildAt(i);
                         AnimationSet slideInAnimation = new AnimationSet(true);
                         slideInAnimation.setInterpolator(new MaterialInterpolator());
-                        slideInAnimation.setDuration(150);
-                        slideInAnimation.setStartOffset(i * 50);
+                        slideInAnimation.setDuration(200);
+                        if(i!=0) {
+                            slideInAnimation.setStartOffset(i * 50 + 25);
+                        }else{
+                            slideInAnimation.setStartOffset(75);
+                        }
                         AlphaAnimation alphaAnimation = new AlphaAnimation(0,1);
                         slideInAnimation.addAnimation(alphaAnimation);
                         TranslateAnimation translateAnimation = new TranslateAnimation(0,0,150,0);
@@ -327,7 +319,8 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     }
 
     void hideKeyBoard(){
-        searchView.clearFocus();
+        if(searchView!=null)
+            searchView.clearFocus();
         pickerActivity.getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 

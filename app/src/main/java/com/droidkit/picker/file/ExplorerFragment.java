@@ -12,6 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +29,7 @@ import com.droidkit.picker.util.Converter;
 import com.droidkit.picker.util.DatabaseConnector;
 import com.droidkit.picker.util.FileDateOrderComparator;
 import com.droidkit.picker.util.FileNameOrderComparator;
+import com.droidkit.picker.util.MaterialInterpolator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,6 +54,7 @@ public class ExplorerFragment extends Fragment {
     private MenuItem sortnameMenuItem;
     private MenuItem sortdateMenuItem;
     private View emptyView;
+    private boolean loaded;
 
     @Override
     public void onAttach(Activity activity) {
@@ -65,9 +70,7 @@ public class ExplorerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(savedInstanceState==null && rootView==null) {
-            //todo: animate it here
-        }
+
         {
             rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
             list = (ListView) rootView.findViewById(R.id.list);
@@ -76,6 +79,8 @@ public class ExplorerFragment extends Fragment {
             emptyView = rootView.findViewById(R.id.empty);
 
             items = new ArrayList<ExplorerItem>();
+
+            int offsetIncrease = 0;
             if (bundle != null) {
                 path = bundle.getString("path");
 
@@ -130,7 +135,7 @@ public class ExplorerFragment extends Fragment {
                 adapter = new ExplorerAdapter(getActivity(), items);
 
             } else {
-
+                offsetIncrease = 100;
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
@@ -181,6 +186,33 @@ public class ExplorerFragment extends Fragment {
 
             list.setAdapter(adapter);
             list.setOnItemClickListener((SuperPickerActivity) getActivity());
+            if(savedInstanceState==null && !loaded) {
+                loaded = true;
+                final int finalOffsetIncrease = offsetIncrease;
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        int offsetIncreaseOffset = finalOffsetIncrease;
+                        for (int i = 0; i < list.getChildCount(); i++) {
+                            View searchItemView = list.getChildAt(i);
+                            AnimationSet slideInAnimation = new AnimationSet(true);
+                            slideInAnimation.setInterpolator(new MaterialInterpolator());
+                            slideInAnimation.setDuration(280);
+                            if (items.get(i) instanceof HeaderItem) {
+                                offsetIncreaseOffset += 150;
+                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
+                                offsetIncreaseOffset += 200;
+                            } else
+                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
+                            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+                            slideInAnimation.addAnimation(alphaAnimation);
+                            TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 150, 0);
+                            slideInAnimation.addAnimation(translateAnimation);
+                            searchItemView.startAnimation(slideInAnimation);
+                        }
+                    }
+                });
+            }
         }
         pickerActivity.updateCounter();
 

@@ -3,9 +3,10 @@ package com.example;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,21 +14,14 @@ import com.droidkit.file.R;
 import com.droidkit.picker.file.FilePickerActivity;
 import com.droidkit.picker.map.MapPickerActivity;
 import com.droidkit.picker.picture.PicturePickerActivity;
+import com.droidkit.picker.util.IndeterminateWrapper;
 import com.google.android.gms.maps.model.LatLng;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 
 
 public class MainActivity extends Activity  {
@@ -39,6 +33,7 @@ public class MainActivity extends Activity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        new IndeterminateWrapper(this).show();
         setContentView(R.layout.activity_main);
 
         Button selectFiles = (Button) findViewById(R.id.select_files);
@@ -71,8 +66,9 @@ public class MainActivity extends Activity  {
                 .build();
         ImageLoader.getInstance().init(config);
 
-        Button test = (Button) findViewById(R.id.test);
+        final Button test = (Button) findViewById(R.id.test);
         test.setOnClickListener(new View.OnClickListener() {
+            int count = 0;
             @Override
             public void onClick(View view) {
                 TextView box = (TextView) findViewById(R.id.testBox);
@@ -81,12 +77,28 @@ public class MainActivity extends Activity  {
                 // strongRegex testString+= "" + tempString.matches("(((.*)(\\s+))|(^))(pic)(.*)");
                 // weakRegex testString+= "" + tempString.matches(".*(pic).*");
                 box.setText(testString);
+                Window w = getWindow();
+                WindowManager.LayoutParams lp = w.getAttributes();
+                switch (count){
+                    case 0:
+                        testString = "Отвали от меня";
+                        break;
+                    case 1:
+                        testString = "Хватит";
+                        break;
+                    case 3:
+                        testString = "Наркоман что ли?";
+                        break;
+                }
+                count++;
+                test.setText(testString);
             }
         });
 
+
+
+
     }
-
-
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent resultData) {

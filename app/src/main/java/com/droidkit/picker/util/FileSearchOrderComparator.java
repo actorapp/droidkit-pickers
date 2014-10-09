@@ -11,8 +11,10 @@ public class FileSearchOrderComparator extends FileOrderComparator {
 
     private final String strongRegex;
     private final String mostStrongRegex;
+    private final String searchQuery;
 
     public FileSearchOrderComparator(String searchQuery){
+        this.searchQuery = searchQuery;
         String tempRegex = searchQuery.toLowerCase();
         String[] splitedTempRegex = tempRegex.split("\\s+");
         ArrayList<String> filtered = new ArrayList<String>();
@@ -35,35 +37,40 @@ public class FileSearchOrderComparator extends FileOrderComparator {
     protected int compareFiles(ExplorerItem explorerItem, ExplorerItem explorerItem2) {
         boolean firstStronk = false;
         boolean secondStronk = false;
-        if (explorerItem.getTitle().toLowerCase().matches(strongRegex)) {
+        String firstTitle = explorerItem.getTitle().toLowerCase();
+        String secondTitle = explorerItem2.getTitle().toLowerCase();
+        if(searchQuery.length()<3){
+            return (firstTitle.compareTo(secondTitle));
+        }
+        if (firstTitle.matches(strongRegex)) {
             firstStronk = true;
         }
-        if (explorerItem2.getTitle().toLowerCase().matches(strongRegex)) {
+        if (secondTitle.matches(strongRegex)) {
             secondStronk = true;
         }
         if(firstStronk && secondStronk){
             boolean firstVeryStronk = false;
             boolean secondVeryStronk = false;
 
-            if (explorerItem.getTitle().toLowerCase().matches(mostStrongRegex)) {
+            if (firstTitle.matches(mostStrongRegex)) {
                 firstVeryStronk = true;
             }
-            if (explorerItem2.getTitle().toLowerCase().matches(mostStrongRegex)) {
+            if (secondTitle.matches(mostStrongRegex)) {
                 secondVeryStronk = true;
             }
 
             if(firstVeryStronk && secondVeryStronk) {
-                return (explorerItem.getTitle().compareToIgnoreCase(explorerItem2.getTitle()));
+                return (firstTitle.compareTo(secondTitle));
             }
 
             if(!firstVeryStronk && !secondVeryStronk){
-                return (explorerItem.getTitle().compareToIgnoreCase(explorerItem2.getTitle()));
+                return (firstTitle.compareTo(secondTitle));
             }
             return firstVeryStronk ? -1 : 1;
 
         }
         if(!firstStronk && !secondStronk){
-            return (explorerItem.getTitle().compareToIgnoreCase(explorerItem2.getTitle()));
+            return (firstTitle.compareTo(secondTitle));
         }
         return firstStronk ? -1 : 1;
     }

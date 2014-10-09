@@ -12,6 +12,7 @@ import com.droidkit.file.R;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
 import com.droidkit.picker.items.StorageItem;
+import com.droidkit.picker.util.Timer;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class ExplorerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        long startTime = System.currentTimeMillis();
+        Timer.start();
         View itemView;
         ExploreItemViewHolder holder;
         if (convertView == null) {
@@ -74,7 +75,7 @@ public class ExplorerAdapter extends BaseAdapter {
         if(getCount()==1){
             holder.disableDivider();
         }
-        Log.d("Picker", "Time to create item: " + (System.currentTimeMillis() - startTime));
+        Timer.stop("Item created");
         return itemView;
     }
 }

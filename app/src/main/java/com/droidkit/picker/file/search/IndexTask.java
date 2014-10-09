@@ -6,6 +6,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
+import com.droidkit.picker.util.Timer;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -42,26 +44,29 @@ public abstract class IndexTask extends AsyncTask<Void,File,Integer> {
                 //onSearchStarted();
             }
         });
-        Log.i("Searching", "Scanning started. Root path: " + root);
+        Log.i("Searching", "Indexing started. Root path: " + root);
         if (!root.getPath().equals("")) {
             scanFolder(root);
         } else {
-            scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+            Timer.start();
+            scanFolder(Environment.getExternalStorageDirectory());
+            /*scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
             scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
             if (Build.VERSION.SDK_INT >= 19) {
                 scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS));
             }
-            scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));
+            scanFolder(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC));*/
+            Timer.stop("Indexing");
         }
         if (isCancelled()) {
             return null;
         } else
-            Log.i("Searching", "Scanning ended. " + foundCount + " items found");
+            Log.i("Search", "Indexing ended. " + index.size() + " items indexed");
         return foundCount;
     }
 
     private void scanFolder(File folder) {
-        if (folder.getPath().contains("/sys")) {
+        if (folder.getPath().contains("/sys") || folder.getPath().toLowerCase().contains("android/data")) {
             return;
         }
 
@@ -76,6 +81,9 @@ public abstract class IndexTask extends AsyncTask<Void,File,Integer> {
             if (file.isDirectory()) {
                 scanFolder(file);
             } else {
+                if (file.getName().toCharArray()[0] == '.') {
+                    continue;
+                }
                 index.add(file);
             }
         }
