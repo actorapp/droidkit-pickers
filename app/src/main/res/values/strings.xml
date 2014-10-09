@@ -17,6 +17,7 @@
     <string name="picker_search">Search</string>
     <string name="picker_header_recent">Recent Files</string>
     <string name="picker_header_main">Main Folders</string>
+
     <plurals name="picker_time_minutes_ago">
         <item quantity="one">%d minute ago</item>
         <item quantity="two">%d minutes ago</item>
@@ -24,4 +25,7 @@
         <item quantity="many">%d minutes ago</item>
         <item quantity="other">%d songs found.</item>
     </plurals>
+
+    <string name="title_activity_test">TestActivity</string>
+
 </resources>

@@ -66,7 +66,9 @@ public abstract class IndexTask extends AsyncTask<Void,File,Integer> {
     }
 
     private void scanFolder(File folder) {
-        if (folder.getPath().contains("/sys") || folder.getPath().toLowerCase().contains("android/data")) {
+        if (folder.getPath().contains("/sys")
+                || folder.getPath().toLowerCase().contains("/cache")
+                || folder.getPath().toLowerCase().contains(Environment.getExternalStorageDirectory().getPath().toLowerCase() + "/android")) {
             return;
         }
 

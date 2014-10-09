@@ -118,7 +118,25 @@ public class ExplorerFragment extends Fragment {
                     if (fileList.length == 0) {
 
                         emptyView.setVisibility(View.VISIBLE);
+                        AnimationSet slideInAnimation = new AnimationSet(true);
+                        slideInAnimation.setInterpolator(new MaterialInterpolator());
+                        slideInAnimation.setDuration(280);
+                        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+                        slideInAnimation.addAnimation(alphaAnimation);
+                        TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 150, 0);
+                        slideInAnimation.addAnimation(translateAnimation);
+                        emptyView.startAnimation(slideInAnimation);
+
                         statusView.setVisibility(View.VISIBLE);
+                        AnimationSet slideInAnimation1 = new AnimationSet(true);
+                        slideInAnimation1.setInterpolator(new MaterialInterpolator());
+                        slideInAnimation1.setDuration(280);
+                        slideInAnimation1.setStartOffset(150);//cause of offset
+                        AlphaAnimation alphaAnimation1 = new AlphaAnimation(0, 1);
+                        slideInAnimation1.addAnimation(alphaAnimation1);
+                        TranslateAnimation translateAnimation1 = new TranslateAnimation(0, 0, 150, 0);
+                        slideInAnimation1.addAnimation(translateAnimation1);
+                        statusView.startAnimation(slideInAnimation1);
                         statusView.setText(R.string.picker_files_directory_empty);
                         //return rootView;
                     }

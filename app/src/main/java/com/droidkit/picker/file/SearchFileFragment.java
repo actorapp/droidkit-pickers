@@ -49,7 +49,6 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     private IndexTask indexingTask;
     private ArrayList<File> index = new ArrayList<File>();
     private String query;
-    private IndeterminateWrapper progress;
 
 
     @Override
@@ -62,8 +61,8 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         View contentContainer = rootView.findViewById(R.id.content_container);
 
         status = (TextView) rootView.findViewById(R.id.status);
-        progress = new IndeterminateWrapper(pickerActivity);
-        progress.show();
+        // progress = new IndeterminateWrapper(pickerActivity);
+        // progress.show();
         listView = (ListView) contentContainer.findViewById(R.id.list);
         listView.setOnScrollListener(this);
 
@@ -93,8 +92,9 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                     indexingTask = null;
                     if (searchingTask != null) {
                         searchingTask.execute();
-                    }else
-                        progress.hide();
+                    }else {
+                    //  progress.hide();
+                    }
                 }
             };
                 //searchingProgressBar.progressiveStart();
@@ -174,12 +174,12 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
                 if(root == null || root.equals("")){
                     rootFile = null;
                 }
-                progress.show();
+                // progress.show();
                 searchingTask = new SearchTask(rootFile, query, index) {
                     @Override
                     public void onSearchEnded(final ArrayList<ExplorerItem> files) {
                         searchingTask = null;
-                        progress.hide();
+                        // progress.hide();
                         if (files.isEmpty()) {
                             status.setVisibility(View.VISIBLE);
                             status.setText(R.string.picker_empty);

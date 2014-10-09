@@ -13,7 +13,7 @@ public class Timer {
     }
 
     public static void stop(String message) {
-        Log.d("Picker", "Timer: " + (System.currentTimeMillis() - startTime)+"ms, message: "+message);
+        Log.d("Picker timer", "Timer: " + (System.currentTimeMillis() - startTime)+"ms, message: "+message);
         startTime = 0;
     }
 }

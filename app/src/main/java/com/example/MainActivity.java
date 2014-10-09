@@ -89,6 +89,9 @@ public class MainActivity extends Activity  {
                     case 3:
                         testString = "Наркоман что ли?";
                         break;
+                    case 4:
+                        startActivity(new Intent(getBaseContext(), TestActivity.class));
+                        break;
                 }
                 count++;
                 test.setText(testString);

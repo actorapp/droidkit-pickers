@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.util.SearchViewHacker;
+import com.droidkit.picker.util.Timer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -76,8 +77,9 @@ public class MapPickerActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timer.start();
         setContentView(R.layout.activity_map_picker);
-
+        Timer.stop("Layout set");
         list = (ListView) findViewById(R.id.list);
         list.setOnScrollListener(this);
         list.setOnItemClickListener(this);
@@ -348,6 +350,7 @@ public class MapPickerActivity extends Activity
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+        Timer.start();
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         for (String provider : locationManager.getAllProviders()) {
             currentLocation = locationManager.getLastKnownLocation(provider);
@@ -367,7 +370,7 @@ public class MapPickerActivity extends Activity
         mMap.setMyLocationEnabled(true);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerClickListener(this);
-
+        Timer.stop("Map set");
     }
 
     private void fetchPlaces(String query) {

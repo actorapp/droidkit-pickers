@@ -52,7 +52,7 @@ public class ExplorerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Timer.start();
+        //Timer.start();
         View itemView;
         ExploreItemViewHolder holder;
         if (convertView == null) {
@@ -75,7 +75,7 @@ public class ExplorerAdapter extends BaseAdapter {
         if(getCount()==1){
             holder.disableDivider();
         }
-        Timer.stop("Item created");
+        //Timer.stop("Item created");
         return itemView;
     }
 }

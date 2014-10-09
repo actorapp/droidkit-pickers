@@ -1,18 +1,12 @@
 package com.droidkit.picker.util;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import com.droidkit.file.R;
 import com.droidkit.progress.IndeterminateView;
@@ -23,14 +17,14 @@ import com.droidkit.progress.IndeterminateView;
 public class IndeterminateWrapper {
 
 
-    IndeterminateView mProgressBar;
+    IndeterminateView indeterminateView;
 
 
     public IndeterminateWrapper(Activity activity) {
         Context context = activity;
         View decorView = activity.getWindow().getDecorView();
-        mProgressBar = (IndeterminateView) LayoutInflater.from(context).inflate(R.layout.progress, null, false);
-
+        indeterminateView = (IndeterminateView) LayoutInflater.from(context).inflate(R.layout.progress, null, false);
+        indeterminateView.setVisibility(View.GONE);
 
         // get the action bar layout
         int actionBarId = context.getResources().getIdentifier("action_bar_container", "id", "android");
@@ -44,14 +38,14 @@ public class IndeterminateWrapper {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.BOTTOM;
-        f.addView(mProgressBar, params);
+        f.addView(indeterminateView, params);
     }
 
     public void show() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        indeterminateView.setVisibility(View.VISIBLE);
     }
 
     public void hide() {
-        mProgressBar.setVisibility(View.GONE);
+        indeterminateView.setVisibility(View.GONE);
     }
 }

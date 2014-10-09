@@ -49,6 +49,9 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<ExplorerI
         foundItems = new ArrayList<File>();
     }
 
+    public void start(){
+        onPostExecute(doInBackground());
+    }
 
     @Override
     protected final ArrayList<ExplorerItem> doInBackground(Void... voids) {
@@ -67,6 +70,7 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<ExplorerI
             }
         });
         Log.i("Searching", "Search started. Root path: " + root);
+        Timer.start();
         for (File file : index) {
             compare(file);
             if(isCancelled()) {
@@ -74,6 +78,8 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<ExplorerI
                 return null;
             }
         }
+        Timer.stop("Searched");
+        resort();
         Log.i("Searching", "Search ended. " + foundItems.size() + " items found");
         ArrayList<ExplorerItem> items = new ArrayList<ExplorerItem>();
         for (File file : foundItems) {
@@ -87,9 +93,7 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<ExplorerI
             if(item!=null)
                 items.add(item);
         }
-        Timer.start();
-        Collections.sort(items, new CancelableComparator(query));
-        Timer.stop("Sorted");
+        // Collections.sort(items, new CancelableComparator(query));
         return items;
     }
     private class CancelableComparator extends FileSearchOrderComparator{
@@ -106,15 +110,36 @@ public abstract class SearchTask extends AsyncTask<Void,Void,ArrayList<ExplorerI
             return super.compare(explorerItem, explorerItem2);
         }
     }
+    private ArrayList<File> strongRegexFiles = new ArrayList<File>();
+    private ArrayList<File> strongRegexFolders = new ArrayList<File>();
+    private ArrayList<File> weakRegexFiles = new ArrayList<File>();
+    private ArrayList<File> weakRegexFolders = new ArrayList<File>();
     private void compare(File file) {
         if (root == null || file.getPath().contains(root.getPath())) {
 
             String name = file.getName().toLowerCase();
-            if (//name.matches(strongRegex) ||
-                    name.matches(weakRegex)) {
-                foundItems.add(file);
+            if (name.matches(weakRegex)) {
+                if(name.matches(strongRegex)){
+
+                    if (file.isDirectory()) {
+                        strongRegexFolders.add(file);
+                    }else{
+                        strongRegexFiles.add(file);
+                    }
+                }else
+                if (file.isDirectory()) {
+                    weakRegexFolders.add(file);
+                }else{
+                    weakRegexFiles.add(file);
+                }
             }
         }
+    }
+    void resort(){
+        foundItems.addAll(strongRegexFolders);
+        foundItems.addAll(weakRegexFolders);
+        foundItems.addAll(strongRegexFiles);
+        foundItems.addAll(weakRegexFiles);
     }
 
     @Override
