@@ -1,5 +1,6 @@
 package com.droidkit.picker.file;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Build;
@@ -207,9 +208,11 @@ public class ExplorerFragment extends Fragment {
             if(savedInstanceState==null && !loaded) {
                 loaded = true;
                 final int finalOffsetIncrease = offsetIncrease;
+                list.setAlpha(0);
                 list.post(new Runnable() {
                     @Override
                     public void run() {
+                        list.setAlpha(1);
                         int offsetIncreaseOffset = finalOffsetIncrease;
                         for (int i = 0; i < list.getChildCount(); i++) {
                             View searchItemView = list.getChildAt(i);

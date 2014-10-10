@@ -261,10 +261,11 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         status.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
         if(!animated){
+            listView.setAlpha(0);
             listView.post(new Runnable() {
                 @Override
                 public void run() {
-                    listView.setVisibility(View.VISIBLE);
+                    listView.setAlpha(1);
                     for (int i = 0; i < listView.getChildCount(); i++) {
                         View searchItemView = listView.getChildAt(i);
                         AnimationSet slideInAnimation = new AnimationSet(true);
