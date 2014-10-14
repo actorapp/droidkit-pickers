@@ -19,7 +19,6 @@
     </style>
 
     <style name="pickerActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <!-- todo repair actionbar -->
         <item name="android:titleTextStyle">@style/pickerActionBarTitleStyle</item>
         <item name="android:background">@color/main_color</item>
     </style>

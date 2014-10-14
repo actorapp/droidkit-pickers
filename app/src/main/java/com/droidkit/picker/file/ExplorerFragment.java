@@ -1,6 +1,9 @@
 package com.droidkit.picker.file;
 
 import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Build;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.ListView;
@@ -21,6 +25,7 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
+import com.droidkit.picker.file.animations.AnimationType;
 import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
@@ -55,7 +60,9 @@ public class ExplorerFragment extends Fragment {
     private MenuItem sortnameMenuItem;
     private MenuItem sortdateMenuItem;
     private View emptyView;
-    private boolean loaded;
+
+    // animation needs
+    private boolean animated;
 
     @Override
     public void onAttach(Activity activity) {
@@ -68,10 +75,11 @@ public class ExplorerFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.d("Explorer Animation","Created");
         {
             rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
             list = (ListView) rootView.findViewById(R.id.list);
@@ -81,7 +89,6 @@ public class ExplorerFragment extends Fragment {
 
             items = new ArrayList<ExplorerItem>();
 
-            int offsetIncrease = 0;
             if (bundle != null) {
                 path = bundle.getString("path");
 
@@ -154,7 +161,6 @@ public class ExplorerFragment extends Fragment {
                 adapter = new ExplorerAdapter(getActivity(), items);
 
             } else {
-                offsetIncrease = 100;
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
@@ -205,35 +211,7 @@ public class ExplorerFragment extends Fragment {
 
             list.setAdapter(adapter);
             list.setOnItemClickListener((SuperPickerActivity) getActivity());
-            if(savedInstanceState==null && !loaded) {
-                loaded = true;
-                final int finalOffsetIncrease = offsetIncrease;
-                list.setAlpha(0);
-                list.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        list.setAlpha(1);
-                        int offsetIncreaseOffset = finalOffsetIncrease;
-                        for (int i = 0; i < list.getChildCount(); i++) {
-                            View searchItemView = list.getChildAt(i);
-                            AnimationSet slideInAnimation = new AnimationSet(true);
-                            slideInAnimation.setInterpolator(new MaterialInterpolator());
-                            slideInAnimation.setDuration(280);
-                            if (items.get(i) instanceof HeaderItem) {
-                                offsetIncreaseOffset += 150;
-                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
-                                offsetIncreaseOffset += 200;
-                            } else
-                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
-                            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
-                            slideInAnimation.addAnimation(alphaAnimation);
-                            TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 150, 0);
-                            slideInAnimation.addAnimation(translateAnimation);
-                            searchItemView.startAnimation(slideInAnimation);
-                        }
-                    }
-                });
-            }
+
         }
         pickerActivity.updateCounter();
 
@@ -357,9 +335,159 @@ public class ExplorerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("Explorer Animation", "Resume");
         setTitle();
         pickerActivity.setFragment(this);
         pickerActivity.invalidateOptionsMenu();
+        if(!animated) {
+            animated = true;
+        }
+    }
+
+
+
+    @Override
+    public Animator onCreateAnimator(int transit, boolean enter, int nextAnim) {
+        Log.d("Explorer animation", "CreateAnimator: " + transit + " " + enter + " " + nextAnim);
+
+
+        int animationLength = 0;
+        switch (nextAnim) {
+            case R.animator.fragment_explorer_welcome_enter:
+                list.setAlpha(0);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.setAlpha(1);
+                        int offsetIncreaseOffset = 0;
+                        for (int i = 0; i < list.getChildCount(); i++) {
+                            View searchItemView = list.getChildAt(i);
+                            AnimationSet slideInAnimation = new AnimationSet(true);
+                            slideInAnimation.setInterpolator(new MaterialInterpolator());
+                            slideInAnimation.setDuration(180);
+                            if (items.get(i) instanceof HeaderItem) {
+                                offsetIncreaseOffset += 150;
+                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
+                                offsetIncreaseOffset += 200;
+                            } else
+                                slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
+                            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+                            slideInAnimation.addAnimation(alphaAnimation);
+                            TranslateAnimation translateAnimation = new TranslateAnimation(0, 0, 150, 0);
+                            slideInAnimation.addAnimation(translateAnimation);
+                            searchItemView.startAnimation(slideInAnimation);
+                        }
+                    }
+                });
+                animationLength = list.getChildCount() * 100 + 50;
+                Log.d("Explorer animation", "CreateAnimator: enter");
+                break;
+            case R.animator.fragment_explorer_enter:
+                list.setAlpha(0);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.setAlpha(1);
+                        int offsetIncreaseOffset = 0;
+                        for (int i = 0; i < list.getChildCount(); i++) {
+                            View searchItemView = list.getChildAt(i);
+                            AnimationSet slideInAnimation = new AnimationSet(true);
+                            slideInAnimation.setInterpolator(new MaterialInterpolator());
+                            slideInAnimation.setDuration(100);
+                            slideInAnimation.setStartOffset(i * 50 + offsetIncreaseOffset);
+                            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+                            slideInAnimation.addAnimation(alphaAnimation);
+                            TranslateAnimation translateAnimation = new TranslateAnimation(100, 0, 0, 0);
+                            slideInAnimation.addAnimation(translateAnimation);
+                            searchItemView.startAnimation(slideInAnimation);
+                        }
+                    }
+                });
+                animationLength = list.getChildCount() * 100 + 50;
+                Log.d("Explorer animation", "CreateAnimator: enter");
+                break;
+            case R.animator.fragment_explorer_welcome_exit:
+            case R.animator.fragment_explorer_exit:
+
+                for (int i = 0; i < list.getChildCount(); i++) {
+                    View searchItemView = list.getChildAt(i);
+                    AnimationSet slideInAnimation = new AnimationSet(true);
+                    slideInAnimation.setInterpolator(new MaterialInterpolator());
+                    slideInAnimation.setDuration(100);
+                    slideInAnimation.setStartOffset(i * 50);
+                    slideInAnimation.setFillAfter(true);
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+                    alphaAnimation.setFillAfter(true);
+                    slideInAnimation.addAnimation(alphaAnimation);
+                    TranslateAnimation translateAnimation = new TranslateAnimation(0, -100, 0, 0);
+                    slideInAnimation.addAnimation(translateAnimation);
+                    searchItemView.startAnimation(slideInAnimation);
+                }
+
+                animationLength = 0;// list.getChildCount() * 100 + 50;
+                Log.d("Explorer animation", "CreateAnimator: exit");
+                break;
+            case R.animator.fragment_explorer_return:
+                list.setAlpha(0);
+                list.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        list.setAlpha(1);
+                        for (int i = 0; i < list.getChildCount(); i++) {
+                            View searchItemView = list.getChildAt(i);
+                            AnimationSet slideInAnimation = new AnimationSet(true);
+                            slideInAnimation.setInterpolator(new MaterialInterpolator());
+                            slideInAnimation.setDuration(100);
+                            slideInAnimation.setStartOffset(i * 50);
+                            AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+                            slideInAnimation.addAnimation(alphaAnimation);
+                            TranslateAnimation translateAnimation = new TranslateAnimation(-100, 0, 0, 0);
+                            slideInAnimation.addAnimation(translateAnimation);
+                            searchItemView.startAnimation(slideInAnimation);
+                        }
+                    }
+                });
+                animationLength = list.getChildCount() * 100 + 50;
+                Log.d("Explorer animation", "CreateAnimator: return");
+                break;
+
+            // destroy
+            case R.animator.fragment_explorer_out:
+
+
+                for (int i = 0; i < list.getChildCount(); i++) {
+                    View searchItemView = list.getChildAt(i);
+                    AnimationSet slideInAnimation = new AnimationSet(true);
+                    slideInAnimation.setInterpolator(new MaterialInterpolator());
+                    slideInAnimation.setDuration(100);
+                    slideInAnimation.setStartOffset(i * 50);
+                    slideInAnimation.setFillAfter(true);
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+                    alphaAnimation.setFillAfter(true);
+                    slideInAnimation.addAnimation(alphaAnimation);
+                    TranslateAnimation translateAnimation = new TranslateAnimation(0, 100, 0, 0);
+                    slideInAnimation.addAnimation(translateAnimation);
+                    searchItemView.startAnimation(slideInAnimation);
+                }
+                if(items.size()==1){
+                    AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
+                    alphaAnimation.setInterpolator(new MaterialInterpolator());
+                    alphaAnimation.setDuration(100);
+                    alphaAnimation.setFillAfter(true);
+                    emptyView.startAnimation(alphaAnimation);
+                    statusView.startAnimation(alphaAnimation);
+                    animationLength = 250;
+                }//else
+                animationLength =0;// list.getChildCount() * 100 + 50;
+                Log.d("Explorer animation", "CreateAnimator: out");
+                break;
+        }
+
+        AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(pickerActivity,
+                R.animator.fragment_explorer_enter);
+        animator.setDuration(animationLength);
+
+        return animator;
     }
 
     private void setTitle() {
