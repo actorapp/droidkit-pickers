@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="google_play_services_version">1</integer>
-    <integer name="fragment_animation_duration">400</integer>
-    <integer name="num_columns_albums">2</integer>
-    <integer name="num_columns_pictures" >3</integer>
-</resources>
