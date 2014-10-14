@@ -3,12 +3,10 @@ package com.droidkit.filepicker.sample;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import com.droidkit.pickers.Intents;
-import com.google.android.gms.maps.model.LatLng;
+import com.droidkit.pickers.sample.R;
 
 import java.util.ArrayList;
 
@@ -42,14 +40,14 @@ public class PickerSampleActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == ACTIVITY_REQUEST_FILES) {
-                String res = "extra[result]: " + data.getStringExtra("result");
+                String res = "";
                 ArrayList<String> files = data.getStringArrayListExtra("picked");
                 if (!files.isEmpty())
                     for (int i = 0; i < files.size(); i++) {
-                        res += "\nextra[picked][" + i + "]: " + files.get(i);
+                        res += "extra[picked][" + i + "]: " + files.get(i) + "\n";
                     }
                 else {
-                    res = "\nextra[picked].size() == 0";
+                    res = "extra[picked].size() == 0";
                 }
                 ((TextView) findViewById(R.id.result)).setText(res);
             } else if (requestCode == ACTIVITY_REQUEST_MAP) {

@@ -43,7 +43,7 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
         // getActionBar().setDisplayShowHomeEnabled(false);
         // getActionBar().setDisplayUseLogoEnabled(false);
 
-        View select =  findViewById(R.id.select);
+        View select = findViewById(R.id.select);
         select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,8 +72,8 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(currentFragment!=null){
-            currentFragment.onCreateOptionsMenu(menu,getMenuInflater());
+        if (currentFragment != null) {
+            currentFragment.onCreateOptionsMenu(menu, getMenuInflater());
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -81,21 +81,15 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        switch (id){
+        switch (id) {
             case android.R.id.home:
                 // finish();
                 onBackPressed();
                 return true;
         }
-        if(currentFragment!=null)
+        if (currentFragment != null)
             return currentFragment.onOptionsItemSelected(item);
         return super.onOptionsItemSelected(item);
     }
@@ -105,6 +99,7 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
         super.onAttachFragment(fragment);
         // currentFragment = fragment;
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -117,7 +112,7 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
         boolean selected = !selectedItems.contains(path);
 
         if (selected) {
-            if(selectedItems.size()>9){
+            if (selectedItems.size() > 9) {
                 Toast.makeText(this, "You can pick only 10 items.", Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -130,7 +125,8 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
         updateCounter();
         return selected;
     }
-    public void selectItem(ExplorerItem item, View itemView){
+
+    public void selectItem(ExplorerItem item, View itemView) {
         item.setSelected(selectItem(item.getPath()));
         item.bindData(itemView);
     }
@@ -140,14 +136,14 @@ public abstract class BasePickerActivity extends Activity implements AdapterView
         View selectView = findViewById(R.id.select);
         View cancelView = findViewById(R.id.cancel);
         View controllerHolder = findViewById(R.id.controllers);
-        if(!selectedItems.isEmpty()) {
+        if (!selectedItems.isEmpty()) {
             counterView.setText("" + selectedItems.size());
         }
         final View counterHolder = findViewById(R.id.counter_holder);
         findViewById(R.id.select_text).setEnabled(!selectedItems.isEmpty());
         selectView.setEnabled(!selectedItems.isEmpty());
-        if((selectedItems.isEmpty() && counterHolder.getVisibility() != View.GONE)
-            ||(!selectedItems.isEmpty() && counterHolder.getVisibility() == View.GONE)){
+        if ((selectedItems.isEmpty() && counterHolder.getVisibility() != View.GONE)
+                || (!selectedItems.isEmpty() && counterHolder.getVisibility() == View.GONE)) {
 
             final int i = counterHolder.getLayoutParams().width;
             ValueAnimator valueAnimator;

@@ -4,5 +4,5 @@
     <string name="app_name">sample</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+<string name="sample_maps_key">AIzaSyBV6Kul7Ybt_7yeEd6Im7gSjN_0fNu_Psw</string>
 </resources>

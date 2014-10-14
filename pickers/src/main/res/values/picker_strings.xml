@@ -10,8 +10,7 @@
     <string name="picker_loading">Loading</string>
     <string name="picker_internalerror">Error has occurred</string>
     <string name="picker_search">Search</string>
-    <!-- todo google maps api key -->
-    <string name="picker_google_maps_key">AIzaSyBV6Kul7Ybt_7yeEd6Im7gSjN_0fNu_Psw</string>
+
     <string name="picker_pick">Pick</string>
     <string name="picker_cancel">Cancel</string>
 

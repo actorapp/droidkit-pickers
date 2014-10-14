@@ -15,7 +15,6 @@ import com.droidkit.pickers.file.util.HistoryDatabase;
 public class FilePickerActivity extends BasePickerActivity {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,26 +38,15 @@ public class FilePickerActivity extends BasePickerActivity {
 
     @Override
     protected void save() {
-
         HistoryDatabase.save(this, selectedItems);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View itemView, int position, long id) {
 
         ExplorerItem item = (ExplorerItem) parent.getItemAtPosition(position);
 
-        if(item instanceof BackItem){
+        if (item instanceof BackItem) {
             onBackPressed();
             return;
         }
@@ -78,7 +66,7 @@ public class FilePickerActivity extends BasePickerActivity {
                     .commit();
         } else {
 
-            selectItem(item,itemView);
+            selectItem(item, itemView);
             returnResult();
         }
     }
