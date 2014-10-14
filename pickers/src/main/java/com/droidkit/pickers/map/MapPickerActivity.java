@@ -205,7 +205,7 @@ public class MapPickerActivity extends Activity
             valueAnimator.start();
 
             listHolder.setVisibility(View.VISIBLE);
-            fullSizeButton.setImageResource(R.drawable.conv_location_fullscreen_icon);
+            fullSizeButton.setImageResource(R.drawable.picker_map_fullscreen_icon);
         } else {
 
             fullSizeButton.setEnabled(false);
@@ -256,7 +256,7 @@ public class MapPickerActivity extends Activity
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    fullSizeButton.setImageResource(R.drawable.conv_location_halfscreen_icon);
+                    fullSizeButton.setImageResource(R.drawable.picker_map_halfscreen_icon);
                     listHolder.setVisibility(View.GONE);
                     valueAnimator.start();
                 }
@@ -309,7 +309,7 @@ public class MapPickerActivity extends Activity
 
         SearchViewHacker.disableCloseButton(searchView);
         SearchViewHacker.disableMagIcon(searchView);
-        SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
+        SearchViewHacker.setIcon(searchView, R.drawable.picker_bar_search);
         SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
         SearchViewHacker.setEditText(searchView, R.drawable.picker_search_text_box);
         SearchViewHacker.setHint(searchView, getString(R.string.picker_file_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_focused_color), null);

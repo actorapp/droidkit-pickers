@@ -2,7 +2,6 @@ package com.droidkit.pickers.file;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -20,6 +19,9 @@ public class FilePickerActivity extends BasePickerActivity {
         super.onCreate(savedInstanceState);
         //searchEnable();
         findViewById(R.id.controllers).setVisibility(View.GONE);
+
+        getActionBar().setIcon(R.drawable.picker_bar_filepicker_icon);
+        getActionBar().setLogo(R.drawable.picker_bar_filepicker_icon);
         getActionBar().setDisplayShowHomeEnabled(true);
         getActionBar().setDisplayUseLogoEnabled(true);
         /*

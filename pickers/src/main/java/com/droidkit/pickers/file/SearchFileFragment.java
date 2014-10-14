@@ -135,7 +135,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         }
 
         SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
-        SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
+        SearchViewHacker.setIcon(searchView, R.drawable.picker_bar_search);
         SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
         SearchViewHacker.setEditText(searchView, R.drawable.picker_search_text_box);
         SearchViewHacker.setHint(searchView, getString(R.string.picker_file_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_hint_color), null);
@@ -290,7 +290,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         super.onPause();
 
         hideKeyBoard();
-        pickerActivity.getActionBar().setIcon(R.drawable.bar_filepicker_icon);
+        pickerActivity.getActionBar().setIcon(R.drawable.picker_bar_filepicker_icon);
     }
 
 
@@ -305,7 +305,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         // pickerActivity.searchDisable();
         pickerActivity.setFragment(this);
         pickerActivity.invalidateOptionsMenu();
-        pickerActivity.getActionBar().setIcon(R.drawable.bar_search);
+        pickerActivity.getActionBar().setIcon(R.drawable.picker_bar_search);
     }
 
     @Override
