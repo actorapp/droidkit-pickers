@@ -44,7 +44,7 @@
             android:layout_height="64dp">
 
             <EditText
-                android:id="@+id/search_text_box"
+                android:id="@+id/picker_search_text_box"
                 android:hint="Search here"
                 android:textColor="#ffffff"
                 android:paddingLeft="4dp"
@@ -52,13 +52,13 @@
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textColorHint="#bbffffff"
-                android:background="@drawable/search_text_box"
+                android:background="@drawable/picker_search_text_box"
                 android:layout_width="match_parent"
                 android:layout_height="28dp"/>
             <Spinner
 
                 android:layout_marginTop="8dp"
-                android:background="@drawable/search_text_box"
+                android:background="@drawable/picker_search_text_box"
                 android:id="@+id/search_type_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="24dp"/>

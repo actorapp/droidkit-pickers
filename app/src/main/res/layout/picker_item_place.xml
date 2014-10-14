@@ -31,7 +31,7 @@
                 android:id="@+id/title"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:textColor="@color/black"
+                android:textColor="@color/picker_black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
@@ -50,7 +50,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/picker_map_item_place_checked"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
         />
     </RelativeLayout>

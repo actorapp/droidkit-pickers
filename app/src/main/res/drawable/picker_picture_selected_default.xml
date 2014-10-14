@@ -3,8 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape>
-            <solid
-                android:color="@color/picture_item_selection_selected"/>
+            <solid android:color="@color/picker_picture_item_selection"/>
         </shape>
     </item>
 </layer-list>

@@ -3,7 +3,7 @@
 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/main_color"
+    android:background="@color/picker_main_color"
     android:orientation="horizontal"
     android:id="@+id/controllers"
     android:layout_alignParentBottom="true"
@@ -12,7 +12,7 @@
     tools:showIn="@layout/activity_picker">
 
     <RelativeLayout
-        android:background="@drawable/controller_background"
+        android:background="@drawable/picker_controller_background"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:id="@+id/cancel"
@@ -23,7 +23,7 @@
             android:textAllCaps="true"
             android:textSize="@dimen/picker_controls_text_size"
             android:layout_centerInParent="true"
-            android:textColor="@color/controller_text_color"
+            android:textColor="@color/picker_controller_text_color"
             android:text="cancel"
             android:background="#00000000"
             android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:id="@+id/select"
-        android:background="@drawable/controller_background"
+        android:background="@drawable/picker_controller_background"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -56,9 +56,9 @@
             <TextView
                 android:textStyle="bold"
                 android:textAllCaps="true"
-                android:background="@drawable/counter_background"
+                android:background="@drawable/picker_counter_background"
                 android:text="0"
-                android:textColor="@color/controller_background_default"
+                android:textColor="@color/picker_controller_background_default"
                 android:textSize="@dimen/picker_controls_text_size"
                 android:id="@+id/counter"
                 android:gravity="center"
@@ -73,7 +73,7 @@
             android:textSize="@dimen/picker_controls_text_size"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:textColor="@color/controller_text_color"
+            android:textColor="@color/picker_controller_text_color"
             android:text="@string/picker_pick"
             android:gravity="center"
             android:layout_width="wrap_content"

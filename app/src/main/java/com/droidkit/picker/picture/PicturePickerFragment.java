@@ -82,7 +82,7 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
         //todo: animate it here
         items = new ArrayList<ExplorerItem>();
         if (bundle == null) {
-            rootView = inflater.inflate(R.layout.fragment_picture_picker, container, false);
+            rootView = inflater.inflate(R.layout.picker_fragment_picture_picker, container, false);
             loadDirectories();
             if(items.isEmpty()){
 
@@ -100,7 +100,7 @@ public class PicturePickerFragment extends Fragment implements AdapterView.OnIte
             path = bundle.getString("path");
             pathName = bundle.getString("path_name");
             loadDirectory();
-            rootView = inflater.inflate(R.layout.fragment_picture_picker, container, false);
+            rootView = inflater.inflate(R.layout.picker_fragment_picture_picker, container, false);
             if (items.isEmpty()) {
                 ((TextView)rootView.findViewById(R.id.status)).setText(R.string.picker_pictures_empty_folder);
             } else {

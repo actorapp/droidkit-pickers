@@ -1,34 +1,15 @@
 package com.droidkit.picker.map;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
@@ -62,7 +43,7 @@ public class PlacesAdapter extends BaseAdapter {
         if(convertView!=null){
             itemView = convertView;
         }else{
-            itemView = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.item_place,null);
+            itemView = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.picker_item_place,null);
         }
 
         TextView titleView = (TextView) itemView.findViewById(R.id.title);
@@ -73,7 +54,7 @@ public class PlacesAdapter extends BaseAdapter {
 
         titleView.setText(item.name);
         subtitleView.setText(item.vicinity);
-        iconView.setImageResource(R.drawable.user_placeholder);
+        iconView.setImageResource(R.drawable.example_user_placeholder);
 
         return itemView;
     }

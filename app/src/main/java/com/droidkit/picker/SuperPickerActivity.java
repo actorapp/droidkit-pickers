@@ -1,30 +1,21 @@
 package com.droidkit.picker;
 
-import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droidkit.file.R;
-import com.droidkit.picker.file.ExplorerFragment;
-import com.droidkit.picker.file.SearchFileFragment;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.util.DatabaseConnector;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,10 +31,10 @@ public abstract class SuperPickerActivity extends Activity implements AdapterVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_picker);
+        setContentView(R.layout.picker_activity_picker);
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
+                    .setCustomAnimations(R.animator.picker_fragment_explorer_welcome_enter, R.animator.picker_fragment_explorer_welcome_exit)
                     .add(R.id.container, getWelcomeFragment())
                     .commit();
         }

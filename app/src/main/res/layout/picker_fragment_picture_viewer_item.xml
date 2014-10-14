@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/image"
-        android:src="@drawable/user_placeholder"
+        android:src="@drawable/example_user_placeholder"
         android:scaleType="centerInside"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -15,7 +15,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:id="@+id/selected"
-        android:background="@drawable/ic_selected"
+        android:background="@drawable/picker_picture_selected"
         android:scaleType="center"
         android:src="@drawable/picker_viewer_check"
         android:layout_margin="10dp"

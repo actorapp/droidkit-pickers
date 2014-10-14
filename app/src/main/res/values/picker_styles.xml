@@ -1,17 +1,17 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="PickerTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/pickerActionBarStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/bar_back</item>
         <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStyle</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowBackground">@color/globalWindowBackground</item>
+        <item name="android:windowBackground">@color/picker_globalWindowBackground</item>
     </style>
-    <style name="AppTheme.FilePicker" parent="AppTheme">
+    <style name="PickerTheme.FilePicker" parent="PickerTheme">
         <item name="android:actionBarStyle">@style/pickerActionBarStyleFilePicker</item>
     </style>
-    <style name="AppTheme.PicturePicker" parent="AppTheme">
+    <style name="PickerTheme.PicturePicker" parent="PickerTheme">
         <item name="android:logo">@null</item>
         <item name="android:actionOverflowButtonStyle">@style/pickerActionOverflowButtonStylePicturePicker</item>
         <item name="android:windowBackground">@color/picker_picture_content_background</item>
@@ -20,12 +20,12 @@
 
     <style name="pickerActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:titleTextStyle">@style/pickerActionBarTitleStyle</item>
-        <item name="android:background">@color/main_color</item>
+        <item name="android:background">@color/picker_main_color</item>
     </style>
     <style name="pickerActionBarStyleFilePicker" parent="@style/pickerActionBarStyle">
     </style>
     <style name="pickerActionBarStylePicturePicker" parent="@style/pickerActionBarStyle">
-        <item name="android:background">@color/main_color_picturepicker</item>
+        <item name="android:background">@color/picker_main_color_picturepicker</item>
     </style>
 
     <style name="pickerActionBarTitleStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">

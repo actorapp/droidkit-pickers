@@ -70,7 +70,7 @@ public class PictureAdapter extends BaseAdapter {
             if (convertView != null && convertView.getTag().equals("picture_folder"))
                 itemView = convertView;
             else
-                itemView = View.inflate(pickerActivity, R.layout.item_picture_folder, null);
+                itemView = View.inflate(pickerActivity, R.layout.picker_item_picture_folder, null);
 
             itemView.setTag("picture_folder");
 
@@ -78,7 +78,7 @@ public class PictureAdapter extends BaseAdapter {
             if (convertView != null && convertView.getTag().equals("picture"))
                 itemView = convertView;
             else
-                itemView = View.inflate(pickerActivity, R.layout.item_picture, null);
+                itemView = View.inflate(pickerActivity, R.layout.picker_item_picture, null);
 
             itemView.setTag("picture");
         }

@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -78,7 +77,7 @@ public class MapPickerActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Timer.start();
-        setContentView(R.layout.activity_map_picker);
+        setContentView(R.layout.picker_activity_map_picker);
         Timer.stop("Layout set");
         list = (ListView) findViewById(R.id.list);
         list.setOnScrollListener(this);
@@ -308,15 +307,15 @@ public class MapPickerActivity extends Activity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.map, menu);
+        getMenuInflater().inflate(R.menu.picker_map, menu);
         searchView = (SearchView) menu.getItem(0).getActionView();
 
         SearchViewHacker.disableCloseButton(searchView);
         SearchViewHacker.disableMagIcon(searchView);
         SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
         SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
-        SearchViewHacker.setEditText(searchView, R.drawable.search_text_box);
-        SearchViewHacker.setHint(searchView, getString(R.string.picker_files_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_focused_color), null);
+        SearchViewHacker.setEditText(searchView, R.drawable.picker_search_text_box);
+        SearchViewHacker.setHint(searchView, getString(R.string.picker_file_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_focused_color), null);
         SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
         searchView.setIconified(true);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

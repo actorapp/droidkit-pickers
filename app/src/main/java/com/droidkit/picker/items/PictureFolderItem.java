@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.droidkit.file.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by kiolt_000 on 16/09/2014.
@@ -54,10 +53,10 @@ public class PictureFolderItem extends FolderItem {
 
         final ImageView holder = (ImageView) itemView.findViewById(R.id.image);
         if (holder != null) {
-            holder.setImageResource(R.drawable.user_placeholder);
+            holder.setImageResource(R.drawable.example_user_placeholder);
 
 
-            ImageLoader.getInstance().displayImage("file://"+ albumImage, holder);
+            //ImageLoader.getInstance().displayImage("file://"+ albumImage, holder);
 
         }
          // super.bindImage(itemView);

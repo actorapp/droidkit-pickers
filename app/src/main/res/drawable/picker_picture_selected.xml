@@ -3,7 +3,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_selected="true"
-        android:drawable="@drawable/ic_selected_checked"/>
+        android:drawable="@drawable/picker_picture_selected_checked"/>
     <item
-        android:drawable="@drawable/ic_selected_default" />
+        android:drawable="@drawable/picker_picture_selected_default" />
 </selector>

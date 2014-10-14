@@ -1,17 +1,10 @@
 package com.droidkit.picker.file;
 
-import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.TextView;
 
 
 import com.droidkit.file.R;
@@ -19,8 +12,6 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.util.DatabaseConnector;
-
-import java.util.ArrayList;
 
 public class FilePickerActivity extends SuperPickerActivity {
 
@@ -81,8 +72,8 @@ public class FilePickerActivity extends SuperPickerActivity {
             Fragment fragment = new ExplorerFragment();
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                            R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                    .setCustomAnimations(R.animator.picker_fragment_explorer_enter, R.animator.picker_fragment_explorer_exit,
+                            R.animator.picker_fragment_explorer_return, R.animator.picker_fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();

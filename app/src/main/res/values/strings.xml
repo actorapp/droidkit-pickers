@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="picker_loading">Loading</string>
-    <string name="picker_map_nearby_header">or select from nearby</string>
-    <string name="picker_map_nearby_empty">No places nearby</string>
-    <string name="picker_internalerror">Error has occurred</string>
-    <string name="picker_time_yesterday_at">yesterday at %s</string>
-    <string name="picker_time_today_at">today at %s</string>
-    <string name="picker_bytes">%d bytes</string>
-    <string name="picker_kbytes">KB</string>
-    <string name="picker_mbytes">MB</string>
-    <string name="picker_gbytes">GB</string>
-    <string name="picker_time_hour_ago">1 hour ago</string>
-    <string name="picker_time_minute_ago">1 minute ago</string>
-    <string name="picker_time_at">%1$s at %2$s</string>
-    <string name="picker_search">Search</string>
-    <string name="picker_header_recent">Recent Files</string>
-    <string name="picker_header_main">Main Folders</string>
 
-    <plurals name="picker_time_minutes_ago">
-        <item quantity="one">%d minute ago</item>
-        <item quantity="two">%d minutes ago</item>
-        <item quantity="few">%d minutes ago</item>
-        <item quantity="many">%d minutes ago</item>
-        <item quantity="other">%d songs found.</item>
-    </plurals>
 
-    <string name="title_activity_test">TestActivity</string>
+
+
 
 </resources>

@@ -158,6 +158,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <include  layout="@layout/controllers" />
+        <include  layout="@layout/picker_controllers" />
         </LinearLayout>
 </RelativeLayout>

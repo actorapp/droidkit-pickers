@@ -11,5 +11,5 @@
         android:layout_above="@+id/controllers"
         />
 
-    <include layout="@layout/controllers" />
+    <include layout="@layout/picker_controllers" />
 </RelativeLayout>

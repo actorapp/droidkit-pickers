@@ -70,8 +70,8 @@ public class PicturePickerActivity extends SuperPickerActivity {
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
                     // todo animate out
-                    //.setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                      //      R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                    //.setCustomAnimations(R.animator.picker_fragment_explorer_enter, R.animator.picker_fragment_explorer_exit,
+                      //      R.animator.picker_fragment_explorer_return, R.animator.picker_fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();
@@ -86,8 +86,8 @@ public class PicturePickerActivity extends SuperPickerActivity {
             fragment.setArguments(bundle);
             getFragmentManager().beginTransaction()
                     // todo animate out
-                   // .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                    //        R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                   // .setCustomAnimations(R.animator.picker_fragment_explorer_enter, R.animator.picker_fragment_explorer_exit,
+                    //        R.animator.picker_fragment_explorer_return, R.animator.picker_fragment_explorer_out)
                     .replace(R.id.container, fragment)
                     .addToBackStack(path)
                     .commit();
@@ -107,8 +107,8 @@ public class PicturePickerActivity extends SuperPickerActivity {
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
                 // todo animate out
-                // .setCustomAnimations(R.animator.fragment_explorer_enter, R.animator.fragment_explorer_exit,
-                //        R.animator.fragment_explorer_return, R.animator.fragment_explorer_out)
+                // .setCustomAnimations(R.animator.picker_fragment_explorer_enter, R.animator.picker_fragment_explorer_exit,
+                //        R.animator.picker_fragment_explorer_return, R.animator.picker_fragment_explorer_out)
                 .replace(R.id.container, fragment)
                 .addToBackStack(path+"_full")
                 .commit();

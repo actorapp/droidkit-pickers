@@ -1,5 +1,6 @@
 package com.droidkit.picker.items;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -48,6 +49,11 @@ public class PictureItem extends FileItem {
                 videoHolder.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    public String getSubtitle(Context context) {
+        return null;
     }
 
     @Override

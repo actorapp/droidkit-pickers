@@ -26,7 +26,6 @@ import com.droidkit.picker.SuperPickerActivity;
 import com.droidkit.picker.file.search.IndexTask;
 import com.droidkit.picker.file.search.SearchTask;
 import com.droidkit.picker.items.ExplorerItem;
-import com.droidkit.picker.util.IndeterminateWrapper;
 import com.droidkit.picker.util.MaterialInterpolator;
 import com.droidkit.picker.util.SearchViewHacker;
 
@@ -54,7 +53,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootView = inflater.inflate(R.layout.fragment_file_search, container, false);
+        rootView = inflater.inflate(R.layout.picker_fragment_file_search, container, false);
         root = getArguments().getString("root");
 
 //        ViewGroup searchContainer = (ViewGroup) rootView.findViewById(R.id.search_container);
@@ -82,7 +81,7 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
 
         /**/
 
-        getActivity().getActionBar().setTitle(R.string.picker_files_search_activity_title);
+        getActivity().getActionBar().setTitle(R.string.picker_file_search_activity_title);
         if(index.isEmpty()) {
             indexingTask = new IndexTask(new File(root)) {
                 @Override
@@ -142,8 +141,8 @@ public class SearchFileFragment extends Fragment implements AbsListView.OnScroll
         SearchViewHacker.setCloseIcon(searchView, R.drawable.bar_clear_search);
         SearchViewHacker.setIcon(searchView, R.drawable.bar_search);
         SearchViewHacker.setText(searchView, getResources().getColor(R.color.picker_file_searchbox_focused_color));
-        SearchViewHacker.setEditText(searchView, R.drawable.search_text_box);
-        SearchViewHacker.setHint(searchView, getString(R.string.picker_files_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_hint_color), null);
+        SearchViewHacker.setEditText(searchView, R.drawable.picker_search_text_box);
+        SearchViewHacker.setHint(searchView, getString(R.string.picker_file_search_query_text), 0, getResources().getColor(R.color.picker_file_searchbox_hint_color), null);
         SearchViewHacker.disableMagIcon(searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

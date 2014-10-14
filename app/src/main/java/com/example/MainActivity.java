@@ -34,7 +34,7 @@ public class MainActivity extends Activity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new IndeterminateWrapper(this).show();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.example_activity_main);
 
         Button selectFiles = (Button) findViewById(R.id.select_files);
         selectFiles.setOnClickListener(new View.OnClickListener(){

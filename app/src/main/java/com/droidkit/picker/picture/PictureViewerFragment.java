@@ -25,7 +25,7 @@ public class PictureViewerFragment extends PicturePickerFragment {
     // todo more interactive
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_picture_viewer, null);
+        rootView = inflater.inflate(R.layout.picker_fragment_picture_viewer, null);
         pager = (ViewPager) rootView.findViewById(R.id.pager);
         pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

@@ -3,7 +3,6 @@ package com.droidkit.picker.file;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Build;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.ListView;
@@ -25,7 +23,6 @@ import android.widget.TextView;
 
 import com.droidkit.file.R;
 import com.droidkit.picker.SuperPickerActivity;
-import com.droidkit.picker.file.animations.AnimationType;
 import com.droidkit.picker.items.BackItem;
 import com.droidkit.picker.items.ExplorerItem;
 import com.droidkit.picker.items.ExternalStorageItem;
@@ -41,9 +38,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ExplorerFragment extends Fragment {
 
     protected static final String LOG_TAG = "FILE SELECTOR";
@@ -81,7 +75,7 @@ public class ExplorerFragment extends Fragment {
                              Bundle savedInstanceState) {
         Log.d("Explorer Animation","Created");
         {
-            rootView = inflater.inflate(R.layout.fragment_file_picker, container, false);
+            rootView = inflater.inflate(R.layout.picker_fragment_file_picker, container, false);
             list = (ListView) rootView.findViewById(R.id.list);
             Bundle bundle = getArguments();
             statusView = (TextView) rootView.findViewById(R.id.status);
@@ -107,19 +101,19 @@ public class ExplorerFragment extends Fragment {
 
                 if (path.equals(Environment.getExternalStorageDirectory().getPath())) {
                     if(Environment.isExternalStorageEmulated()){
-                        title = getString(R.string.picker_files_memory_phone);
+                        title = getString(R.string.picker_file_memory_phone);
                     }else
-                        title = getString((R.string.picker_files_memory_external));
+                        title = getString((R.string.picker_file_memory_external));
                 } else if (path.equals("/"))
-                    title = getString(R.string.picker_files_memory_phone);
+                    title = getString(R.string.picker_file_memory_phone);
 
                 if (fileList == null) {
                     statusView.setVisibility(View.VISIBLE);
                     File external = Environment.getExternalStorageDirectory();
                     if (path.equals(external.getPath()))
-                        statusView.setText(R.string.picker_files_memory_external_error);
+                        statusView.setText(R.string.picker_file_memory_external_error);
                     else
-                        statusView.setText(R.string.picker_files_denied);
+                        statusView.setText(R.string.picker_file_denied);
 
                     return rootView;
                 } else {
@@ -145,7 +139,7 @@ public class ExplorerFragment extends Fragment {
                         TranslateAnimation translateAnimation1 = new TranslateAnimation(0, 0, 150, 0);
                         slideInAnimation1.addAnimation(translateAnimation1);
                         statusView.startAnimation(slideInAnimation1);
-                        statusView.setText(R.string.picker_files_directory_empty);
+                        statusView.setText(R.string.picker_file_directory_empty);
                         //return rootView;
                     }
                 }
@@ -164,7 +158,7 @@ public class ExplorerFragment extends Fragment {
                 welcome = true;
 //                items.add(new StorageItem(getActivity()));
                 adapter = new WelcomeExplorerAdapter(getActivity(), items);
-                items.add(new HeaderItem(getString(R.string.picker_header_main)));
+                items.add(new HeaderItem(getString(R.string.picker_file_header_main)));
                 String externalStorageState = Environment.getExternalStorageState();
                 Log.w(LOG_TAG, externalStorageState);
                 if (
@@ -176,7 +170,7 @@ public class ExplorerFragment extends Fragment {
                                 || externalStorageState.equals(Environment.MEDIA_SHARED)
                                 || externalStorageState.equals(Environment.MEDIA_NOFS)
                         ) {
-                     items.add(new StorageItem(getString(R.string.picker_files_memory_phone)));
+                     items.add(new StorageItem(getString(R.string.picker_file_memory_phone)));
                 } else {/*
                     File cameraFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
                     if(cameraFile.exists()) {
@@ -189,9 +183,9 @@ public class ExplorerFragment extends Fragment {
                     putItem((Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES)));
                     if (Environment.isExternalStorageEmulated()) {
 
-                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_phone),R.drawable.picker_memory));
+                        items.add(new ExternalStorageItem(getString(R.string.picker_file_memory_phone),R.drawable.picker_memory));
                     }else
-                        items.add(new ExternalStorageItem(getString(R.string.picker_files_memory_external),R.drawable.picker_sdcard));
+                        items.add(new ExternalStorageItem(getString(R.string.picker_file_memory_external),R.drawable.picker_sdcard));
 
 
                     if (Build.VERSION.SDK_INT >= 19) {
@@ -200,7 +194,7 @@ public class ExplorerFragment extends Fragment {
                     }
                 }
                 path = "";
-                title = getString(R.string.picker_files_activity_title);
+                title = getString(R.string.picker_file_activity_title);
 
                 ArrayList<ExplorerItem> historyItems = loadHistory();
                 if (!historyItems.isEmpty()) {
@@ -285,7 +279,7 @@ public class ExplorerFragment extends Fragment {
                 SearchFileFragment searchFragment = new SearchFileFragment();
                 searchFragment.setArguments(bundle);
                 pickerActivity.getFragmentManager().beginTransaction()
-                        //.setCustomAnimations(R.animator.fragment_explorer_welcome_enter, R.animator.fragment_explorer_welcome_exit)
+                        //.setCustomAnimations(R.animator.picker_fragment_explorer_welcome_enter, R.animator.picker_fragment_explorer_welcome_exit)
                         .replace(R.id.container, searchFragment)
                         .addToBackStack("search")
                         .commit();
@@ -321,7 +315,7 @@ public class ExplorerFragment extends Fragment {
 
         ArrayList<String> pathesFromDB = DatabaseConnector.getHistory(pickerActivity);
         if(!pathesFromDB.isEmpty()) {
-            history.add(new HeaderItem(getString(R.string.picker_header_recent)));
+            history.add(new HeaderItem(getString(R.string.picker_file_header_recent)));
             for (String pathFromDB : pathesFromDB) {
                 File historyFile = new File(pathFromDB);
                 if (historyFile.exists())
@@ -353,7 +347,7 @@ public class ExplorerFragment extends Fragment {
 
         int animationLength = 0;
         switch (nextAnim) {
-            case R.animator.fragment_explorer_welcome_enter:
+            case R.animator.picker_fragment_explorer_welcome_enter:
                 list.setAlpha(0);
                 list.post(new Runnable() {
                     @Override
@@ -382,7 +376,7 @@ public class ExplorerFragment extends Fragment {
                 animationLength = list.getChildCount() * 100 + 50;
                 Log.d("Explorer animation", "CreateAnimator: enter");
                 break;
-            case R.animator.fragment_explorer_enter:
+            case R.animator.picker_fragment_explorer_enter:
                 list.setAlpha(0);
                 list.post(new Runnable() {
                     @Override
@@ -406,8 +400,8 @@ public class ExplorerFragment extends Fragment {
                 animationLength = list.getChildCount() * 100 + 50;
                 Log.d("Explorer animation", "CreateAnimator: enter");
                 break;
-            case R.animator.fragment_explorer_welcome_exit:
-            case R.animator.fragment_explorer_exit:
+            case R.animator.picker_fragment_explorer_welcome_exit:
+            case R.animator.picker_fragment_explorer_exit:
 
                 for (int i = 0; i < list.getChildCount(); i++) {
                     View searchItemView = list.getChildAt(i);
@@ -427,7 +421,7 @@ public class ExplorerFragment extends Fragment {
                 animationLength = 0;// list.getChildCount() * 100 + 50;
                 Log.d("Explorer animation", "CreateAnimator: exit");
                 break;
-            case R.animator.fragment_explorer_return:
+            case R.animator.picker_fragment_explorer_return:
                 list.setAlpha(0);
                 list.post(new Runnable() {
                     @Override
@@ -452,7 +446,7 @@ public class ExplorerFragment extends Fragment {
                 break;
 
             // destroy
-            case R.animator.fragment_explorer_out:
+            case R.animator.picker_fragment_explorer_out:
 
 
                 for (int i = 0; i < list.getChildCount(); i++) {
@@ -484,7 +478,7 @@ public class ExplorerFragment extends Fragment {
         }
 
         AnimatorSet animator = (AnimatorSet) AnimatorInflater.loadAnimator(pickerActivity,
-                R.animator.fragment_explorer_enter);
+                R.animator.picker_fragment_explorer_enter);
         animator.setDuration(animationLength);
 
         return animator;
