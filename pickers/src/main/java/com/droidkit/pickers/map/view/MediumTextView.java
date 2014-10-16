@@ -11,19 +11,19 @@ import android.widget.TextView;
 public class MediumTextView extends TextView {
     public MediumTextView(Context context) {
         super(context);
-        Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
-        this.setTypeface(type);
+        // Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
+        // this.setTypeface(type);
     }
 
     public MediumTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
-        this.setTypeface(type);
+        // Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
+        // this.setTypeface(type);
     }
 
     public MediumTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
-        this.setTypeface(type);
+        // Typeface type = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "Roboto-Medium.ttf");
+        // this.setTypeface(type);
     }
 }
